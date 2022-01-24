@@ -5,14 +5,20 @@ import { Footer } from "../Footer/Footer";
 import { Main } from "../Main/Main";
 import { PageNotFound } from "../PageNotFound/PageNotFound";
 
+ 
 function App() {
+   //стейт авторизации юзера
+   const [loggedIn, setIsLoggedIn] = React.useState(true);
+
   return (
     <div className="App">
       <Switch>
         <Route exact path="/">
           <>
             <div className="page">
-              <Header />
+              <Header
+              loggedIn={loggedIn}
+              />
               <Main />
               <Footer />
             </div>
