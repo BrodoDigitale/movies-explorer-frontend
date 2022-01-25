@@ -5,6 +5,7 @@
     justify-content: space-between;
     align-items: center;
     background-color: transparent;
+    padding: 0 70px;
 }
 
 .header__content-wrapper {
