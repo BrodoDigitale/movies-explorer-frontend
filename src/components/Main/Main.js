@@ -14,7 +14,8 @@ export function Main(props) {
         loggedIn = {props.loggedIn}
         />
         <Promo/>
-        <AboutProject />
+        <AboutProject/>
+        <Techs/>
     </main>
     )
 }
