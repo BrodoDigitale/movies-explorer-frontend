@@ -1,28 +1,26 @@
 .promo {
+    padding: 155px 0 75px;
+    background-color: #F3C1F8;
+    margin-top: -80px;
+}
+.promo__content-wrapper {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    padding: 75px 0;
-    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 70px;
+    box-sizing: border-box;
 }
-.promo__background-overlay {
-    background-color: #F3C1F8;
-    position: absolute;
-    width: 100vw;
-    height: 648px;
-    margin: 0;
-    top:0;
-    left:0;
-    right:0;
-    z-index: -1;
-}
-.promo__content-wrapper {
+
+.promo__text-wrapper {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
     max-width: 640px;
 }
+
 .promo__header {
     font-size: 50px;
     line-height: 58px;

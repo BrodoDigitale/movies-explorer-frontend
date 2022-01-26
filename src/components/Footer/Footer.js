@@ -1,6 +1,8 @@
-export function Footer(props) {
+import "./Footer.css";
+
+export function Footer() {
     return(
-    <footer className="header">
-    </footer>
-    )
+        <footer>
+        </footer>
+    );
 }

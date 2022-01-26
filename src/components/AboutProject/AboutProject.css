@@ -1,11 +1,14 @@
 .aboutProject {
     background-color: #fff;
-    padding: 110px 0 183px;
+    padding: 110px 70px 183px;
+    min-width: 320px;
+    max-width: 1280px;
+    margin: 0 auto;
+    box-sizing: border-box;
 }
 
 .aboutProject__description-table {
     display: flex;
-    width: 100%;
     list-style: none;
     padding: 70px 0 110px;
     margin: 0;
