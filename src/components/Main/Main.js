@@ -15,6 +15,8 @@ export function Main(props) {
         <Promo/>
         <AboutProject/>
         <Techs/>
+        <AboutMe/>
+        <Portfolio/>
         <Footer/>
     </main>
     )
