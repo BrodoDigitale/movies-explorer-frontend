@@ -1,4 +1,4 @@
-.sectionHeader__wrapper {
+.sectionHeader {
 width: 100%;
 display: flex;
 align-items: center;
@@ -11,4 +11,9 @@ margin: 0;
 font-size: 22px;
 line-height: 27px;
 font-weight: 400;
+}
+
+.sectionHeader_portfolio {
+    color: #A0A0A0;
+    border-bottom: none;
 }
