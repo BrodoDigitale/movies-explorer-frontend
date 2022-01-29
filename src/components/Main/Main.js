@@ -8,7 +8,7 @@ import { Portfolio } from "../Portfolio/Portfolio";
 
 export function Main(props) {
     return(
-    <main className="main">
+    <>
         <Header 
         loggedIn = {props.loggedIn}
         />
@@ -18,6 +18,6 @@ export function Main(props) {
         <AboutMe/>
         <Portfolio/>
         <Footer/>
-    </main>
+    </>
     )
 }

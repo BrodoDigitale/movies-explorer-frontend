@@ -11,6 +11,7 @@ export function Header(props) {
       {loggedIn ? (
         <header className="header">
           <div className="header__content-wrapper">
+            <nav className="header__nav">
             <Logo />
             <Link className="header__nav-link header__nav-link_bold transition" to="/movies">
               Фильмы
@@ -18,7 +19,7 @@ export function Header(props) {
             <Link className="header__nav-link link-transition" to="/saved-movies">
               Сохраненные фильмы
             </Link>
-          </div>
+            </nav>
           <Link className="header__nav-link header__nav-link_profile transition" to="/profile">
             <p>Аккаунт</p>
             <img src={userpic} alt="иконка юзера" />
@@ -28,11 +29,13 @@ export function Header(props) {
             type="button"
             aria-label="Открыть_меню_навигации"
           />
+          </div>
         </header>
       ) : (
         <header className="header">
-          <Logo />
           <div className="header__content-wrapper">
+          <Logo />
+          <nav className="header__nav">
             <Link className="header__nav-link transition" to="/register">
               Регистрация
             </Link>
@@ -43,6 +46,7 @@ export function Header(props) {
             >
               Войти
             </button>
+          </nav>
           </div>
         </header>
       )}
