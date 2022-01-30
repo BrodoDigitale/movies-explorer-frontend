@@ -1,24 +1,24 @@
-.searchBar {
+.searchForm {
     max-width: 1140px;
     padding: 70px 0;
     margin: 0 auto;
     box-sizing: border-box;
     border-bottom: 1px solid #E8E8E8;
 }
-.searchBar__form {
+.searchForm__form {
     display: flex;
     align-items: center;
     width: 100%;
     box-shadow: 0px 3px 14px rgba(0, 0, 0, 0.08);
     border-radius: 9px;
 }
-.searchBar__panel {
+.searchForm__panel {
     display: flex;
     align-items: center;
     width: 80%;
     padding: 19px;
 }
-.searchBar__input {
+.searchForm__input {
     width: 100%;
     border: none;
     min-height: 34px;
@@ -30,7 +30,7 @@
     background-position: left center;
     
 }
-.searchBar__input::placeholder {
+.searchForm__input::placeholder {
     padding: 25px 0 25px 44px;
     color: #A0A0A0;
     font-size: 18px;
@@ -38,7 +38,7 @@
     font-weight: 400;
 
 }
-.searchBar__button {
+.searchForm__button {
     width: 80px;
     height: 34px;
     border: none;
@@ -49,18 +49,18 @@
     background-repeat: no-repeat;
     background-position: center;
 }
-.searchBar__switch {
+.searchForm__switch {
     width: 20%;
     height: 40px;
     padding: 0 30px;
     border-left: 1px solid #CBCBCB;
 }
-.searchBar__switch-container {
+.searchForm__switch-container {
     display: flex;
     align-items: center;
     height: 100%;
 }
-.searchBar__switch-checkbox {
+.searchForm__switch-checkbox {
     position: relative;
     width: 36px;
     height: 20px;
@@ -78,7 +78,7 @@
     -moz-appearance: none;
     appearance: none;
 }
-.searchBar__switch-checkbox::after {
+.searchForm__switch-checkbox::after {
     content: "";
     display: inline-block;
     position: absolute;
@@ -90,15 +90,15 @@
     border-radius: 50%;
     transform: translateX(0);
   }
-  .searchBar__switch-checkbox:checked::after {
+  .searchForm__switch-checkbox:checked::after {
     transform: translateX(calc(100% + 6px));
     background-color: #fff;
     transition: all 0.3s cubic-bezier(0.2, 0.85, 0.32, 1.2);
   }
-  .searchBar__switch-checkbox:checked {
+  .searchForm__switch-checkbox:checked {
     background-color:#2BE080;
   }
-  .searchBar__switch-text {
+  .searchForm__switch-text {
     color: #000;
     font-size: 13px;
     line-height: 18px;
