@@ -8,8 +8,10 @@ export function Movies(props) {
         <Header 
         loggedIn = {props.loggedIn}
         />
+        <main>
         <SearchBar/>
+        </main>
         <Footer/>
-    </>
+     </>
     )
 }

@@ -8,7 +8,7 @@ import "./App.css";
  
 function App() {
    //стейт авторизации юзера
-   const [loggedIn, setIsLoggedIn] = React.useState(false);
+   const [loggedIn, setIsLoggedIn] = React.useState(true);
 
   return (
     <div className="App">
@@ -17,7 +17,7 @@ function App() {
             <Main loggedIn={loggedIn}/>
         </Route>
         <Route path="/movies">
-          <Movies/>
+          <Movies loggedIn={loggedIn}/>
         </Route>
         <Route path="/saved-movies"></Route>
         <Route path="/profile"></Route>

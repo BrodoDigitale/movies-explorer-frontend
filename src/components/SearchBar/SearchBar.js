@@ -3,22 +3,24 @@ import "./SearchBar.css"
 
 export function SearchBar() {
     return(
-        <div className="SearchBar">
-            <form className="SearchBar__form"> 
-                <label>
+        <section className="searchBar">
+            <form className="searchBar__form"> 
+                <label className="searchBar__panel">
                     <input 
                     type="search"  
-                    className="SearchBar__input" 
+                    className="searchBar__input" 
                     placeholder="Фильм"
                     aria-label="Искать фильм"
                     />
-                    <button className="SearchBar__button" type="submit"/>
+                    <button className="searchBar__button" type="submit"/>
                 </label>
-                <label form className="SearchBar__switch">
-                     <input type="checkbox"/>
-                    <p>короткометражки</p>
+                <div className="searchBar__switch">
+                <label className="searchBar__switch-container" >
+                     <input  className="searchBar__switch-checkbox" type="checkbox"/>
+                    <p className="searchBar__switch-text">Короткометражки</p>
                 </label>
+                </div>
             </form>
-        </div>
+        </section>
     )
 }
