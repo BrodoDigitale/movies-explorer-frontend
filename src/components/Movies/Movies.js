@@ -2,8 +2,7 @@ import "./Movies.css"
 import { Header } from "../Header/Header";
 import { Footer } from "../Footer/Footer";
 import { SearchForm } from "../SearchForm/SearchForm";
-import { MoviesCard } from "../MoviesCard/MoviesCard";
-import { movies } from "../../utils/utils";
+import { MoviesCardList } from "../MoviesCardList/MoviesCardList";
 
 export function Movies(props) {
 
@@ -14,18 +13,7 @@ export function Movies(props) {
         />
         <main className="movies">
             <SearchForm />
-            {movies.map((movie) => {
-                console.log(movie)
-                     return(
-                        <MoviesCard
-                        key={movie._id}
-                        image={movie.image}
-                        nameRU={movie.nameRU}
-                        duration={movie.duration}
-                        />
-                     )
-                 })
-            }
+            <MoviesCardList />
         </main>
         <Footer/>
      </>

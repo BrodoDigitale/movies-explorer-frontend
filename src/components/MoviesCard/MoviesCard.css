@@ -1,7 +1,6 @@
 .movie {
     display: flex;
     flex-direction: column;
-    width: 270px;
 }
 .movie__img {
     width: 100%;
