@@ -61,4 +61,20 @@ export const movies = [
         "_id": "1n3n4m5v6w"
 
     }
+];
+export const savedMovies = [
+    { 
+        "nameRU": "33 слова о дизайне",
+        "image": "https://i.postimg.cc/Gpdt5KZS/pic-COLOR-pic.jpg",
+        "duration": "1ч42м",
+        "_id": "1n3n4m5v6b"
+
+    },
+    { 
+        "nameRU": "Киноальманах «100 лет дизайна»",
+        "image": "https://i.postimg.cc/GhkBrKWr/pic-COLOR-pic.jpg",
+        "duration": "1ч42м",
+        "_id": "1n3n4m5v6t"
+
+    }
 ]

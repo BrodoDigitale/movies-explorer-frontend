@@ -1,10 +1,9 @@
 import "./MoviesCardList.css"
 import { MoviesCard } from "../MoviesCard/MoviesCard";
-import { movies } from "../../utils/utils";
 
 
-export function MoviesCardList() {
-  
+export function MoviesCardList(props) {
+const movies = props.movies;
     return(
     <section className="moviesCardList">
         <ul className="moviesCardList__list">

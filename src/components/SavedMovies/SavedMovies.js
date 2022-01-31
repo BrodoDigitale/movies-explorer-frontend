@@ -1,12 +1,10 @@
 import { Header } from "../Header/Header";
 import { Footer } from "../Footer/Footer";
 import { SearchForm } from "../SearchForm/SearchForm";
-import Preloader from "../Preloader/Preloader";
 import { MoviesCardList } from "../MoviesCardList/MoviesCardList";
-import { movies } from "../../utils/utils";
+import { savedMovies } from "../../utils/utils";
 
-export function Movies(props) {
-
+export function SavedMovies(props) {
     return(
     <>
         <Header 
@@ -14,9 +12,8 @@ export function Movies(props) {
         />
         <main>
             <SearchForm />
-            <Preloader />
-            <MoviesCardList 
-            movies = {movies}
+            <MoviesCardList
+            movies={savedMovies}
             />
         </main>
         <Footer/>

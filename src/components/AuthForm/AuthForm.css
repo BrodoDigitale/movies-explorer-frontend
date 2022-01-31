@@ -1,0 +1,59 @@
+.authForm {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: calc(179px + 18px);
+}
+.authForm__header {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 29px;
+    padding: 40px 0;
+    margin: 0;
+}
+.authForm__input-title {
+    margin: 0;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 12px;
+    color: #A0A0A0;
+    padding-bottom: 5px;
+}
+.authForm__input {
+    font-size: 14px;
+    line-height: 17px;
+    border:none;
+    border-bottom: 1px solid #CCCCCC;
+    background-color: #fff;
+    width: 396px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    margin-bottom: 24px;
+    padding: 0 0 10px;
+}
+.authForm__input:focus {
+    outline-style: none;
+    background-color: #fff;
+}
+.authForm__button {
+    width: 396px;
+    height: 45px;
+    color: #fff;
+    background-color: #000;
+    border: none;
+    border-radius: 3px;
+}
+.authForm__link {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: #A0A0A0;
+    margin: 0;
+    padding-top: 16px;
+    font-size: 14px;
+    line-height: 17px;
+    font-weight: 400; 
+}
+.authForm__link_lead {
+    color: #000;
+}
