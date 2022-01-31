@@ -9,8 +9,9 @@ import { student } from "../../utils/utils";
 export function AboutMe() {
     return(
         <section className="aboutMe">
-            <SectionHeader title="Студент"/>
             <div className="aboutMe__wrapper">
+            <SectionHeader title="Студент"/>
+            <div className="aboutMe__info-wrapper">
             <div className="aboutMe__text-wrapper">
             <h3 className="aboutMe__name">{student.name}</h3>
             <p className="aboutMe__title">{student.title}, {student.age}</p>
@@ -23,6 +24,7 @@ export function AboutMe() {
         </nav>
             </div>
             <img className="aboutMe__photo" src={studentPic} alt="Фото студента"/>
+            </div>
             </div>
         </section>
     )

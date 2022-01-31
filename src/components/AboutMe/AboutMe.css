@@ -1,16 +1,17 @@
 .aboutMe {
     background-color: #fff;
-    padding: 110px 70px 96px;
+    width: 100%;
+}
+.aboutMe__wrapper {
     min-width: 320px;
     max-width: 1280px;
+    padding: 110px 70px 96px;
     margin: 0 auto;
     box-sizing: border-box;
 }
-
-.aboutMe__wrapper {
+.aboutMe__info-wrapper {
     display: flex;
     justify-content: space-between;
-    width: 100%;
     padding-top: 66px;
 }
 .aboutMe__text-wrapper {

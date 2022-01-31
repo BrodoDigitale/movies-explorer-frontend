@@ -1,11 +1,12 @@
 .techs {
     background-color: #F5F5F5;
-    padding: 110px 0 183px;
+    width: 100%;
 }
 .techs__content-wrapper {
     max-width: 1280px;
+    box-sizing: border-box;
+    padding: 110px 70px 183px;
     margin: 0 auto;
-    padding: 0 70px;
     display: flex;
     flex-direction: column;
     align-items: center;

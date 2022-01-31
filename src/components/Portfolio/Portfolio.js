@@ -6,6 +6,7 @@ import arrow from "../../images/portfolio-arrow.svg";
 export function Portfolio() {
   return (
     <section className="portfolio">
+     <div className="portfolio__wrapper">
       <SectionHeader title="Портфолио" modificator="sectionHeader_portfolio"/>
       <ul className="portfolio__list">
         <li className="portfolio__list-item">
@@ -39,6 +40,7 @@ export function Portfolio() {
           </Link>
         </li>
       </ul>
+      </div>
     </section>
   );
 }
