@@ -6,11 +6,23 @@
 }
 .moviesCardList__list {
     list-style: none;
-    padding: 0;
+    padding: 0 0 77px;
     margin: 0;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(auto-fit, minmax(min-content, 1fr));
     column-gap: 20px;
     row-gap: 38px;
+}
+.moviesCardList__button {
+    display: block;
+    width: 320px;
+    height: 36px;
+    border: 1px solid #E8E8E8;
+    background-color: transparent;
+    color: #000;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 15px;
+    margin: 0 auto;
 }

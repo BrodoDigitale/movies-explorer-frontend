@@ -20,6 +20,7 @@ export function MoviesCardList() {
                  })
             }
         </ul>
+        <button className="moviesCardList__button" type="button" aria-label="Показать ещё фильмы">Ещё</button>
     </section>
     )
     }
