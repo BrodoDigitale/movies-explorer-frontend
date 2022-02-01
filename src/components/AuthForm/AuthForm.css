@@ -1,7 +1,12 @@
 .authForm {
     padding: 70px 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
-
+.authForm__form-container {
+    padding-bottom: 69px;
+}
 .authForm__header {
     font-size: 24px;
     font-weight: 500;
@@ -41,8 +46,7 @@
     background-color: #000;
     border: none;
     border-radius: 3px;
-    justify-self: end;
-    margin-top: 45px;
+    margin-top: auto;
 }
 .authForm__link {
     display: block;
@@ -53,7 +57,7 @@
     padding-top: 16px;
     font-size: 14px;
     line-height: 17px;
-    font-weight: 400; 
+    font-weight: 400;
 }
 .authForm__link_lead {
     color: #000;

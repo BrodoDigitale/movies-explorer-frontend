@@ -7,7 +7,7 @@ export function AuthForm(props) {
     return (
     <section className="authForm">
         <Logo />
-        <form>
+        <form className="authForm__form-container">
         <h1 className="authForm__header">{props.header}</h1>
         {props.children}
         </form>
