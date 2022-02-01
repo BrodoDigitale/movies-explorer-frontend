@@ -2,6 +2,7 @@ import userpic from "../../images/profile-icon.svg";
 import "./Navigation.css";
 import { Link } from "react-router-dom";
 import { Logo } from "../Logo/Logo";
+import { HamburgerMenu } from "../HamburgerMenu/HamburgerMenu";
 
 export function Navigation(props) {
   return (
@@ -19,17 +20,13 @@ export function Navigation(props) {
       </Link>
       </div>
       <Link
-        className="nav__link nav__link_profile"
+        className="nav__profile-link"
         to="/profile"
       >
         <p>Аккаунт</p>
         <img src={userpic} alt="иконка юзера" />
       </Link>
-      <button
-        className="nav__hamburger-menu"
-        type="button"
-        aria-label="Открыть_меню_навигации"
-      />
+      <HamburgerMenu/>
     </nav>
   );
 }

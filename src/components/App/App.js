@@ -12,13 +12,13 @@ import "./App.css";
  
 function App() {
    //стейт авторизации юзера
-   const [loggedIn, setIsLoggedIn] = React.useState(false);
+   const [loggedIn, setIsLoggedIn] = React.useState(true);
 
   return (
     <div className="App">
       <Switch>
         <Route exact path="/">
-            <Main loggedIn={loggedIn}/>
+          <Main loggedIn={loggedIn}/>
         </Route>
         <Route path="/movies">
           <Movies loggedIn={loggedIn}/>
