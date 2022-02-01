@@ -10,7 +10,7 @@ export function Portfolio() {
       <SectionHeader title="Портфолио" modificator="sectionHeader_portfolio"/>
       <ul className="portfolio__list">
         <li className="portfolio__list-item">
-          <Link className="portfolio__list-link" to="https://brododigitale.github.io/how-to-learn/">
+          <Link className="portfolio__list-link" to={{ pathname: "https://brododigitale.github.io/how-to-learn/"}} target="_blank">
             <p className="portfolio__list-text">Статичный сайт</p>
             <img
               className="portfolio__list-icon"
@@ -20,7 +20,7 @@ export function Portfolio() {
           </Link>
         </li>
         <li className="portfolio__list-item">
-          <Link className="portfolio__list-link" to="https://brododigitale.github.io/russian-travel/">
+          <Link className="portfolio__list-link" to={{ pathname: "https://brododigitale.github.io/russian-travel/"}} target="_blank">
             <p className="portfolio__list-text">Адаптивный сайт</p>
             <img
               className="portfolio__list-icon"
@@ -30,7 +30,7 @@ export function Portfolio() {
           </Link>
         </li>
         <li className="portfolio__list-item">
-          <Link className="portfolio__list-link" to="https://github.com/BrodoDigitale/react-mesto-api-full">
+          <Link className="portfolio__list-link" to={{ pathname: "https://github.com/BrodoDigitale/react-mesto-api-full"}} target="_blank">
             <p className="portfolio__list-text">Одностраничное приложение</p>
             <img
               className="portfolio__list-icon"

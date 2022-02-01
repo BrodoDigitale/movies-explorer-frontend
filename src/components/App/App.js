@@ -5,6 +5,7 @@ import { Movies } from "../Movies/Movies";
 import { SavedMovies } from "../SavedMovies/SavedMovies";
 import { PageNotFound } from "../PageNotFound/PageNotFound";
 import { Login } from "../Login/Login";
+import { Register } from "../Register/Register";
 import "./App.css";
 
  
@@ -28,7 +29,9 @@ function App() {
         <Route path="/signin">
           <Login />
         </Route>
-        <Route path="/signup"></Route>
+        <Route path="/signup">
+          <Register />
+        </Route>
         <Route path="*">
           <PageNotFound />
         </Route>

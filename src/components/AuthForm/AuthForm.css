@@ -1,8 +1,7 @@
 .authForm {
-    display: flex;
-    flex-direction: column;
-    padding-bottom: calc(179px + 18px);
+    padding: 70px 0;
 }
+
 .authForm__header {
     font-size: 24px;
     font-weight: 500;
@@ -16,7 +15,7 @@
     font-weight: 400;
     line-height: 12px;
     color: #A0A0A0;
-    padding-bottom: 5px;
+    padding: 24px 0 5px;
 }
 .authForm__input {
     font-size: 14px;
@@ -28,7 +27,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    margin-bottom: 24px;
+    margin-bottom: 6px;
     padding: 0 0 10px;
 }
 .authForm__input:focus {
@@ -42,6 +41,8 @@
     background-color: #000;
     border: none;
     border-radius: 3px;
+    justify-self: end;
+    margin-top: 45px;
 }
 .authForm__link {
     display: block;

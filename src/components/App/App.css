@@ -3,10 +3,7 @@
     font-weight: 400;
     font-size: 13px;
     color: #000;
-    height: 100%;
     box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
     width: 100%;
   }
 

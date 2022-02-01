@@ -5,9 +5,9 @@ import { Link } from "react-router-dom";
 
 export function AuthForm(props) {
     return (
-    <section>
+    <section className="authForm">
         <Logo />
-        <form className="authForm" autoComplete="off">
+        <form>
         <h1 className="authForm__header">{props.header}</h1>
         {props.children}
         </form>
