@@ -8,11 +8,15 @@
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-    padding-bottom: 14px;
 }
 @media screen and (max-width: 769px) {
     .movie__img {
         height: 190px;
+    }
+  }
+  @media screen and (max-width: 425px) {
+    .movie__img {
+        height: 168px;
     }
   }
 .movie__title-wrapper {
@@ -28,6 +32,12 @@
     line-height: 16px;
     margin: 0;
 }
+@media screen and (max-width: 425px) {
+    .movie__title {
+        font-size: 12px;
+        line-height: 15px;
+    }
+  }
 .movie__duration {
     font-size: 11px;
     font-weight: 400;
@@ -36,6 +46,12 @@
     color: #A0A0A0;
     padding-top: 6px;
 }
+@media screen and (max-width: 425px) {
+    .movie__duration {
+        font-size: 10px;
+        line-height: 12px;
+    }
+  }
 .movie__like-button {
     background-image: url(../../images/like-icon.svg);
     width: 24px;
