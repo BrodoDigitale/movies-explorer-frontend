@@ -1,7 +1,6 @@
 import "./Portfolio.css";
 import { Link } from "react-router-dom";
 import { SectionHeader } from "../SectionHeader/SectionHeader";
-import arrow from "../../images/portfolio-arrow.svg";
 
 export function Portfolio() {
   return (
@@ -12,31 +11,19 @@ export function Portfolio() {
         <li className="portfolio__list-item">
           <Link className="portfolio__list-link" to={{ pathname: "https://brododigitale.github.io/how-to-learn/"}} target="_blank">
             <p className="portfolio__list-text">Статичный сайт</p>
-            <img
-              className="portfolio__list-icon"
-              src={arrow}
-              alt="стрелка для перехода по ссылке"
-            />
+            <div className="portfolio__list-icon"/>
           </Link>
         </li>
         <li className="portfolio__list-item">
           <Link className="portfolio__list-link" to={{ pathname: "https://brododigitale.github.io/russian-travel/"}} target="_blank">
             <p className="portfolio__list-text">Адаптивный сайт</p>
-            <img
-              className="portfolio__list-icon"
-              src={arrow}
-              alt="стрелка для перехода по ссылке"
-            />
+            <div className="portfolio__list-icon"/>
           </Link>
         </li>
         <li className="portfolio__list-item">
           <Link className="portfolio__list-link" to={{ pathname: "https://github.com/BrodoDigitale/react-mesto-api-full"}} target="_blank">
             <p className="portfolio__list-text">Одностраничное приложение</p>
-            <img
-              className="portfolio__list-icon"
-              src={arrow}
-              alt="стрелка для перехода по ссылке"
-            />
+            <div className="portfolio__list-icon"/>
           </Link>
         </li>
       </ul>

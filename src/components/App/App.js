@@ -12,7 +12,7 @@ import "./App.css";
  
 function App() {
    //стейт авторизации юзера
-   const [loggedIn, setIsLoggedIn] = React.useState(true);
+   const [loggedIn, setIsLoggedIn] = React.useState(false);
 
   return (
     <div className="App">

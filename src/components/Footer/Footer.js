@@ -10,27 +10,25 @@ export function Footer() {
             Учебный проект Яндекс.Практикум х BeatFilm.
           </h3>
         </div>
-        <div className="footer__links-wrapper">
-          <p>&#169; 2022</p>
-          <nav>
-            <ul className="footer__nav">
+        <div className="footer__content-wrapper">
+          <p className="footer__year">&#169; 2022</p>
+            <ul className="footer__links">
               <li>
-                <Link className="footer__nav-link" to="#">
+                <Link className="footer__link" to="#">
                   Яндекс.Практикум
                 </Link>
               </li>
               <li>
-                <Link className="footer__nav-link" to="#">
+                <Link className="footer__link" to="#">
                   Github
                 </Link>
               </li>
               <li>
-                <Link className="footer__nav-link" to="#">
+                <Link className="footer__link" to="#">
                   Facebook
                 </Link>
               </li>
             </ul>
-          </nav>
         </div>
       </div>
     </footer>

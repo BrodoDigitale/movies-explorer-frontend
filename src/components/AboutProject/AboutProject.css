@@ -6,12 +6,33 @@
     margin: 0 auto;
     box-sizing: border-box;
 }
+@media screen and (max-width: 768px){
+    .aboutProject {
+        padding: 90px 50px 90px;
+ }
+}
+@media screen and (max-width: 425px){
+    .aboutProject {
+        padding: 70px 18px 70px;
+ }
+}
 
 .aboutProject__description-table {
     display: flex;
     list-style: none;
     padding: 70px 0 110px;
     margin: 0;
+}
+@media screen and (max-width: 768px){
+    .aboutProject__description-table {
+        padding: 70px 0 93px;
+ }
+}
+@media screen and (max-width: 425px){
+    .aboutProject__description-table {
+        padding: 60px 0 4px;
+        flex-direction: column;
+ }
 }
 .aboutProject__description-header {
     font-size: 20px;
@@ -20,16 +41,36 @@
     padding-bottom: 26px;
     margin: 0;
 }
+@media screen and (max-width: 425px){
+    .aboutProject__description-header {
+        font-size: 18px;
+        line-height: 22px;
+        padding-bottom: 16px;
+ }
+}
 .aboutProject__description-text {
     font-size: 14px;
     font-weight: 400;
     line-height: 20px;
     margin: 0;
 }
+@media screen and (max-width: 768px){
+    .aboutProject__description-text {
+        font-size: 12px;
+        line-height: 18px;
+ }
+}
+@media screen and (max-width: 425px){
+    .aboutProject__description-text {
+        font-size: 11px;
+        line-height: 16px;
+        margin-bottom: 56px;
+ }
+}
 .aboutProject__timeline {
     display: grid;
     width: 100%;
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: 1fr 3.75fr;
     grid-template-rows: 2;
 }
 .aboutProject__timeline-cell {
@@ -41,6 +82,13 @@
     font-weight: 500;
     line-height: 17px;
 }
+@media screen and (max-width: 425px){
+    .aboutProject__timeline-cell {
+        font-size: 11px;
+        line-height: 13px;
+        padding: 10px 0;
+ }
+}
 
 .aboutProject__timeline-cell_black {
     color: #fff;
@@ -48,9 +96,23 @@
     font-weight: 400;
     padding: 9px 0;
 }
+@media screen and (max-width: 425px){
+    .aboutProject__timeline-cell_black {
+        font-size: 11px;
+        line-height: 14px;
+        padding: 11px 0;
+ }
+}
 .aboutProject__timeline-cell_grey {
     color: #000;
     background-color: #F2F2F2;
     font-weight: 400;
     padding: 9px 0;
+}
+@media screen and (max-width: 425px){
+    .aboutProject__timeline-cell_grey {
+        font-size: 11px;
+        line-height: 14px;
+        padding: 11px 0;
+ }
 }
