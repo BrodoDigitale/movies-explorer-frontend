@@ -22,16 +22,17 @@
   display: flex;
   align-items: center;
 }
+
 .nav__link {
   font-size: 13px;
   line-height: 18px;
   text-decoration: none;
   color: #000;
-  padding-right: 16px;
 }
 
 .nav__link_bold {
   font-weight: 500;
+  padding: 0 16px 0 44px;
 }
 .nav__profile-link {
   text-decoration: none;
