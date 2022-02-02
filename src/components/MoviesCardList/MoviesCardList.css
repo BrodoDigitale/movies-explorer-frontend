@@ -4,6 +4,11 @@
     margin: 0 auto;
     box-sizing: border-box;  
 }
+@media screen and (max-width: 769px) {
+    .moviesCardList {
+        padding: 80px 30px;
+    }
+  }
 .moviesCardList__list {
     list-style: none;
     padding: 0 0 77px;
@@ -15,6 +20,14 @@
     row-gap: 38px;
     grid-auto-flow: row;
 }
+@media screen and (max-width: 769px) {
+    .moviesCardList__list {
+        padding: 0 0 50px;
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 30px;
+        row-gap: 30px;
+    }
+  }
 .moviesCardList__button {
     display: block;
     width: 320px;

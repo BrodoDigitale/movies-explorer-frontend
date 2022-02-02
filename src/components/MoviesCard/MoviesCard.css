@@ -10,6 +10,11 @@
     background-repeat: no-repeat;
     padding-bottom: 14px;
 }
+@media screen and (max-width: 769px) {
+    .movie__img {
+        height: 190px;
+    }
+  }
 .movie__title-wrapper {
     display: flex;
     justify-content: space-between;

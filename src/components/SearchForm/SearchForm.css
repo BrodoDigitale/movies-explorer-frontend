@@ -1,10 +1,16 @@
 .searchForm {
     max-width: 1140px;
     padding: 70px 0;
-    margin: 0 auto;
+    margin: 0 70px;
     box-sizing: border-box;
     border-bottom: 1px solid #E8E8E8;
 }
+@media screen and (max-width: 768px) {
+    .searchForm {
+        margin: 0 30px;
+        padding: 70px 0 109px;
+    }
+  }
 .searchForm__form {
     display: flex;
     align-items: center;
@@ -16,11 +22,11 @@
 .searchForm__panel {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     width: 80%;
     padding: 19px;
 }
 .searchForm__input {
-    width: 100%;
     border: none;
     min-height: 34px;
     padding: 0 19px 0 0;
@@ -45,6 +51,7 @@
     width: 80px;
     height: 34px;
     border: none;
+    padding: 0;
     border-radius: 48px;
     background-color: #000;
     background-image: url(../../images/search-icon-white.svg);
@@ -55,12 +62,19 @@
 .searchForm__switch {
     width: 20%;
     height: 40px;
-    padding: 0 30px;
+    padding: 0 30px;;
     border-left: 1px solid #CBCBCB;
 }
+@media screen and (max-width: 768px) {
+    .searchForm__switch {
+        width: 30%;
+        padding: 0 20px;
+    }
+  }
 .searchForm__switch-container {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     height: 100%;
 }
 .searchForm__switch-checkbox {
@@ -107,5 +121,5 @@
     line-height: 18px;
     font-weight: 400;
     margin: 0;
-    padding: 0 0 0 14px; 
+    padding: 0; 
   }

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Logo } from "../Logo/Logo";
 import { HamburgerMenu } from "../HamburgerMenu/HamburgerMenu";
 
-export function Navigation(props) {
+export function Navigation() {
   return (
     <nav className="nav">
     <div className="nav__wrapper">

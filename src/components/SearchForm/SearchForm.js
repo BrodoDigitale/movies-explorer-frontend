@@ -1,6 +1,5 @@
 import "./SearchForm.css"
 
-
 export function SearchForm() {
     return(
         <section className="searchForm">
