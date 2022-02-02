@@ -1,64 +1,103 @@
 .authForm {
-    padding: 70px 0;
+  padding: 70px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-width: 425px) {
+  .authForm {
+    padding: 56px 30px 30px;
+    align-items: center;
     height: 100%;
-    display: flex;
-    flex-direction: column;
+  }
 }
 .authForm__form-container {
-    padding-bottom: 69px;
+  min-height: 266px;
+  display: flex;
+  flex-direction: column;
 }
+
 .authForm__header {
-    font-size: 24px;
-    font-weight: 500;
-    line-height: 29px;
-    padding: 40px 0;
-    margin: 0;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 29px;
+  padding: 40px 0;
+  margin: 0;
 }
+
 .authForm__input-title {
-    margin: 0;
-    font-size: 10px;
-    font-weight: 400;
-    line-height: 12px;
-    color: #A0A0A0;
-    padding: 24px 0 5px;
+  margin: 0;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 12px;
+  color: #a0a0a0;
+  padding: 24px 0 5px;
 }
+
 .authForm__input {
-    font-size: 14px;
-    line-height: 17px;
-    border:none;
-    border-bottom: 1px solid #CCCCCC;
-    background-color: #fff;
-    width: 396px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    margin-bottom: 6px;
-    padding: 0 0 10px;
+  font-size: 14px;
+  line-height: 17px;
+  border: none;
+  border-bottom: 1px solid #e8e8e8;
+  background-color: #fff;
+  width: 396px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  margin-bottom: 6px;
+  padding: 0 0 10px;
+}
+@media screen and (max-width: 425px) {
+  .authForm__input {
+    max-width: 260px;
+  }
 }
 .authForm__input:focus {
-    outline-style: none;
-    background-color: #fff;
+  outline-style: none;
+  background-color: #fff;
 }
 .authForm__button {
-    width: 396px;
-    height: 45px;
-    color: #fff;
-    background-color: #000;
-    border: none;
-    border-radius: 3px;
+  width: 396px;
+  height: 45px;
+  color: #fff;
+  background-color: #000;
+  border: none;
+  border-radius: 3px;
+  margin-top: 69px;
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: 500;
+}
+@media screen and (max-width: 425px) {
+  .authForm__button {
+    width: 260px;
+    font-size: 12px;
+    line-height: 14px;
+  }
+}
+@media screen and (max-width: 425px) {
+  .authForm__button-wrapper {
     margin-top: auto;
+  }
 }
 .authForm__link {
-    display: block;
-    text-align: center;
-    text-decoration: none;
-    color: #A0A0A0;
-    margin: 0;
-    padding-top: 16px;
-    font-size: 14px;
-    line-height: 17px;
-    font-weight: 400;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  color: #a0a0a0;
+  margin: 0;
+  padding-top: 16px;
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: 400;
+}
+@media screen and (max-width: 425px) {
+  .authForm__link {
+    font-size: 12px;
+    line-height: 15px;
+    padding-top: 14px;
+  }
 }
 .authForm__link_lead {
-    color: #000;
+  color: #000;
 }

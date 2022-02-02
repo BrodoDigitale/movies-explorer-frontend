@@ -2,11 +2,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
-}
-
-@media screen and (min-height: 700px){
-    .login {
-    max-height: 700px;
- }
+    justify-content: center;
+    height: 100vh;  
 }
