@@ -96,6 +96,11 @@
     font-size: 12px;
     line-height: 16px;
 }
+.promo__button-link {
+    text-decoration: none;
+    color: #000;
+}
+
 @media screen and (max-width: 425px){
     .promo__img {
         width: 206px;

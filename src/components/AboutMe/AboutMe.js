@@ -18,8 +18,8 @@ export function AboutMe() {
             <p className="aboutMe__description">{student.description}</p>
             <nav>
             <ul className="aboutMe__links">
-                <li><Link className="aboutMe__link" to="https://github.com/BrodoDigitale">Github</Link></li>
-                <li><Link className="aboutMe__link" to="https://www.linkedin.com/in/yulia-sensi/">LinkedIn</Link></li>
+                <li><Link className="aboutMe__link" to={{ pathname: "https://github.com/BrodoDigitale"}} target="_blank">Github</Link></li>
+                <li><Link className="aboutMe__link" to={{ pathname: "https://www.linkedin.com/in/yulia-sensi/"}} target="_blank">LinkedIn</Link></li>
             </ul>
         </nav>
             </div>

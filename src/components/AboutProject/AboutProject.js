@@ -4,7 +4,7 @@ import { SectionHeader } from "../SectionHeader/SectionHeader";
 
 export function AboutProject() {
     return(
-        <section className="aboutProject">
+        <section className="aboutProject" id="aboutProject">
             <SectionHeader title="О проекте"/>
             <ul className="aboutProject__description-table">
                 <li>
