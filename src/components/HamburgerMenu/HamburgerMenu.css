@@ -1,98 +1,103 @@
 .hamburgerMenu__button {
-    display: none;
-    background-image: url("../../images/hamburger_menu.svg");
-    height: 44px;
-    width: 44px;
-    border: none;
-    background-color: transparent;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
-
-  @media screen and (max-width: 768px) {
-    .hamburgerMenu__button {
-      display: block;
-    }
-  }
-
-  .hamburgerMenu__menu {
-    display: flex;
-    flex: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-    background-color: rgba(0,0,0,0.3);
-    position: fixed;
-    top: 0;
-    left: 0;
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0s linear 0.5s,opacity 0.5s linear;
-  }
-
-  .hamburgerMenu__menu_opened {
-    visibility: visible;
-    opacity: 1;
-    transition-delay:0s;
-    z-index: 5;
-  }
-  .hamburgerMenu__wrapper {
-      width: 70%;
-      height: 100%;
-      margin-left: auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      background-color: #fff;
-      padding: 159px 0 92px;
-      box-sizing: border-box;
-  }
-  .hamburgerMenu__close-button {
-    background-color: transparent;
-    padding: 0;
-    border: none;
-    width: 22px;
-    height: 22px;
-    background-image: url(../../images/closeButton-icon.svg);
-    background-size: cover;
-    position: absolute;
-    right: 23px;
-    top: 23px;
-    color: #000; 
-  }
-  .hamburgerMenu__links-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-  }
-  .hamburgerMenu__link {
-      text-decoration: none;
-      color: #000;
-      font-size: 18px;
-      line-height: 22px;
-      font-weight: 500;
-      margin-bottom: 28px;
-
-  }
-  .hamburgerMenu__link:hover {
-    border-bottom: 2px solid #000;
+  display: none;
+  background-image: url("../../images/hamburger_menu.svg");
+  height: 44px;
+  width: 44px;
+  border: none;
+  background-color: transparent;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
-  .hamburgerMenu__link:active {
-      border-bottom: 2px solid #000;
+
+@media screen and (max-width: 768px) {
+  .hamburgerMenu__button {
+    display: block;
   }
-  .hamburgerMenu__profile-link {
-      width: 100px;
-      height: 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      text-decoration: none;
-      color: #000;
-      font-size: 14px;
-      line-height: 16px;
-      font-weight: 500;
-      background: transparent;
+}
+
+.hamburgerMenu__menu {
+  display: flex;
+  flex: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s linear 0.5s, opacity 0.5s linear;
+}
+
+.hamburgerMenu__menu_opened {
+  visibility: visible;
+  opacity: 1;
+  transition-delay: 0s;
+  z-index: 5;
+}
+.hamburgerMenu__wrapper {
+  width: 70%;
+  height: 100%;
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  padding: 159px 0 92px;
+  box-sizing: border-box;
+}
+@media screen and (max-width: 425px) {
+  .hamburgerMenu__wrapper {
+    width: 100%;
+    padding: 144px 0 48px;
   }
+}
+.hamburgerMenu__close-button {
+  background-color: transparent;
+  padding: 0;
+  border: none;
+  width: 22px;
+  height: 22px;
+  background-image: url(../../images/closeButton-icon.svg);
+  background-size: cover;
+  position: absolute;
+  right: 23px;
+  top: 23px;
+  color: #000;
+}
+.hamburgerMenu__links-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.hamburgerMenu__link {
+  text-decoration: none;
+  color: #000;
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 500;
+  margin-bottom: 28px;
+}
+.hamburgerMenu__link:hover {
+  border-bottom: 2px solid #000;
+}
+.hamburgerMenu__link:active {
+  border-bottom: 2px solid #000;
+}
+.hamburgerMenu__profile-link {
+  width: 100px;
+  height: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-decoration: none;
+  color: #000;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  background: transparent;
+}

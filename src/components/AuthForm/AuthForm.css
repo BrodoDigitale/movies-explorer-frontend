@@ -38,7 +38,7 @@
   font-size: 14px;
   line-height: 17px;
   border: none;
-  border-bottom: 1px solid #e8e8e8;
+  border-bottom: 1px solid #E8E8E8;
   background-color: #fff;
   width: 396px;
   text-overflow: ellipsis;
@@ -76,10 +76,10 @@
   }
 }
 @media screen and (max-width: 425px) {
-  .authForm__button-wrapper {
-    margin-top: auto;
+    .authForm__button-wrapper {
+        margin-top: auto;
+    }
   }
-}
 .authForm__link {
   display: block;
   text-align: center;
@@ -92,12 +92,12 @@
   font-weight: 400;
 }
 @media screen and (max-width: 425px) {
-  .authForm__link {
-    font-size: 12px;
-    line-height: 15px;
-    padding-top: 14px;
+    .authForm__link {
+        font-size: 12px;
+        line-height: 15px;
+        padding-top: 14px;
+    }
   }
-}
 .authForm__link_lead {
   color: #000;
 }
