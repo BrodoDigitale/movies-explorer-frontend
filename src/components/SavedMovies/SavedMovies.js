@@ -14,6 +14,7 @@ export function SavedMovies(props) {
             <SearchForm />
             <MoviesCardList
             movies={savedMovies}
+            button="movie__unlike-button"
             />
         </main>
         <Footer/>

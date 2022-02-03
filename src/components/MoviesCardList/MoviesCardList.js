@@ -14,6 +14,7 @@ const movies = props.movies;
                         image={movie.image}
                         nameRU={movie.nameRU}
                         duration={movie.duration}
+                        button={props.button}
                         />
                      )
                  })
