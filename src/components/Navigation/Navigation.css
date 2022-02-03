@@ -28,12 +28,17 @@
   line-height: 18px;
   text-decoration: none;
   color: #000;
-}
-
-.nav__link_bold {
-  font-weight: 500;
   padding: 0 16px 0 44px;
 }
+.nav__link:last-of-type {
+    padding: 0;
+  }
+.nav__link:active {
+  font-weight: 500;
+}
+.nav__link:hover {
+    font-weight: 500;
+  }
 .nav__profile-link {
   text-decoration: none;
   color: #000;

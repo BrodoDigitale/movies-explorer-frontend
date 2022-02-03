@@ -11,7 +11,7 @@ export function SearchForm() {
                     placeholder="Фильм"
                     aria-label="Искать фильм"
                     />
-                    <button className="searchForm__button" type="submit"/>
+                    <button className="searchForm__button transition-button" type="submit"/>
                 </label>
                 <div className="searchForm__switch">
                 <label className="searchForm__switch-container" >

@@ -4,7 +4,7 @@ import "./Logo.css";
 
 export function Logo() {
   return (
-    <Link className="logo" to="/">
+    <Link className="logo transition-link" to="/">
       <img src={logo} alt="логотип" />
     </Link>
   );

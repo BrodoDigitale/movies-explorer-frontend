@@ -12,6 +12,9 @@
   margin-bottom: 80px;
   padding: 0;
 }
+.movies__button:hover {
+    cursor: pointer;
+}
 @media screen and (max-width: 425px) {
   .movies__button {
     width: 240px;

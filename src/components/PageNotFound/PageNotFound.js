@@ -10,7 +10,7 @@ export function PageNotFound() {
         <h1 className="pageNotFound__header">404</h1>
         <p className="pageNotFound__text">Страница не найдена</p>
         </div>
-        <button className="pageNotFound__button" to={history.goBack}>Назад</button>
+        <button className="pageNotFound__button transition-button" to={history.goBack}>Назад</button>
     </main>
     )
 }

@@ -96,6 +96,9 @@
     font-size: 12px;
     line-height: 16px;
 }
+.promo__button:hover {
+    cursor: pointer;
+}
 .promo__button-link {
     text-decoration: none;
     color: #000;

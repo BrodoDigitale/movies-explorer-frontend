@@ -12,23 +12,35 @@ export function Footer() {
         </div>
         <div className="footer__content-wrapper">
           <p className="footer__year">&#169; 2022</p>
-            <ul className="footer__links">
-              <li>
-                <Link className="footer__link" to="#">
-                  Яндекс.Практикум
-                </Link>
-              </li>
-              <li>
-                <Link className="footer__link" to="#">
-                  Github
-                </Link>
-              </li>
-              <li>
-                <Link className="footer__link" to="#">
-                  Facebook
-                </Link>
-              </li>
-            </ul>
+          <ul className="footer__links">
+            <li>
+              <Link
+                className="footer__link transition-link"
+                to={{ pathname: "https://practicum.yandex.ru/" }}
+                target="_blank"
+              >
+                Яндекс.Практикум
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="footer__link transition-link"
+                to={{ pathname: "https://github.com/BrodoDigitale" }}
+                target="_blank"
+              >
+                Github
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="footer__link transition-link"
+                to={{ pathname: "https://www.linkedin.com/in/yulia-sensi/" }}
+                target="_blank"
+              >
+                LinkedIn
+              </Link>
+            </li>
+          </ul>
         </div>
       </div>
     </footer>

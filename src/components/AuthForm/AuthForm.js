@@ -12,10 +12,10 @@ export function AuthForm(props) {
         {props.children}
         </form>
         <div className="authForm__button-wrapper">
-        <button className="authForm__button" type="submit">{props.buttonName}</button>
-        <Link className="authForm__link" to={props.linkTo}>
+        <button className="authForm__button transition-button" type="submit">{props.buttonName}</button>
+        <Link className="authForm__link transition-link" to={props.linkTo}>
         {props.linkText}
-        <span className="authForm__link_lead">{props.linkLead}</span>
+        <span className="authForm__link_lead transition-link">{props.linkLead}</span>
         </Link>
         </div>
     </section>

@@ -10,7 +10,7 @@ export function Navigation() {
     <div className="nav__wrapper">
      <Logo />
       <Link
-        className="nav__link nav__link_bold"
+        className="nav__link"
         to="/movies"
       >
         Фильмы
@@ -20,7 +20,7 @@ export function Navigation() {
       </Link>
       </div>
       <Link
-        className="nav__profile-link"
+        className="nav__profile-link transition-link"
         to="/profile"
       >
         <p>Аккаунт</p>

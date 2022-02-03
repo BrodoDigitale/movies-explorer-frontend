@@ -39,14 +39,14 @@ export function Profile(props) {
         </div>
         <div className="profile__buttons-wrapper">
           <button
-            className="profile__button"
+            className="profile__button transition-button"
             type="submit"
             aria-label="Редактировать"
           >
             Редактировать
           </button>
           <button
-            className="profile__button profile__button_red"
+            className="profile__button profile__button_red transition-button"
             type="submit"
             aria-label="Редактировать"
           >

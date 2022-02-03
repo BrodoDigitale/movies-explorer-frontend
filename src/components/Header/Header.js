@@ -17,10 +17,10 @@ export function Header(props) {
           <div className="header__content-wrapper">
           <Logo />
           <div className="header__links">
-            <Link className="header__link" to="/signup">
+            <Link className="header__link transition-link" to="/signup">
               Регистрация
             </Link>
-            <Link className="header__link header__link_black" to="/signin">
+            <Link className="header__link header__link_black transition-link" to="/signin">
               Войти
             </Link>
           </div>
