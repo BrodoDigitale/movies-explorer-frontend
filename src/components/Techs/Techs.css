@@ -68,7 +68,7 @@
 }
 .techs__list {
   display: grid;
-  min-height: 60px;
+  width: 100%;
   grid-template-columns: repeat(7, 90px);
   column-gap: 10px;
   list-style: none;
@@ -80,8 +80,8 @@
 }
 @media screen and (max-width: 768px) {
   .techs__list {
-    min-height: 57px;
-    grid-template-columns: repeat(7, 84px);
+    grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+    row-gap: 10px;
   }
 }
 @media screen and (max-width: 425px) {
@@ -94,8 +94,13 @@
 .techs__list-item {
   border-radius: 10px;
   background-color: #e8e8e8;
-  height: 100%;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+@media screen and (max-width: 768px) {
+  .techs__list-item {
+    height: 57px;
+  }
 }
