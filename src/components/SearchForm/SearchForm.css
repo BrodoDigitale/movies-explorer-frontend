@@ -7,13 +7,11 @@
 }
 @media screen and (max-width: 768px) {
   .searchForm {
-    margin: 0 30px;
     padding: 70px 0 50px;
   }
 }
 @media screen and (max-width: 425px) {
   .searchForm {
-    margin: 0 10px;
     padding: 80px 0 45px;
     display: flex;
     flex-direction: column;
@@ -28,7 +26,7 @@
   border-radius: 9px;
   background-color: #fdfdfd;
 }
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 600px) {
   .searchForm__form {
     flex-direction: column;
     box-shadow: none;
@@ -42,7 +40,7 @@
   padding: 19px;
   border-radius: 9px;
 }
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 600px) {
   .searchForm__panel {
     padding: 0 16px 0;
     box-sizing: border-box;
@@ -93,20 +91,18 @@
 }
 
 .searchForm__switch {
-  width: 20%;
+  width: fit-content;
   height: 40px;
   padding: 0 30px;
   border-left: 1px solid #cbcbcb;
 }
 @media screen and (max-width: 768px) {
   .searchForm__switch {
-    width: 30%;
     padding: 0 20px;
   }
 }
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 600px) {
   .searchForm__switch {
-    width: fit-content;
     border-left: none;
     padding: 45px 0 0;
   }
@@ -157,15 +153,14 @@
 }
 .searchForm__switch-text {
   color: #000;
+  margin-left: 13px;
   font-size: 13px;
   line-height: 18px;
   font-weight: 400;
-  margin: 0;
   padding: 0;
 }
 @media screen and (max-width: 425px) {
   .searchForm__switch-text {
-    margin-left: 13px;
     font-size: 11px;
   }
 }
