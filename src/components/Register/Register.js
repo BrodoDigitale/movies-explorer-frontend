@@ -11,33 +11,35 @@ export function Register() {
         linkLead="Войти"
         linkTo="/signin"
       >
+      <form className="register__form">
         <label>
-          <h3 className="authForm__input-title">Имя</h3>
+          <h3 className="register__input-title">Имя</h3>
           <input
-            className="authForm__input"
+            className="register__input"
             type="email"
             name="userEmail"
             required
           />
         </label>
         <label>
-          <h3 className="authForm__input-title">E-mail</h3>
+          <h3 className="register__input-title">E-mail</h3>
           <input
-            className="authForm__input"
+            className="register__input"
             type="email"
             name="userEmail"
             required
           />
         </label>
         <label>
-          <h3 className="authForm__input-title">Пароль</h3>
+          <h3 className="register__input-title">Пароль</h3>
           <input
-            className="authForm__input"
+            className="register__input"
             type="password"
             name="userPassword"
             required
           />
         </label>
+        </form>
       </AuthForm>
     </section>
   );

@@ -10,12 +10,12 @@ export function Movies(props) {
   return (
     <>
       <Header loggedIn={props.loggedIn} />
-      <main>
+      <main className="movies">
         <SearchForm />
         <Preloader />
         <MoviesCardList 
         movies={movies} 
-        button="movie__like-button"
+        button="movies__like-button"
         />
         <button
           className="movies__button"

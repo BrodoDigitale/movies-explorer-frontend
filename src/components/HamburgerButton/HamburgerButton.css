@@ -1,4 +1,4 @@
-.hamburgerMenu__button {
+.hamburgerButton {
   display: none;
   background-image: url("../../images/hamburger_menu.svg");
   height: 44px;
@@ -11,12 +11,12 @@
 }
 
 @media screen and (max-width: 768px) {
-  .hamburgerMenu__button {
+  .hamburgerButton {
     display: block;
   }
 }
 
-.hamburgerMenu__menu {
+.hamburgerMenu {
   display: flex;
   flex: column;
   justify-content: center;
@@ -32,7 +32,7 @@
   transition: visibility 0s linear 0.5s, opacity 0.5s linear;
 }
 
-.hamburgerMenu__menu_opened {
+.hamburgerMenu_opened {
   visibility: visible;
   opacity: 1;
   transition-delay: 0s;

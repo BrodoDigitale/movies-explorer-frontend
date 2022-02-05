@@ -1,16 +1,16 @@
-import "./HamburgerMenu.css";
+import "./HamburgerButton.css";
 import { Link } from "react-router-dom";
 import userpic from "../../images/profile-icon.svg";
 
-export function HamburgerMenu(props) {
+export function HamburgerButton(props) {
   return (
     <>
       <button
-        className="hamburgerMenu__button transition-button"
+        className="hamburgerButton transition-button"
         type="button"
         aria-label="Открыть_меню_навигации"
-      />
-      <div className="hamburgerMenu__menu">
+      ></button>
+      <div className="hamburgerMenu">
         <button
           className="hamburgerMenu__close-button transition-button"
           type="button"

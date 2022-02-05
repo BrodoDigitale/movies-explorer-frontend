@@ -21,3 +21,22 @@
     height: 36px;
   }
 }
+.movies__like-button {
+  background-image: url(../../images/like-icon.svg);
+  width: 24px;
+  height: 24px;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+}
+.movies__like-button:hover {
+  cursor: pointer;
+}
+.movies__like-button_active {
+  background-image: url(../../images/like-icon-active.svg);
+  width: 24px;
+  height: 24px;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+}

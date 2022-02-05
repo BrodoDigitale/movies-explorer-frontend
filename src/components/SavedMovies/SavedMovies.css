@@ -1,0 +1,11 @@
+.movies__unlike-button {
+    width: 24px;
+    height: 24px;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+  }
+  .movies__unlike-button:hover {
+    cursor: pointer;
+    background-image: url(../../images/unlike-icon.svg);
+  }

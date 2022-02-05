@@ -11,24 +11,26 @@ export function Login() {
         linkLead="Регистрация"
         linkTo="/signup"
       >
+        <form className="login__form">
         <label>
-          <h3 className="authForm__input-title">E-mail</h3>
+          <h3 className="login__input-title">E-mail</h3>
           <input
-            className="authForm__input"
+            className="login__input"
             type="email"
             name="userEmail"
             required
           />
         </label>
         <label>
-          <h3 className="authForm__input-title">Пароль</h3>
+          <h3 className="login__input-title">Пароль</h3>
           <input
-            className="authForm__input"
+            className="login__input"
             type="password"
             name="userPassword"
             required
           />
         </label>
+        </form>
       </AuthForm>
     </section>
   );

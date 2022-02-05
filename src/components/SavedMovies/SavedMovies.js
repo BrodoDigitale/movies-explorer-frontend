@@ -1,3 +1,4 @@
+import "./SavedMovies.css";
 import { Header } from "../Header/Header";
 import { Footer } from "../Footer/Footer";
 import { SearchForm } from "../SearchForm/SearchForm";
@@ -10,11 +11,11 @@ export function SavedMovies(props) {
         <Header 
         loggedIn = {props.loggedIn}
         />
-        <main>
+        <main className="movies">
             <SearchForm />
             <MoviesCardList
             movies={savedMovies}
-            button="movie__unlike-button"
+            button="movies__unlike-button"
             />
         </main>
         <Footer/>

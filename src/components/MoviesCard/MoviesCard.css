@@ -52,34 +52,3 @@
     line-height: 12px;
   }
 }
-.movie__like-button {
-  background-image: url(../../images/like-icon.svg);
-  width: 24px;
-  height: 24px;
-  border: none;
-  background-color: transparent;
-  padding: 0;
-}
-.movie__like-button:hover {
-  cursor: pointer;
-}
-.movie__unlike-button {
-  width: 24px;
-  height: 24px;
-  border: none;
-  background-color: transparent;
-  padding: 0;
-}
-.movie__unlike-button:hover {
-  cursor: pointer;
-  background-image: url(../../images/unlike-icon.svg);
-}
-
-.movie__like-button_active {
-  background-image: url(../../images/like-icon-active.svg);
-  width: 24px;
-  height: 24px;
-  border: none;
-  background-color: transparent;
-  padding: 0;
-}

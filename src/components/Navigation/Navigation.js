@@ -2,7 +2,7 @@ import userpic from "../../images/profile-icon.svg";
 import "./Navigation.css";
 import { Link } from "react-router-dom";
 import { Logo } from "../Logo/Logo";
-import { HamburgerMenu } from "../HamburgerMenu/HamburgerMenu";
+import { HamburgerButton } from "../HamburgerButton/HamburgerButton";
 
 export function Navigation() {
   return (
@@ -26,7 +26,7 @@ export function Navigation() {
         <p>Аккаунт</p>
         <img src={userpic} alt="иконка юзера" />
       </Link>
-      <HamburgerMenu/>
+      <HamburgerButton/>
     </nav>
   );
 }
