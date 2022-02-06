@@ -74,8 +74,11 @@
   }
 }
 .searchForm__input:focus {
-  outline-style: none;
-  background-color: #fdfdfd;
+  outline: none;
+  background-color: transparent;
+}
+.searchForm__input::-webkit-search-cancel-button{
+  display: none;  
 }
 .searchForm__button {
   width: 80px;

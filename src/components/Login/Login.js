@@ -3,7 +3,7 @@ import { AuthForm } from "../AuthForm/AuthForm";
 
 export function Login() {
   return (
-    <section className="login">
+    <main className="login">
       <AuthForm
         header="Рады видеть!"
         buttonName="Войти"
@@ -32,6 +32,6 @@ export function Login() {
         </label>
         </form>
       </AuthForm>
-    </section>
+    </main>
   );
 }

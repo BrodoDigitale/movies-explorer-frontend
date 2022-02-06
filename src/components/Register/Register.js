@@ -3,7 +3,7 @@ import { AuthForm } from "../AuthForm/AuthForm";
 
 export function Register() {
   return (
-    <section className="register">
+    <main className="register">
       <AuthForm
         header="Добро пожаловать!"
         buttonName="Зарегистрироваться"
@@ -41,6 +41,6 @@ export function Register() {
         </label>
         </form>
       </AuthForm>
-    </section>
+    </main>
   );
 }

@@ -10,6 +10,7 @@ export function SearchForm() {
                     className="searchForm__input" 
                     placeholder="Фильм"
                     aria-label="Искать фильм"
+                    required
                     />
                     <button className="searchForm__button transition-button" type="submit"/>
                 </label>

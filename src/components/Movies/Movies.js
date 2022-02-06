@@ -13,10 +13,7 @@ export function Movies(props) {
       <main className="movies">
         <SearchForm />
         <Preloader />
-        <MoviesCardList 
-        movies={movies} 
-        button="movies__like-button"
-        />
+        <MoviesCardList movies={movies} button="movies__like-button_active" />
         <button
           className="movies__button"
           type="button"

@@ -12,11 +12,13 @@ export function Main(props) {
         <Header 
         loggedIn = {props.loggedIn}
         />
+        <main>
         <Promo/>
         <AboutProject/>
         <Techs/>
         <AboutMe/>
         <Portfolio/>
+        </main>
         <Footer/>
     </>
     )
