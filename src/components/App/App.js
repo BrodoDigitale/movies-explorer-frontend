@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Route, Switch, useHistory, Redirect } from "react-router-dom";
 import { Main } from "../Main/Main";
 import { Movies } from "../Movies/Movies";
 import { SavedMovies } from "../SavedMovies/SavedMovies";
@@ -11,6 +11,7 @@ import { Register } from "../Register/Register";
 import { mainApi } from "../../utils/MainApi";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
+import { savedMovies } from "../../utils/utils";
 
 function App() {
   const history = useHistory();
@@ -77,34 +78,45 @@ function App() {
     //.finally(() => {setIsInfoToolOpen(true)})
   }
   //задания стейта юзера при монтировании
-  const [currentUser, setCurrentUser] = React.useState([]);
+  const [currentUser, setCurrentUser] = React.useState({});
+  
   React.useEffect(() => {
     if (loggedIn) {
       mainApi
         .getUserProfile()
         .then((res) => {
           setCurrentUser(res);
+          console.log(currentUser);
         })
         .catch((err) => console.log(err));
     }
-  }, [loggedIn]);
+  },[loggedIn]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
+      {loggedIn ? <Redirect to="/movies" /> : <Redirect to="/" />}
         <Switch>
+          <Route exact path="/">
             <Main loggedIn={loggedIn} />
+          </Route>
             <ProtectedRoute 
             exact path="/movies"
             component={Movies}
             loggedIn={loggedIn}
             />
-            <Route path="/saved-movies">
-              <SavedMovies loggedIn={loggedIn} />
-            </Route>
-            <Route path="/profile">
-              <Profile loggedIn={loggedIn} />
-            </Route>
+            <ProtectedRoute 
+            exact path="/saved-movies"
+            component={SavedMovies}
+            loggedIn={loggedIn}
+            />
+            <ProtectedRoute 
+            path="/profile"
+            component={Profile}
+            loggedIn={loggedIn}
+            userName={currentUser.name}
+            userEmail={currentUser.email}
+            />
           <Route path="/signin">
             <Login onLogin={handleLogin} />
           </Route>

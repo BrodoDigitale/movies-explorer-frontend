@@ -3,21 +3,18 @@ import "./Profile.css";
 import { Header } from "../Header/Header";
 
 export function Profile(props) {
-  const [userName, setUserName] = React.useState("Незнакомец");
-  const [userEmail, setUSerEmail] = React.useState("some.mailbox@gmail.com");
-
   return (
     <>
       <Header loggedIn={props.loggedIn} />
       <main className="profile">
         <div className="profile__wrapper">
-          <h1 className="profile__header">Привет, {userName}!</h1>
+          <h1 className="profile__header">Привет, {props.userName}!</h1>
           <div className="profile__inputs-wrapper">
             <label className="profile__input-label">
               Имя
               <input
                 className="profile__input"
-                placeholder={userName}
+                placeholder={props.userName}
                 name="userName"
                 maxLength="30"
                 minLength="2"
@@ -29,7 +26,7 @@ export function Profile(props) {
               Почта
               <input
                 className="profile__input"
-                placeholder={userEmail}
+                placeholder={props.userEmail}
                 name="userEmail"
                 type="email"
                 required
