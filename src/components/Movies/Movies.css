@@ -2,9 +2,9 @@
   padding: 80px 30px 0;
 }
 
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 320px) {
   .movies {
-    padding: 50px 10px 0;
+    padding: 80px 10px 0;
   }
 }
 .movies__button {

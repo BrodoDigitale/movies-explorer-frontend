@@ -47,7 +47,7 @@ register(data) {
   }; 
 
   checkTokenValidity(token){
-    return fetch(`${this._url}/profile`, {
+    return fetch(`${this._url}/users/me`, {
         method: 'GET',
         headers: {
             "Content-Type": "application/json",
@@ -60,14 +60,14 @@ register(data) {
       }) 
     }
      getUserProfile() {
-        return fetch(`${this._url}/profile`,{
+        return fetch(`${this._url}/users/me`,{
             method: 'GET',
             headers: this._headers
         })
         .then(this._handleResponse)
      }
      updateProfile(data) {
-      return fetch(`${this._url}/profile`,{
+      return fetch(`${this._url}/users/me`,{
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({

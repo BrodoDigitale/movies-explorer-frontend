@@ -35,3 +35,48 @@
     outline-style: none;
     background-color: #fff;
   }
+  .login__button {
+    width: 396px;
+    height: 45px;
+    color: #fff;
+    background-color: #000;
+    border: none;
+    border-radius: 3px;
+    margin-top: 69px;
+    font-size: 14px;
+    line-height: 17px;
+    font-weight: 500;
+  }
+  @media screen and (max-width: 425px) {
+    .login__button {
+      width: 260px;
+      font-size: 12px;
+      line-height: 14px;
+    }
+  }
+  @media screen and (max-width: 425px) {
+    .login__button-wrapper {
+      margin-top: auto;
+    }
+  }
+  .login__link {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: #a0a0a0;
+    margin: 0;
+    padding-top: 16px;
+    font-size: 14px;
+    line-height: 17px;
+    font-weight: 400;
+  }
+  @media screen and (max-width: 425px) {
+    .login__link {
+      font-size: 12px;
+      line-height: 15px;
+      padding-top: 14px;
+    }
+  }
+  .login__link-span {
+    color: #000;
+  }
