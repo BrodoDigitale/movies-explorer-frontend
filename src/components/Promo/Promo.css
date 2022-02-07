@@ -1,0 +1,112 @@
+.promo {
+    padding: 155px 0 75px;
+    background-color: #F3C1F8;
+    margin-top: -80px;
+}
+@media screen and (max-width: 425px){
+    .promo {
+        padding: 144px 0 30px;
+ }
+}
+.promo__content-wrapper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 70px;
+    box-sizing: border-box;
+}
+@media screen and (max-width: 768px){
+    .promo__content-wrapper {
+    flex-direction: column-reverse;
+    align-items: center;
+ }
+}
+@media screen and (max-width: 425px){
+    .promo__content-wrapper {
+        padding: 0 5px;
+ }
+}
+.promo__text-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    max-width: 640px;
+}
+
+@media screen and (max-width: 768px){
+    .promo__text-wrapper {
+    align-items: center;
+    padding-top: 48px;
+ }
+}
+@media screen and (max-width: 768px){
+    .promo__text-wrapper {
+    padding-top: 44px;
+ }
+}
+.promo__header {
+    font-size: 50px;
+    line-height: 58px;
+    font-weight: 400;
+    margin: 0;
+}
+@media screen and (max-width: 768px){
+    .promo__header {
+    text-align: center;
+    font-size: 40px;
+    line-height: 50px;
+ }
+}
+@media screen and (max-width: 425px){
+    .promo__header {
+    font-size: 30px;
+    line-height: 38px;
+ }
+}
+.promo__text {
+    font-size: 13px;
+    max-width: 310px;
+    padding: 36px 0 146px;
+    line-height: 16px;
+    color: rgba(0, 0, 0, 0.5);
+    margin: 0;
+}
+@media screen and (max-width: 768px){
+    .promo__text {
+    padding: 22px 0 92px;
+    text-align: center;
+ }
+}
+@media screen and (max-width: 425px){
+    .promo__text {
+    padding: 24px 0 80px;
+    max-width: 260px;
+ }
+}
+.promo__button {
+    background-color: transparent;
+    border: 1px solid #000000;
+    border-radius: 3px;
+    width: 129px;
+    height: 36px;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+}
+.promo__button:hover {
+    cursor: pointer;
+}
+.promo__button-link {
+    text-decoration: none;
+    color: #000;
+}
+
+@media screen and (max-width: 425px){
+    .promo__img {
+        width: 206px;
+        height: 210px;
+ }
+}
