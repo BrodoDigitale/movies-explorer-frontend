@@ -10,8 +10,8 @@ const movies = props.movies;
         {movies.map((movie) => {
                      return(
                         <MoviesCard
-                        key={movie._id}
-                        image={movie.image}
+                        key={movie.id}
+                        image={`https://api.nomoreparties.co/${movie.image.url}`}
                         nameRU={movie.nameRU}
                         duration={movie.duration}
                         button={props.button}

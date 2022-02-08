@@ -9,14 +9,30 @@ import { PageNotFound } from "../PageNotFound/PageNotFound";
 import { Login } from "../Login/Login";
 import { Register } from "../Register/Register";
 import { mainApi } from "../../utils/MainApi";
+import { moviesApi } from "../../utils/MoviesApi";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
-import { savedMovies } from "../../utils/utils";
+
 
 function App() {
   const history = useHistory();
   //стейт авторизации юзера
   const [loggedIn, setIsLoggedIn] = React.useState(false);
+  //Стейт фильмов
+  const [movies, renderMovies] = React.useState([]);
+  //Стейт юзера 
+      const [currentUser, setCurrentUser] = React.useState({});
+
+      React.useEffect(() => {
+        if (loggedIn) {
+          mainApi
+            .getUserProfile()
+            .then((res) => {
+              setCurrentUser(res);
+            })
+            .catch((err) => console.log(err));
+        }
+      },[loggedIn])
 
   //Проверка токена при загрузке страницы
   React.useEffect(() => {
@@ -32,20 +48,7 @@ function App() {
         .catch((err) => console.log(err));
     }
   }, []);
-    //задания стейта юзера при монтировании
-    const [currentUser, setCurrentUser] = React.useState({});
-  
-    React.useEffect(() => {
-      if (loggedIn) {
-        mainApi
-          .getUserProfile()
-          .then((res) => {
-            setCurrentUser(res);
-            console.log(currentUser);
-          })
-          .catch((err) => console.log(err));
-      }
-    },[loggedIn])
+
   //Логин
   function handleLogin(data) {
     if (!data.email || !data.password) {
@@ -91,6 +94,18 @@ function App() {
       })
       .catch(err => console.log(err));
   }
+
+//Отображениие фильмов
+      React.useEffect(() => {
+      if(loggedIn) {
+          moviesApi.getMovies()
+          .then((res)=> {
+              renderMovies(res)
+          })
+          .catch(err => console.log(err));
+      }
+      }, [loggedIn]);
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
@@ -103,6 +118,7 @@ function App() {
             exact path="/movies"
             component={Movies}
             loggedIn={loggedIn}
+            movies={movies}
             />
             <ProtectedRoute
             exact path="/saved-movies"

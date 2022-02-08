@@ -3,7 +3,6 @@ import { Header } from "../Header/Header";
 import { Footer } from "../Footer/Footer";
 import { SearchForm } from "../SearchForm/SearchForm";
 import { MoviesCardList } from "../MoviesCardList/MoviesCardList";
-import { savedMovies } from "../../utils/utils";
 
 export function SavedMovies(props) {
     return(
@@ -14,7 +13,7 @@ export function SavedMovies(props) {
         <main className="movies">
             <SearchForm />
             <MoviesCardList
-            movies={savedMovies}
+            movies={props.movies}
             button="movies__unlike-button"
             />
         </main>
