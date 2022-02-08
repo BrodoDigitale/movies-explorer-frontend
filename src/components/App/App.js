@@ -63,7 +63,11 @@ function App() {
       })
       .catch((err) => console.log(err));
   }
-
+    //Логаут
+    function handleLogout() {
+      localStorage.removeItem('jwt');
+      setIsLoggedIn(false);
+  }
   //Регистрация
   function handleRegister(data) {
     mainApi
@@ -90,7 +94,7 @@ function App() {
         })
         .catch((err) => console.log(err));
     }
-  },[loggedIn]);
+  },[loggedIn])
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -105,7 +109,7 @@ function App() {
             component={Movies}
             loggedIn={loggedIn}
             />
-            <ProtectedRoute 
+            <ProtectedRoute
             exact path="/saved-movies"
             component={SavedMovies}
             loggedIn={loggedIn}
@@ -116,6 +120,7 @@ function App() {
             loggedIn={loggedIn}
             userName={currentUser.name}
             userEmail={currentUser.email}
+            handleLogout={handleLogout}
             />
           <Route path="/signin">
             <Login onLogin={handleLogin} />

@@ -45,7 +45,8 @@ export function Profile(props) {
           <button
             className="profile__button profile__button_red transition-button"
             type="submit"
-            aria-label="Редактировать"
+            aria-label="Выйти из аккаунта"
+            onClick={props.handleLogout}
           >
             Выйти из аккаунта
           </button>
