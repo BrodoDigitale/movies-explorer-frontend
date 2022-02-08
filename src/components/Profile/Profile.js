@@ -1,24 +1,60 @@
 import React from "react";
 import "./Profile.css";
 import { Header } from "../Header/Header";
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+
+
 
 export function Profile(props) {
+//Задание стейта 
+
+const [userEmail, setUserEmail] = React.useState("");
+const [userName, setUserName] = React.useState("");
+
+//Подписка на контекст юзера
+  const currentUser = React.useContext(CurrentUserContext);
+
+  React.useEffect(() => {
+    setUserName(currentUser.userName);
+    setUserEmail(currentUser.userEmail);
+  }, [currentUser]);
+
+//Управление полями
+function userNameHandleChange(e) {
+    setUserName(e.target.value);
+  }
+  function userEmailHandleChange(e) {
+    setUserEmail(e.target.value);
+  }
+
+function handleSubmit(e) {
+    e.preventDefault();
+    // Передаём значения управляемых компонентов во внешний обработчик
+    props.onUpdateProfile({
+      name: userName,
+      email: userEmail,
+    });
+  }
   return (
     <>
       <Header loggedIn={props.loggedIn} />
-      <main className="profile">
+      <main>
+      <form className="profile" onSubmit={handleSubmit}>
         <div className="profile__wrapper">
-          <h1 className="profile__header">Привет, {props.userName}!</h1>
+          <h1 className="profile__header">Привет, {currentUser.name}!</h1>
           <div className="profile__inputs-wrapper">
             <label className="profile__input-label">
               Имя
               <input
                 className="profile__input"
-                placeholder={props.userName}
+                id="profile__name"
+                placeholder={currentUser.name}
                 name="userName"
                 maxLength="30"
                 minLength="2"
                 type="text"
+                value={userName||""}
+                onChange={userNameHandleChange}
                 required
               />
             </label>
@@ -26,9 +62,12 @@ export function Profile(props) {
               Почта
               <input
                 className="profile__input"
-                placeholder={props.userEmail}
+                id="profile__email"
+                placeholder={currentUser.email}
                 name="userEmail"
                 type="email"
+                value={userEmail||""}
+                onChange={userEmailHandleChange}
                 required
               />
             </label>
@@ -39,6 +78,7 @@ export function Profile(props) {
             className="profile__button transition-button"
             type="submit"
             aria-label="Редактировать"
+            onClick={props.handleUpdateProfile}
           >
             Редактировать
           </button>
@@ -51,6 +91,7 @@ export function Profile(props) {
             Выйти из аккаунта
           </button>
         </div>
+      </form>
       </main>
     </>
   );

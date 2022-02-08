@@ -36,6 +36,8 @@
   max-width: 410px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  min-height: 61px;
 }
 @media screen and (max-width: 768px) {
   .profile__inputs-wrapper {
@@ -44,34 +46,47 @@
 }
 .profile__input-label {
   width: 100%;
+
   display: flex;
   justify-content: space-between;
-  margin-bottom: 17px;
   height: fit-content;
   font-size: 11px;
   line-height: 14px;
   font-weight: 500;
 }
 .profile__input-label:first-of-type {
+  padding-bottom: 16px;
   border-bottom: 1px solid #e8e8e8;
 }
 .profile__input {
   width: 80%;
+  height: 100%;
   border: none;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  padding: 0 0 16px;
-  text-align: center;
 }
-.profile__input:focus {
-  outline: none;
-}
+
 .profile__input::placeholder {
   text-align: right;
   font-size: 11px;
   line-height: 14px;
   color: #000;
+  margin-top: 8px;
+
+}
+/* скрытие плейсхолдера при фокусе*/
+:focus::-webkit-input-placeholder {
+  color: transparent
+}
+:focus::-moz-placeholder {
+  color: transparent
+}
+:focus:-moz-placeholder {
+  color: transparent
+}
+:focus:-ms-input-placeholder {
+  color: transparent
 }
 .profile__buttons-wrapper {
   display: flex;

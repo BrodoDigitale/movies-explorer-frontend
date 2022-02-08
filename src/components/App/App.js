@@ -15,9 +15,6 @@ import { savedMovies } from "../../utils/utils";
 
 function App() {
   const history = useHistory();
-  //стейты емейла и имени юзера
-  const [userEmail, setUserEmail] = React.useState("email@mail.com");
-  const [userName, setUserName] = React.useState("незнакомец");
   //стейт авторизации юзера
   const [loggedIn, setIsLoggedIn] = React.useState(false);
 
@@ -30,19 +27,25 @@ function App() {
         .then((res) => {
           if (res) {
             setIsLoggedIn(true);
-            setUserEmail(res.email);
           }
         })
         .catch((err) => console.log(err));
     }
   }, []);
+    //задания стейта юзера при монтировании
+    const [currentUser, setCurrentUser] = React.useState({});
   
-  //Логаут
-  function handleLogout() {
-    localStorage.removeItem("jwt");
-    setIsLoggedIn(false);
-  }
-
+    React.useEffect(() => {
+      if (loggedIn) {
+        mainApi
+          .getUserProfile()
+          .then((res) => {
+            setCurrentUser(res);
+            console.log(currentUser);
+          })
+          .catch((err) => console.log(err));
+      }
+    },[loggedIn])
   //Логин
   function handleLogin(data) {
     if (!data.email || !data.password) {
@@ -55,8 +58,6 @@ function App() {
         if (!res) throw new Error("Неправильные имя пользователя или пароль");
         if (res) {
           localStorage.setItem("jwt", res.token);
-          setUserEmail(data.email);
-          setUserName(data.name);
           setIsLoggedIn(true);
           history.push("/movies");
         }
@@ -81,21 +82,15 @@ function App() {
       .catch((err) => console.log(err));
     //.finally(() => {setIsInfoToolOpen(true)})
   }
-  //задания стейта юзера при монтировании
-  const [currentUser, setCurrentUser] = React.useState({});
-  
-  React.useEffect(() => {
-    if (loggedIn) {
-      mainApi
-        .getUserProfile()
-        .then((res) => {
-          setCurrentUser(res);
-          console.log(currentUser);
-        })
-        .catch((err) => console.log(err));
-    }
-  },[loggedIn])
 
+//редактирование профиля
+    function handleUpdateProfile(data) {
+      mainApi.updateProfile(data)
+      .then((res)=> {
+          setCurrentUser(res)
+      })
+      .catch(err => console.log(err));
+  }
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
@@ -118,9 +113,8 @@ function App() {
             path="/profile"
             component={Profile}
             loggedIn={loggedIn}
-            userName={currentUser.name}
-            userEmail={currentUser.email}
             handleLogout={handleLogout}
+            onUpdateProfile={handleUpdateProfile}
             />
           <Route path="/signin">
             <Login onLogin={handleLogin} />
