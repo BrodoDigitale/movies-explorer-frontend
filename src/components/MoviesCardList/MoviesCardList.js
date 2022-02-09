@@ -15,6 +15,7 @@ const movies = props.movies;
                         nameRU={movie.nameRU}
                         duration={movie.duration}
                         button={props.button}
+                        trailer={movie.trailerLink}
                         />
                      )
                  })
