@@ -6,13 +6,19 @@ import { MoviesCardList } from "../MoviesCardList/MoviesCardList";
 import "./Movies.css";
 
 export function Movies(props) {
+
   return (
     <>
       <Header loggedIn={props.loggedIn} />
       <main className="movies">
-        <SearchForm />
+        <SearchForm 
+        onSearch={props.onSearch} 
+        />
         <Preloader />
-        <MoviesCardList movies={props.movies} button="movies__like-button_active" />
+        <MoviesCardList 
+        movies={props.movies} 
+        isLoading={props.isLoading}
+        button="movies__like-button_active" />
         <button
           className="movies__button"
           type="button"
