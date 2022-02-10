@@ -105,17 +105,20 @@ function App() {
   //Сохранение фильмов
   /*React.useEffect(() => {
       if(loggedIn) {
+         setIsLoading(true);
           moviesApi.getMovies()
           .then((res)=> {
             localStorage.setItem("movies", JSON.stringify(res));
-            /*const apiMovies = JSON.parse(localStorage.getItem("movies") || "[]");
-            setMovies(apiMovies);
+            //const apiMovies = JSON.parse(localStorage.getItem("movies") || "[]");
+            setApiMovies(res);
+            setIsLoading(false);
           })
           .catch(err => console.log(err));
       }
       }, [loggedIn]); 
+    
 
-
+      /*
             const apiMovies = JSON.parse(localStorage.getItem("movies")
       return const searchResult = apiMovies.filter(movie => {
         return movie.nameRu.includes(searchParams)
@@ -140,43 +143,42 @@ function App() {
         }
       */
 
-           /*if (apiMovies.length > 0) {
+  /*if (apiMovies.length > 0) {
        searchMovies(apiMovies, searchParams);
     } else */
   // Получение фильмов
 
-  function getMovies() {
-    moviesApi.getMovies().then((res) => {
-      localStorage.setItem("movies", JSON.stringify(res));
-      setApiMovies(res);
-    });
-  }
+
 
   //Поиск фильмов
-  const searchMovies = (moviesList, searchWord) => {
-    console.log(moviesList);
-    console.log(searchWord);
-   let result;
-   result = moviesList.filter((movie) => {
-       return movie.nameRU.toLowerCase().includes(searchWord.trim().toLowerCase())
-    })
-    console.log(result);
-    setResultMovies(result);
-    
-  }
-
-  //Отрисовка фильмов
   function handleMoviesSearch(searchParams) {
-    setIsLoading(true);
- 
-      moviesApi.getMovies()
-      .then((res) => {
-        localStorage.setItem("movies", JSON.stringify(res))
-        setApiMovies(res)
-        searchMovies(apiMovies, searchParams);
+    setIsLoading(true)
+    if(!localStorage.movies) {
+      try {
+        moviesApi.getMovies()
+        .then((res) => {
+          localStorage.setItem("movies", JSON.stringify(res));
+      let result;
+      result = res.filter((movie) => {
+        return movie.nameRU
+          .toLowerCase()
+          .includes(searchParams.trim().toLowerCase());
+      });
+      setResultMovies(result);
+      console.log('из апи')
+      setIsLoading(false)
+        })
+      } catch(err) {console.log(err)}
+    } else {
+      const movies = JSON.parse(localStorage.getItem("movies")).filter((movie) => {
+        return movie.nameRU
+          .toLowerCase()
+          .includes(searchParams.trim().toLowerCase());
       })
-      .catch((err) => console.log(err));
-    
+      setTimeout( () => (setIsLoading(false)), 1000) 
+      setResultMovies(movies);
+      console.log('из сторадж') 
+    }
   }
 
   return (

@@ -2,7 +2,7 @@ import "./SearchForm.css"
 import React, { useState } from 'react';
 
 export function SearchForm(props) {
-    
+
     const [searchWord, setSearchWord] = useState("");
   
     function handleSearch(e) {

@@ -14,10 +14,11 @@ export function Movies(props) {
         <SearchForm 
         onSearch={props.onSearch} 
         />
-        <Preloader />
-        <MoviesCardList 
-        movies={props.movies} 
+        <Preloader
         isLoading={props.isLoading}
+        />
+        <MoviesCardList 
+        movies={props.movies}
         button="movies__like-button_active" />
         <button
           className="movies__button"
