@@ -16,13 +16,36 @@ import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
 function App() {
   const history = useHistory();
   //Стейты фильмов
-  const [apiMovies, setApiMovies] = React.useState([]);
   const [resultMovies, setResultMovies] = React.useState([]);
-  const [savedMovies, setSavedMovies] = React.useState([]);
+  React.useEffect(() => setResultMovies([]), [])
+  //const [filtereMovies, setResultMovies] = React.useState([]);
+  //const [savedMovies, setSavedMovies] = React.useState([]);
+  //Стейты для рендера нужного кол-ва фильмов
 
   //Стейты поиска
+  //прелоадер
   const [isLoading, setIsLoading] = React.useState(false);
   const [nothingFound, setNothingFound] = React.useState(false);
+  //кол-во элементов на странице
+  const [limit, setLimit] = React.useState(() => {
+    if (window.innerWidth <= 480) {
+      return 5
+    } else if (window.innerWidth <= 768) {
+      return 8
+    } else if (window.innerWidth > 768) {
+      return 12
+    }
+  })
+  //кол-во добавляемых элементов
+  const [resultsToAdd, setResultsToAdd] = React.useState(() => {
+    if (window.innerWidth <= 768) {
+      return 2
+    } else if (window.innerWidth > 768) {
+      return 4
+    }
+  })
+  //состояние кнопки "еще"
+  const [moreResults, setMoreResults] = React.useState(false);
 
   //стейт авторизации юзера
   const [loggedIn, setIsLoggedIn] = React.useState(false);
@@ -146,40 +169,139 @@ function App() {
   /*if (apiMovies.length > 0) {
        searchMovies(apiMovies, searchParams);
     } else */
-  // Получение фильмов
+  //const moreMovies = JSON.parse(localStorage.getItem("filteredMovies"))
 
+let filteredMovies
 
-
-  //Поиск фильмов
+  //Поиск и фильтр фильмов
   function handleMoviesSearch(searchParams) {
-    setIsLoading(true)
-    if(!localStorage.movies) {
+    setIsLoading(true);
+    if (!localStorage.movies) {
       try {
-        moviesApi.getMovies()
-        .then((res) => {
+        moviesApi.getMovies().then((res) => {
+          console.log(res)
           localStorage.setItem("movies", JSON.stringify(res));
-      let result;
-      result = res.filter((movie) => {
-        return movie.nameRU
-          .toLowerCase()
-          .includes(searchParams.trim().toLowerCase());
-      });
-      setResultMovies(result);
-      console.log('из апи')
-      setIsLoading(false)
-        })
-      } catch(err) {console.log(err)}
+          filteredMovies = res.filter((movie) => {
+            return movie.nameRU
+              .toLowerCase()
+              .includes(searchParams.trim().toLowerCase());
+          });
+        });
+      } catch (err) {
+        console.log(err);
+      }
     } else {
-      const movies = JSON.parse(localStorage.getItem("movies")).filter((movie) => {
-        return movie.nameRU
-          .toLowerCase()
-          .includes(searchParams.trim().toLowerCase());
-      })
-      setTimeout( () => (setIsLoading(false)), 1000) 
-      setResultMovies(movies);
-      console.log('из сторадж') 
+      filteredMovies = JSON.parse(localStorage.getItem("movies")).filter(
+        (movie) => {
+          return movie.nameRU
+            .toLowerCase()
+            .includes(searchParams.trim().toLowerCase());
+        }
+      );
     }
+    setTimeout(() => setIsLoading(false), 1000);
+    //проверка длины массива для отриосвки карточек
+    moviesRender(filteredMovies, limit);
+    localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies))
   }
+
+  ////проверка длины массива для отриосвки карточек
+  const moviesRender = (movies, itemsToShow) => {
+    if (movies.length > itemsToShow) {
+     setMoreResults(true);
+     setResultMovies(movies.slice(0, limit));
+    } else {
+      setResultMovies(movies);
+    }
+  };
+
+
+  //const allFilteredMovies = JSON.parse(localStorage.getItem("filteredMovies"));
+  //console.log(allFilteredMovies)
+
+  //ресайз
+  //отображение в зависисмости от разрешения
+  /*const [width, setWidth] = React.useState(window.innerWidth)
+  const handleResize = () => {
+    // стейт ширины
+    setWidth(window.innerWidth)
+  }
+
+   const handleResize = () => {
+    // Записываем сайт в стейт
+    setScreenWidth(window.innerWidth)
+  }
+     // Вешаем слушатель на ресайз
+    window.addEventListener('resize', () =>
+      setTimeout(() => {
+        handleResize()
+      }, 1000),
+    )
+  }, [])
+  // Дёрнем этот юзЭффект если изменится стейт ширины экрана и выставим актуальное количество карточек
+ 
+  */
+
+  const [width, setWidth] = React.useState(window.innerWidth)
+  React.useEffect(() => {
+    // Вешаем слушатель
+    window.addEventListener('resize', () =>
+      setTimeout(() => {
+        screenSetter()
+      }, 1000),
+    )
+  }, [])
+  const screenSetter = () => {
+    // Записываем сайт в стейт
+    setWidth(window.innerWidth)
+  }
+  React.useEffect(() => {
+    windowSizeHandler()
+    moviesRender(filteredMovies, limit)
+  }, [width])
+
+  const windowSizeHandler = () => {
+    if (window.innerWidth <= 480) {
+      setLimit(5);
+      setResultsToAdd(2);
+    } else if (window.innerWidth <= 800) {
+      setLimit(8);
+      setResultsToAdd(2);
+    } else if (window.innerWidth > 800) {
+      setLimit(12);
+      setResultsToAdd(4);
+    }
+  };
+
+  // логика кнопки показать еще
+ 
+  filteredMovies = JSON.parse(localStorage.getItem("filteredMovies"))
+
+  const showMore = () => {
+    let newLimit = limit
+    if (limit + resultsToAdd < filteredMovies.length) {
+      newLimit = limit + resultsToAdd
+      moviesRender(filteredMovies.slice(0, newLimit))
+      setLimit(newLimit)
+    } else if (limit + resultsToAdd >= filteredMovies.length) {
+      newLimit = filteredMovies.length
+      moviesRender(filteredMovies, newLimit)
+      setMoreResults(false);
+      setLimit(windowSizeHandler)
+    }
+  };
+  /*React.useEffect(() => {
+    if (window.innerWidth <= 480) {
+      setLimit(5)
+      setResultsToAdd(2)
+    } else if (window.innerWidth <= 768) {
+      setLimit(8)
+      setResultsToAdd(2)
+    } else if (window.innerWidth > 768) {
+      setLimit(12)
+      setResultsToAdd(4)
+    }
+  }, [isLoading]);*/
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -198,6 +320,8 @@ function App() {
             noSearchResults={nothingFound}
             onSearch={handleMoviesSearch}
             isLoading={isLoading}
+            moreResults={moreResults}
+            showMoreResults={showMore}
           />
           <ProtectedRoute
             exact

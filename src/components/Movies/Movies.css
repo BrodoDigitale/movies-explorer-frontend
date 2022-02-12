@@ -8,7 +8,7 @@
   }
 }
 .movies__button {
-  display: block;
+  display: none;
   width: 320px;
   height: 36px;
   border: 1px solid #e8e8e8;
@@ -20,6 +20,9 @@
   margin: 0 auto;
   margin-bottom: 80px;
   padding: 0;
+}
+.movies__button_on {
+  display: block;
 }
 .movies__button:hover {
     cursor: pointer;

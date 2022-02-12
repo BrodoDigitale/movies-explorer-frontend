@@ -4,6 +4,8 @@ import { MoviesCard } from "../MoviesCard/MoviesCard";
 
 export function MoviesCardList(props) {
 const movies = props.movies;
+console.log(movies)
+
     return(
     <section className="moviesCardList">
         <ul className="moviesCardList__list">
