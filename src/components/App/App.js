@@ -17,9 +17,10 @@ function App() {
   const history = useHistory();
   //Стейты фильмов
   const [resultMovies, setResultMovies] = React.useState([]);
-  React.useEffect(() => setResultMovies([]), [])
-  //const [filtereMovies, setResultMovies] = React.useState([]);
-  //const [savedMovies, setSavedMovies] = React.useState([]);
+  
+  const [filteredMovies, setFilteredMovies] = React.useState([]);
+
+  
   //Стейты для рендера нужного кол-ва фильмов
 
   //Стейты поиска
@@ -125,63 +126,15 @@ function App() {
       .catch((err) => console.log(err));
   }
 
-  //Сохранение фильмов
-  /*React.useEffect(() => {
-      if(loggedIn) {
-         setIsLoading(true);
-          moviesApi.getMovies()
-          .then((res)=> {
-            localStorage.setItem("movies", JSON.stringify(res));
-            //const apiMovies = JSON.parse(localStorage.getItem("movies") || "[]");
-            setApiMovies(res);
-            setIsLoading(false);
-          })
-          .catch(err => console.log(err));
-      }
-      }, [loggedIn]); 
-    
-
-      /*
-            const apiMovies = JSON.parse(localStorage.getItem("movies")
-      return const searchResult = apiMovies.filter(movie => {
-        return movie.nameRu.includes(searchParams)
-
-                return movies.filter(searchParams => {
-            return movie.nameRu.includes(searchParams.toLowerCase());
-        });
-    }
-
-           
-       if(result.length > 0) {
-         setResultMovies(result);
-       } else {
-         setNothingFound(true);
-       }
-
-               if(result.length > 0) {
-          setResultMovies(result);
-          console.log(resultMovies)
-        } else {
-          setNothingFound(true);
-        }
-      */
-
-  /*if (apiMovies.length > 0) {
-       searchMovies(apiMovies, searchParams);
-    } else */
-  //const moreMovies = JSON.parse(localStorage.getItem("filteredMovies"))
-
-let filteredMovies
-
   //Поиск и фильтр фильмов
   function handleMoviesSearch(searchParams) {
     setIsLoading(true);
+    let filterResults
     if (!localStorage.movies) {
       try {
         moviesApi.getMovies().then((res) => {
-          console.log(res)
           localStorage.setItem("movies", JSON.stringify(res));
-          filteredMovies = res.filter((movie) => {
+          filterResults = res.filter((movie) => {
             return movie.nameRU
               .toLowerCase()
               .includes(searchParams.trim().toLowerCase());
@@ -191,7 +144,7 @@ let filteredMovies
         console.log(err);
       }
     } else {
-      filteredMovies = JSON.parse(localStorage.getItem("movies")).filter(
+       filterResults = JSON.parse(localStorage.getItem("movies")).filter(
         (movie) => {
           return movie.nameRU
             .toLowerCase()
@@ -199,9 +152,10 @@ let filteredMovies
         }
       );
     }
+         moviesRender(filterResults, limit);
+      setFilteredMovies(filterResults)
     setTimeout(() => setIsLoading(false), 1000);
     //проверка длины массива для отриосвки карточек
-    moviesRender(filteredMovies, limit);
     localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies))
   }
 
@@ -214,34 +168,6 @@ let filteredMovies
       setResultMovies(movies);
     }
   };
-
-
-  //const allFilteredMovies = JSON.parse(localStorage.getItem("filteredMovies"));
-  //console.log(allFilteredMovies)
-
-  //ресайз
-  //отображение в зависисмости от разрешения
-  /*const [width, setWidth] = React.useState(window.innerWidth)
-  const handleResize = () => {
-    // стейт ширины
-    setWidth(window.innerWidth)
-  }
-
-   const handleResize = () => {
-    // Записываем сайт в стейт
-    setScreenWidth(window.innerWidth)
-  }
-     // Вешаем слушатель на ресайз
-    window.addEventListener('resize', () =>
-      setTimeout(() => {
-        handleResize()
-      }, 1000),
-    )
-  }, [])
-  // Дёрнем этот юзЭффект если изменится стейт ширины экрана и выставим актуальное количество карточек
- 
-  */
-
   const [width, setWidth] = React.useState(window.innerWidth)
   React.useEffect(() => {
     // Вешаем слушатель
@@ -252,13 +178,17 @@ let filteredMovies
     )
   }, [])
   const screenSetter = () => {
-    // Записываем сайт в стейт
+  // Записываем сайт в стейт
     setWidth(window.innerWidth)
   }
+  //устанавливаем новое кол-во отображаемых карточек при изменении ширины
   React.useEffect(() => {
-    windowSizeHandler()
-    moviesRender(filteredMovies, limit)
+    setLimit(windowSizeHandler)
   }, [width])
+  //перерисовываем карточки
+  React.useEffect(() => {
+    moviesRender(filteredMovies, limit)
+  }, [limit])
 
   const windowSizeHandler = () => {
     if (window.innerWidth <= 480) {
@@ -266,6 +196,7 @@ let filteredMovies
       setResultsToAdd(2);
     } else if (window.innerWidth <= 800) {
       setLimit(8);
+
       setResultsToAdd(2);
     } else if (window.innerWidth > 800) {
       setLimit(12);
@@ -275,8 +206,6 @@ let filteredMovies
 
   // логика кнопки показать еще
  
-  filteredMovies = JSON.parse(localStorage.getItem("filteredMovies"))
-
   const showMore = () => {
     let newLimit = limit
     if (limit + resultsToAdd < filteredMovies.length) {
@@ -290,18 +219,7 @@ let filteredMovies
       setLimit(windowSizeHandler)
     }
   };
-  /*React.useEffect(() => {
-    if (window.innerWidth <= 480) {
-      setLimit(5)
-      setResultsToAdd(2)
-    } else if (window.innerWidth <= 768) {
-      setLimit(8)
-      setResultsToAdd(2)
-    } else if (window.innerWidth > 768) {
-      setLimit(12)
-      setResultsToAdd(4)
-    }
-  }, [isLoading]);*/
+ 
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
