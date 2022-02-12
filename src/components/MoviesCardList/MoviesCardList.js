@@ -4,20 +4,20 @@ import { MoviesCard } from "../MoviesCard/MoviesCard";
 
 export function MoviesCardList(props) {
 const movies = props.movies;
-console.log(movies)
-
     return(
     <section className="moviesCardList">
         <ul className="moviesCardList__list">
         {movies.map((movie) => {
                      return(
                         <MoviesCard
+                        movieCard={movie}
                         key={movie.id}
                         image={`https://api.nomoreparties.co/${movie.image.url}`}
                         nameRU={movie.nameRU}
                         duration={movie.duration}
                         button={props.button}
                         trailer={props.trailerLink}
+                        onClick={props.onClick}
                         />
                      )
                  })

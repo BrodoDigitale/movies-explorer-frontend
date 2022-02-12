@@ -77,6 +77,25 @@ register(data) {
     })
     .then(this._handleResponse)
      }
+     createMovie(card) {
+        return fetch(`${this._url}/movies`,{
+            method: 'POST',
+            headers: this._headers,
+            body: JSON.stringify({
+                country: card.country,
+                director: card.director,
+                duration: card.duration,
+                year: card.year,
+                description: card.description,
+                image: card.image,
+                trailer: card.trailer,
+                nameRU: card.nameRU,
+                nameEN: card.nameEN,
+                thumbnail: card.thumbnail,
+                movieId: card.movieId
+              })
+     })
+    }
   }
   
 //Создание api

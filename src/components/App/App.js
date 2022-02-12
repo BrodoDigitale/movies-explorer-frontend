@@ -17,16 +17,15 @@ function App() {
   const history = useHistory();
   //Стейты фильмов
   const [resultMovies, setResultMovies] = React.useState([]);
-  
   const [filteredMovies, setFilteredMovies] = React.useState([]);
-
-  
-  //Стейты для рендера нужного кол-ва фильмов
+  const [likedMovies, setLikedMovies] = React.useState([]);
 
   //Стейты поиска
   //прелоадер
   const [isLoading, setIsLoading] = React.useState(false);
   const [nothingFound, setNothingFound] = React.useState(false);
+
+
   //кол-во элементов на странице
   const [limit, setLimit] = React.useState(() => {
     if (window.innerWidth <= 480) {
@@ -73,6 +72,7 @@ function App() {
         .then((res) => {
           if (res) {
             setIsLoggedIn(true);
+            localStorage.setItem("savedMovies", []);
           }
         })
         .catch((err) => console.log(err));
@@ -219,7 +219,22 @@ function App() {
       setLimit(windowSizeHandler)
     }
   };
- 
+  
+
+ //Логика лайка !!!В РАЗРАБОТКЕ
+  const saveMovie =(cardMovie) => {
+  console.log(cardMovie)
+  mainApi.createMovie(cardMovie.id)
+  .then((savedCard) => {
+    likedMovies.push(savedCard)
+    localStorage.setItem("savedMovies", [savedCard,...likedMovies])
+  })
+  .catch(err => console.log(err));
+  }
+//Отрисовка сохраненных фильмов
+React.useEffect(() => {
+ setLikedMovies(localStorage.getItem("savedMovies"))
+}, [])
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -237,6 +252,7 @@ function App() {
             movies={resultMovies}
             noSearchResults={nothingFound}
             onSearch={handleMoviesSearch}
+            onLike={saveMovie}
             isLoading={isLoading}
             moreResults={moreResults}
             showMoreResults={showMore}
@@ -244,7 +260,8 @@ function App() {
           <ProtectedRoute
             exact
             path="/saved-movies"
-            component={SavedMovies}
+            movies={likedMovies}
+            component={likedMovies}
             loggedIn={loggedIn}
             noSearchResults={nothingFound}
           />

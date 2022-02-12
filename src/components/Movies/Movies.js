@@ -8,22 +8,6 @@ import React from "react";
 
 export function Movies(props) {
 
-  /*const [allMovies, setAllMovies] = React.useState(props.movies)
-  const limit = 12;
-  const [moviesToRender, setMoviesToRender] = React.useState([])
-  const [index,setIndex] = React.useState(limit);
-  const[ showMore, setShowMore ] = React.useState(true)
-
-  React.useEffect(() => {
-    if (allMovies.length > limit) {
-      setMoviesToRender(allMovies.slice(limit + 1))
-      console.log(allMovies)
-      console.log(moviesToRender)
-    } else {
-      setShowMore(false)
-    }
-  }, [allMovies]);*/
-
   return (
     <>
       <Header loggedIn={props.loggedIn} />
@@ -36,7 +20,9 @@ export function Movies(props) {
         />
         <MoviesCardList 
         movies={props.movies}
-        button="movies__like-button_active" />
+        button="movies__like-button" 
+        onClick={props.onLike}
+        />
         <button
           className={`movies__button ${props.moreResults ? 'movies__button_on' : null}`}
           type="button"
