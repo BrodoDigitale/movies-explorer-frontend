@@ -87,13 +87,27 @@ register(data) {
                 duration: card.duration,
                 year: card.year,
                 description: card.description,
-                image: card.image,
-                trailer: card.trailer,
+                image: `https://api.nomoreparties.co/${card.image.url}`,
+                trailer: card.trailerLink,
                 nameRU: card.nameRU,
                 nameEN: card.nameEN,
-                thumbnail: card.thumbnail,
-                movieId: card.movieId
+                thumbnail: `https://api.nomoreparties.co/${card.image.formats.thumbnail.url}`,
+                movieId: card.id
               })
+     })
+     .then(this._handleResponse)
+    }
+    getMovies() {
+        return fetch(`${this._url}/movies`,{
+            method: 'GET',
+            headers: this._headers,
+     })
+     .then(this._handleResponse)
+    }
+    removeMovie(id) {
+        return fetch(`${this._url}/movies/${id}`,{
+            method: 'DELETE',
+            headers: this._headers,
      })
     }
   }

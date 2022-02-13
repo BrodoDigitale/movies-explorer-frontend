@@ -15,7 +15,7 @@ export function SavedMovies(props) {
             <MoviesCardList
             movies={props.movies}
             button={"movies__unlike-button"}
-            onClick={props.deleteMovie}
+            onClick={props.onUnlike}
             />
         </main>
         <Footer/>
