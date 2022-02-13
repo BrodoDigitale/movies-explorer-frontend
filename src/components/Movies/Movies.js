@@ -18,10 +18,12 @@ export function Movies(props) {
         <Preloader
         isLoading={props.isLoading}
         />
-        <MoviesCardList 
+        <MoviesCardList
         movies={props.movies}
         button="movies__like-button" 
-        onClick={props.onLike}
+        onLike={props.onLike}
+        onUnlike={props.onUnlike}
+        savedMovies={props.savedMovies}
         />
         <button
           className={`movies__button ${props.moreResults ? 'movies__button_on' : null}`}

@@ -51,6 +51,12 @@ function App() {
   //Стейт юзера
   const [currentUser, setCurrentUser] = React.useState({});
 
+  //Отрисовка сохраненных фильмов
+    React.useEffect(() => {
+      moviesRender(likedMovies, limit);
+    }, []);
+
+  //логика логина
   React.useEffect(() => {
     if (loggedIn) {
       mainApi
@@ -172,6 +178,7 @@ function App() {
       setResultMovies(movies.slice(0, limit));
     } else {
       setResultMovies(movies);
+      setMoreResults(false)
     }
   };
   const [width, setWidth] = React.useState(window.innerWidth);
@@ -187,6 +194,10 @@ function App() {
     // Записываем сайт в стейт
     setWidth(window.innerWidth);
   };
+  //отрисовка карточек при переходе на страницу после поиска
+  React.useEffect(() => {
+    moviesRender(filteredMovies, limit);
+  }, []);
   //устанавливаем новое кол-во отображаемых карточек при изменении ширины
   React.useEffect(() => {
     setLimit(windowSizeHandler);
@@ -194,8 +205,8 @@ function App() {
   //перерисовываем карточки
   React.useEffect(() => {
     moviesRender(filteredMovies, limit);
-  }, [limit]);
-
+  }, []);
+//логика отображения нужного кол-ва карточек при изменении ширины окна
   const windowSizeHandler = () => {
     if (window.innerWidth <= 480) {
       setLimit(5);
@@ -225,26 +236,21 @@ function App() {
     }
   };
 
-  //Логика лайка !!!В РАЗРАБОТКЕ
+  //Логика лайка
   const saveMovie = (cardMovie) => {
     mainApi
       .createMovie(cardMovie)
       .then((savedCard) => {
+        console.log("сохранено")
         const updatedLikedMovies = [ ...likedMovies, savedCard]
         setLikedMovies(updatedLikedMovies)
         localStorage.setItem("savedMovies", JSON.stringify(updatedLikedMovies));
       })
       .catch((err) => console.log(err));
   };
-  //Отрисовка сохраненных фильмов
-  React.useEffect(() => {
-      /*setLikedMovies(localStorage.getItem("savedMovies"))
-      console.log('с локал сторадж')
-    }*/
-    moviesRender(likedMovies, limit);
-  }, []);
 
-  //загрузка сохраненных фильмов с сервера
+
+  //загрузка сохраненных фильмов с сервера при логине
   const getSavedMovies = () => {
         mainApi.getMovies()
         .then((res) => {
@@ -255,13 +261,31 @@ function App() {
           .catch((err) => console.log(err))
         }
   //Удаление лайка
+  // проверка наличия id у карточки
+  const idCheck = (card) => {
+    if (!card._id) {
+      const thisCard = likedMovies.find((likedMovie) => likedMovie.movieId === card.id)
+      return thisCard._id
+    } else {
+      return card._id
+    }
+  }
       const removeMovie = (cardMovie) => {
+        //если мы на странице со всеми фильмами и еще не знаем id базы данных
+        const searchId = idCheck(cardMovie)
+        console.log(searchId)
         mainApi
-          .removeMovie(cardMovie._id)
+           //удаляем фильм с сервера
+          .removeMovie(searchId)
           .then(() => {
             const newSavedCards = likedMovies.filter((movie) => movie._id !== cardMovie._id)
+            console.log("удалено")
+            //обновляем сохраненные карточки
             moviesRender(newSavedCards, limit);
+            //обновляем стейт сохраненных карточек
             setLikedMovies(newSavedCards)
+            //обновляем карточки главной страницы
+            moviesRender(resultMovies, limit)
           })
           .catch((err) => console.log(err));
       };
@@ -284,9 +308,11 @@ function App() {
             noSearchResults={nothingFound}
             onSearch={handleMoviesSearch}
             onLike={saveMovie}
+            onUnlike={removeMovie}
             isLoading={isLoading}
             moreResults={moreResults}
             showMoreResults={showMore}
+            savedMovies={likedMovies}
           />
           <ProtectedRoute
             exact
@@ -296,6 +322,7 @@ function App() {
             component={SavedMovies}
             loggedIn={loggedIn}
             noSearchResults={nothingFound}
+            savedMovies={likedMovies}
           />
           <ProtectedRoute
             path="/profile"

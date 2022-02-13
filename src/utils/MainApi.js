@@ -109,6 +109,7 @@ register(data) {
             method: 'DELETE',
             headers: this._headers,
      })
+     .then(this._handleResponse)
     }
   }
   
