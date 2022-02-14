@@ -8,7 +8,8 @@ export function SearchForm(props) {
 
     function handleSearch(e) {
       e.preventDefault();
-      props.onSearch(searchWord);
+      location.pathname === '/movies' ? 
+      (props.onSearch(searchWord)) : (props.onSavedMoviesSearch(searchWord));
     }
 
     return(

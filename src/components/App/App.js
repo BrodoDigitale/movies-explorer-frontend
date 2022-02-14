@@ -171,6 +171,7 @@ function App() {
     }
     //устанавливаем верное кол-во карточек
     setLimit(windowSizeHandler);
+    //Проверяем, стоит ли фильтр на короткометражки
     if(shortMoviesSearch) {
       const shortMovies = filterResults.filter((movie) =>  movie.duration <=40)
       setFilteredMovies(shortMovies)
@@ -184,6 +185,21 @@ function App() {
     //сохраняем в локал сторадж
     localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
   }
+//Функция поиска для сохраненных фильмов
+const handleSavedMoviesSearch = (searchParams) => {
+  setIsLoading(true);
+  const filterResults = JSON.parse(localStorage.getItem("savedMovies")).filter(
+      (movie) => {
+        return movie.nameRU
+          .toLowerCase()
+          .includes(searchParams.trim().toLowerCase());
+      }
+    );
+  setLikedMovies(filterResults);
+  //отключаем загрузчик
+  setTimeout(() => setIsLoading(false), 1000);
+}
+
   //Изменение стейта короткометражек по нажатию на переключатель на главной странице
   const shortMoviesSwitchClick = () => {
     setShortMoviesSearch(!shortMoviesSearch)
@@ -247,14 +263,6 @@ function App() {
     // Записываем ширину окна в стейт
     setWidth(window.innerWidth);
   };
-  //отрисовка карточек при переходе на страницу после поиска
-  React.useEffect(() => {
-    moviesRender(filteredMovies, limit);
-  }, []);
-    //отрисовка сохраненных карточек при переходе на страницу после удаления
-    React.useEffect(() => {
-      moviesRender(filteredMovies, limit);
-    }, []);
   //устанавливаем новое кол-во отображаемых карточек при изменении ширины
   React.useEffect(() => {
     setLimit(windowSizeHandler);
@@ -263,7 +271,6 @@ function App() {
   React.useEffect(() => {
     moviesRender(filteredMovies, limit)
   }, [limit])
-
 
 //логика отображения нужного кол-ва карточек при изменении ширины окна
   const windowSizeHandler = () => {
@@ -345,7 +352,7 @@ function App() {
            //удаляем фильм с сервера
           .removeMovie(searchId)
           .then(() => {
-            const updatedLikedMovies = likedMovies.filter((movie) => movie.movieId !== cardMovie.id)
+            const updatedLikedMovies = likedMovies.filter((movie) => movie._id !== cardMovie._id)
             console.log(updatedLikedMovies)
             localStorage.setItem("savedMovies", JSON.stringify(updatedLikedMovies));
             setLikedMovies(updatedLikedMovies)
@@ -383,8 +390,10 @@ function App() {
             exact
             path="/saved-movies"
             movies={likedMovies}
+            onSearch={handleSavedMoviesSearch}
             onUnlike={removeMovie}
             component={SavedMovies}
+            isLoading={isLoading}
             loggedIn={loggedIn}
             noSearchResults={nothingFound}
             savedMovies={likedMovies}
