@@ -13,6 +13,8 @@ export function SavedMovies(props) {
         <main className="movies">
             <SearchForm
             onToggleSwitchClick={props.onToggleSwitchClick}
+            shortMoviesOn={props.shortMoviesOn}
+            savedIsChecked={props.savedIsChecked}
             />
             <MoviesCardList
             movies={props.movies}

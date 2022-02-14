@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { Route, Switch, useHistory, Redirect } from "react-router-dom";
+import { Route, Switch, useHistory, Redirect, /*useLocation*/ } from "react-router-dom";
 import { Main } from "../Main/Main";
 import { Movies } from "../Movies/Movies";
 import { SavedMovies } from "../SavedMovies/SavedMovies";
@@ -15,6 +15,7 @@ import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
 
 function App() {
   const history = useHistory();
+  //const location = useLocation();
   //Стейты фильмов
   const [resultMovies, setResultMovies] = React.useState([]);
   const [filteredMovies, setFilteredMovies] = React.useState([]);
@@ -22,7 +23,16 @@ function App() {
  
   //Стейты поиска
   //короткометражки
+  //включен ли фильтр короткометражек на основной странице
   const [shortMoviesSearch, setShortMoviesSearch] = React.useState(false)
+  //включен ли фильтр короткометражек на странице с сохраненными фильмами
+  const [savedShortMoviesSearch, setSavedShortMoviesSearch] = React.useState(false)
+  //на странице где все фильмы
+  const [shortIsOn, setShortIsOn] = React.useState(false)
+  //на странице короткометражек
+  const [savedMoviesShortIsOn, setSavedMoviesShortIsOn] = React.useState(false)
+
+
   //прелоадер
   const [isLoading, setIsLoading] = React.useState(false);
   const [nothingFound, setNothingFound] = React.useState(false);
@@ -81,7 +91,6 @@ function App() {
         .then((res) => {
           if (res) {
             setIsLoggedIn(true);
-            localStorage.setItem("savedMovies", []);
           }
         })
         .catch((err) => console.log(err));
@@ -172,25 +181,46 @@ function App() {
     //сохраняем в локал сторадж
     localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
   }
-  //Изменение стейта короткометражек по нажатию на переключатель
+  //Изменение стейта короткометражек по нажатию на переключатель на главной странице
   const shortMoviesSwitchClick = () => {
     setShortMoviesSearch(!shortMoviesSearch)
-    return shortMoviesSearch
   }
-  //перерисовываем отфильтрованные фильмы, если включили режим короткометражек
+  //перерисовываем отфильтрованные фильмы, если включили режим короткометражек на основной странице
+  React.useEffect(() => {
+    shortMoviesRenderer()
+  }, [shortMoviesSearch]);
 
-  /*const shortMoviesRenderer = () => {
-    const shortFilterOn = shortMoviesSwitchClick()
-    if (shortFilterOn) {
-      const shortMovies = filteredMovies.filter((movie) => {return movie.duration <=40})
+  const shortMoviesRenderer = () => {
+    console.log(shortMoviesSearch)
+    if (shortMoviesSearch) {
+      setShortIsOn(true)
+      const shortMovies = filteredMovies.filter((movie) =>  movie.duration <=40)
       moviesRender(shortMovies, limit);
-      setFilteredMovies(shortMovies);
     } else {
-      const allFilteredMovies = JSON.parse(localStorage.getItem("filteredMovies"))
-      moviesRender(allFilteredMovies, limit)
-      setFilteredMovies(allFilteredMovies);
+      moviesRender(filteredMovies, limit)
+      setShortIsOn(false)
     }
-  }*/
+  }
+   //Изменение стейта короткометражек по нажатию на переключатель на главной странице
+   const shortSavedMoviesSwitchClick = () => {
+    setSavedShortMoviesSearch(!savedShortMoviesSearch)
+  }
+   //перерисовываем сохраненные фильмы, если включили режим короткометражек
+   React.useEffect(() => {
+    shortSavedMoviesRenderer()
+  }, [savedShortMoviesSearch]);
+  
+  const shortSavedMoviesRenderer = () => {
+    if (savedShortMoviesSearch) {
+      setSavedMoviesShortIsOn(true)
+      const savedShortMovies = likedMovies.filter((movie) =>  movie.duration <=40)
+      setLikedMovies(savedShortMovies)
+    } else {
+      const savedMovies = JSON.parse(localStorage.getItem("savedMovies"))
+      setLikedMovies(savedMovies)
+      setSavedMoviesShortIsOn(false)
+    }
+  }
 
   ////проверка длины массива для отрисовки карточек
   const moviesRender = (movies, itemsToShow) => {
@@ -280,14 +310,21 @@ function App() {
 
   //загрузка сохраненных фильмов с сервера при логине
   const getSavedMovies = () => {
-        mainApi.getMovies()
-        .then((res) => {
-          localStorage.setItem("savedMovies", JSON.stringify(res));
-          setLikedMovies(res);
-          console.log('с сервака')
-        })
-          .catch((err) => console.log(err))
+    if(!localStorage.savedMovies) {
+      mainApi.getMovies()
+      .then((res) => {
+        localStorage.setItem("savedMovies", JSON.stringify(res));
+        setLikedMovies(res);
+        console.log('с сервака')
+        console.log(localStorage.savedMovies)
+      })
+        .catch((err) => console.log(err))
+    } else {
+      setLikedMovies(JSON.parse(localStorage.getItem("savedMovies")))
+      console.log('с локал сторадж')
+    }
         }
+
   //Удаление лайка
   // проверка наличия id у карточки
   const idCheck = (card) => {
@@ -337,7 +374,8 @@ function App() {
             moreResults={moreResults}
             showMoreResults={showMore}
             savedMovies={likedMovies}
-           // onToggleSwitchClick = {shortMoviesRenderer}
+            onToggleSwitchClick = {shortMoviesSwitchClick}
+            isChecked= {shortIsOn}
           />
           <ProtectedRoute
             exact
@@ -348,7 +386,9 @@ function App() {
             loggedIn={loggedIn}
             noSearchResults={nothingFound}
             savedMovies={likedMovies}
-            //onToggleSwitchClick = {shortMoviesRenderer}
+            shortMoviesOn={shortMoviesSearch}
+            onToggleSwitchClick = {shortSavedMoviesSwitchClick}
+            savedIsChecked= {savedMoviesShortIsOn}
           />
           <ProtectedRoute
             path="/profile"

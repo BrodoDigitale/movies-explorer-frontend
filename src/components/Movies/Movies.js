@@ -15,6 +15,7 @@ export function Movies(props) {
         <SearchForm 
         onSearch={props.onSearch}
         onToggleSwitchClick={props.onToggleSwitchClick}
+        isChecked={props.isChecked}
         />
         <Preloader
         isLoading={props.isLoading}
