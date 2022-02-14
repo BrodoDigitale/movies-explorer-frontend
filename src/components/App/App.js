@@ -102,7 +102,6 @@ function App() {
     if (!data.email || !data.password) {
       return;
     }
-
     mainApi
       .login(data)
       .then((res) => {
@@ -172,10 +171,14 @@ function App() {
     }
     //устанавливаем верное кол-во карточек
     setLimit(windowSizeHandler);
+    if(shortMoviesSearch) {
+      const shortMovies = filterResults.filter((movie) =>  movie.duration <=40)
+      setFilteredMovies(shortMovies)
+    } else {
+    setFilteredMovies(filterResults);
+    }
     //отрисовываем карточки
     moviesRender(filterResults, limit);
-    //обновляем стейт
-    setFilteredMovies(filterResults);
     //отключаем загрузчик
     setTimeout(() => setIsLoading(false), 1000);
     //сохраняем в локал сторадж
@@ -191,7 +194,6 @@ function App() {
   }, [shortMoviesSearch]);
 
   const shortMoviesRenderer = () => {
-    console.log(shortMoviesSearch)
     if (shortMoviesSearch) {
       setShortIsOn(true)
       const shortMovies = filteredMovies.filter((movie) =>  movie.duration <=40)
