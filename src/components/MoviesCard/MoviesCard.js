@@ -1,10 +1,12 @@
 import "./MoviesCard.css";
 import { Link } from "react-router-dom";
 import React from "react";
+import { useLocation } from 'react-router-dom';
 
 export function MoviesCard(props) {
-
+const location = useLocation();
   const thisMovie = props.movieCard
+  
   //Стейт лайка карточки
   const [isLiked, setIsLiked] = React.useState(false);
   //удаление карточки
@@ -21,10 +23,8 @@ export function MoviesCard(props) {
   function handleClick() {
     isLiked ? unlike() : like();
   }
-  //при отрисовке сохраненных карточек задаем им сразу лайк
-  //а если это отрисовка после поиска определяем статус лайка карточки
-  
-  React.useEffect(() => {
+  //проверка лайка
+  const likeCheck = () => {
     if(!isLiked) {
         const someCard = props.savedMovies.find((likedMovie) => likedMovie.movieId === thisMovie.id)
         if(someCard) {
@@ -35,8 +35,12 @@ export function MoviesCard(props) {
             setIsLiked(false)
     } 
   }
+  }
+  //при отрисовке сохраненных карточек задаем им сразу лайк
+  //а если это отрисовка после поиска определяем статус лайка карточки
+  React.useEffect(() => {
+ location.pathname === '/movies' ? likeCheck() : setIsLiked(true)
  }, []);
-
 
   const buttonClassName = `transition-button ${props.button} ${
     isLiked ? `${props.button}_active` : null

@@ -15,23 +15,40 @@ const movies = props.movies;
     return(
     <section className="moviesCardList">
         <ul className="moviesCardList__list">
-        {movies.map((movie) => {
-                     return(
-                        <MoviesCard
-                        key={movie.id}
-                        movieCard={movie}
-                        image={`${location.pathname === '/movies' ? `https://api.nomoreparties.co/${movie.image.url}` : `${movie.image}`}`}
-                        nameRU={movie.nameRU}
-                        duration={movie.duration}
-                        button={props.button}
-                        trailer={movie.trailerLink}
-                        onLike={props.onLike}
-                        onUnlike={props.onUnlike}
-                        savedMovies={props.savedMovies}
-                        />
-                     )
-                 })
-            }
+            {location.pathname === '/movies' ? (
+                        movies.map((movie) => {
+                            return(
+                               <MoviesCard
+                               key={movie.id}
+                               movieCard={movie}
+                               image={`https://api.nomoreparties.co/${movie.image.url}`}
+                               nameRU={movie.nameRU}
+                               duration={movie.duration}
+                               button={props.button}
+                               trailer={movie.trailerLink}
+                               onLike={props.onLike}
+                               onUnlike={props.onUnlike}
+                               savedMovies={props.savedMovies}
+                               />
+                        )})
+                            ) : (
+                                movies.map((movie) => {
+                                    return(
+                                       <MoviesCard
+                                       key={movie._id}
+                                       movieCard={movie}
+                                       image={movie.image}
+                                       nameRU={movie.nameRU}
+                                       duration={movie.duration}
+                                       button={props.button}
+                                       trailer={movie.trailerLink}
+                                       onUnlike={props.onUnlike}
+                                       />
+                                    )}
+
+                        )
+                   
+            )}
         </ul>
     </section>
     )

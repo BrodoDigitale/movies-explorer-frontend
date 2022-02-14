@@ -11,7 +11,9 @@ export function SavedMovies(props) {
         loggedIn = {props.loggedIn}
         />
         <main className="movies">
-            <SearchForm />
+            <SearchForm
+            onToggleSwitchClick={props.onToggleSwitchClick}
+            />
             <MoviesCardList
             movies={props.movies}
             button={"movies__unlike-button"}

@@ -13,7 +13,8 @@ export function Movies(props) {
       <Header loggedIn={props.loggedIn} />
       <main className="movies">
         <SearchForm 
-        onSearch={props.onSearch} 
+        onSearch={props.onSearch}
+        onToggleSwitchClick={props.onToggleSwitchClick}
         />
         <Preloader
         isLoading={props.isLoading}

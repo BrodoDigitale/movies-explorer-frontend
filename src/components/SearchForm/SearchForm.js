@@ -9,6 +9,9 @@ export function SearchForm(props) {
       e.preventDefault();
       props.onSearch(searchWord);
     }
+    /*const handleShortMoviesSearch=() => {
+        props.onToggleSwitchClick()
+    }*/
 
     return(
         <section className="searchForm">
@@ -33,7 +36,11 @@ export function SearchForm(props) {
                 </label>
                 <div className="searchForm__switch">
                 <label className="searchForm__switch-container" >
-                     <input  className="searchForm__switch-checkbox" type="checkbox"/>
+                     <input
+                     id="short-movies"
+                     onChange={props.onToggleSwitchClick}
+                     className="searchForm__switch-checkbox" 
+                     type="checkbox"/>
                     <p className="searchForm__switch-text">Короткометражки</p>
                 </label>
                 </div>
