@@ -19,13 +19,19 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
 
 function App() {
- 
   //Стейты регистрации
 
   const [isRegistrationSuccessful, setIsRegistrationSuccessful] =
     React.useState(false);
+  const [loginError, setLoginError] = React.useState(false);
+  const [loginErrorMessage, setLoginErrorMessage] = React.useState("");
   const [registrationError, setRegistrationError] = React.useState("");
   const [userMessage, setUserMessage] = React.useState("");
+  const [profileUpdateMessage, setProfileUpdateMessage] = React.useState(false);
+  const [profileErrorMessage, setProfileErrorMessage] = React.useState("");
+  const [isProfileUpdateSuccessful, setIsProfileUpdateSuccessful] = React.useState(false);
+
+
   //Стейты фильмов
   const [resultMovies, setResultMovies] = React.useState([]);
   const [filteredMovies, setFilteredMovies] = React.useState([]);
@@ -78,25 +84,29 @@ function App() {
     moviesRender(likedMovies, limit);
   }, []);
 
-
   //Проверка токена при загрузке страницы
- React.useEffect(() => {
+  React.useEffect(() => {
     if (localStorage.jwt) {
       mainApi
         .checkTokenValidity(localStorage.getItem("jwt"))
         .then((res) => {
-          console.log(res)
+          console.log(res);
           if (res) {
-            setCurrentUser(res)
+            setCurrentUser(res);
             setIsLoggedIn(true);
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          setLoginError(true);
+          setLoginErrorMessage('Не удалось войти, пожалуйста, проверьте данные')
+          console.log(err);
+        });
     }
   }, [loggedIn]);
 
-   //Логин
+  //Логин
   function handleLogin(data) {
+    setLoginErrorMessage("")
     if (!data.email || !data.password) {
       return;
     }
@@ -105,13 +115,17 @@ function App() {
       .then((res) => {
         if (!res) throw new Error("Неправильные имя пользователя или пароль");
         if (res) {
-          console.log(res)
+          console.log(res);
           localStorage.setItem("jwt", res.token);
-          console.log(localStorage.getItem("jwt", res.token))
+          console.log(localStorage.getItem("jwt", res.token));
           setIsLoggedIn(true);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setLoginErrorMessage('Не удалось войти, пожалуйста, проверьте данные')
+        setLoginError(true);
+        console.log(err)
+      });
   }
 
   //Логаут
@@ -122,17 +136,18 @@ function App() {
   }
 
   const setUserProfile = () => {
-    mainApi.getUserProfile()
-          .then((res) => {
-            //загружаем профиль и сохраненные фильмы
-            console.log(res)
-            setCurrentUser(res);
-            console.log(currentUser)
-            getSavedMovies()
-            setIsLoggedIn(true);
-          })
-          .catch((err) => console.log(err));
-  }
+    mainApi
+      .getUserProfile()
+      .then((res) => {
+        //загружаем профиль и сохраненные фильмы
+        console.log(res);
+        setCurrentUser(res);
+        console.log(currentUser);
+        getSavedMovies();
+        setIsLoggedIn(true);
+      })
+      .catch((err) => console.log(err));
+  };
 
   //Регистрация
   function handleRegister(signupData) {
@@ -143,7 +158,6 @@ function App() {
           setCurrentUser(res);
           setIsRegistrationSuccessful(true);
           setUserMessage("Вы успешно зарегистрированы!");
-          console.log(signupData);
           setTimeout(() => handleLogin(signupData), 1000);
         }
       })
@@ -153,19 +167,22 @@ function App() {
       });
   }
 
-  React.useEffect(() => {
-    setRegistrationError("");
-    setUserMessage("");
-  }, []);
 
   //редактирование профиля
   function handleUpdateProfile(data) {
+    setProfileUpdateMessage("")
+    setProfileErrorMessage("")
     mainApi
       .updateProfile(data)
       .then((res) => {
+        setIsProfileUpdateSuccessful(true)
         setCurrentUser(res);
+        setProfileUpdateMessage("Данные успешно изменены")
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setIsProfileUpdateSuccessful(false)
+        setProfileErrorMessage("Что-то пошло не так...")
+        console.log(err)});
   }
 
   //Поиск и фильтр фильмов
@@ -439,10 +456,16 @@ function App() {
             loggedIn={loggedIn}
             handleLogout={handleLogout}
             onUpdateProfile={handleUpdateProfile}
-            currentUser={currentUser}
+            profileUpdateMessage={profileUpdateMessage}
+            profileErrorMessage={profileErrorMessage}
+            isProfileUpdateSuccessful={isProfileUpdateSuccessful}
           />
           <Route path="/signin">
-            <Login onLogin={handleLogin} />
+            <Login 
+            onLogin={handleLogin}
+            loginError={loginError}
+            loginErrorMessage={loginErrorMessage}
+            />
           </Route>
           <Route path="/signup">
             <Register

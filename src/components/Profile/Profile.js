@@ -2,36 +2,30 @@ import React from "react";
 import "./Profile.css";
 import { Header } from "../Header/Header";
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { useFormWithValidation } from "../Validation/Validation";
 
 
 
 export function Profile(props) {
-//Задание стейта 
 
-const [userEmail, setUserEmail] = React.useState("");
-const [userName, setUserName] = React.useState("");
-
-//Подписка на контекст юзера
+  //Подписка на контекст юзера
   const currentUser = React.useContext(CurrentUserContext);
 
+const { values, isValid, handleChange, errors } = useFormWithValidation({
+  userName: "",
+  userEmail: "",
+});
 
-
-//Управление полями
-function userNameHandleChange(e) {
-    setUserName(e.target.value);
-  }
-  function userEmailHandleChange(e) {
-    setUserEmail(e.target.value);
-  }
-
-function handleSubmit(e) {
-    e.preventDefault();
-    // Передаём значения управляемых компонентов во внешний обработчик
+const handleSubmit = (e) => {
+  e.preventDefault();
+  if (isValid) {
     props.onUpdateProfile({
-      name: userName,
-      email:userEmail,
+      name: values.userName,
+      email: values.userEmail,
     });
   }
+};
+
   return (
     <>
       <Header loggedIn={props.loggedIn} />
@@ -44,14 +38,14 @@ function handleSubmit(e) {
               Имя
               <input
                 className="profile__input"
-                id="profile__name"
+                id="userName"
                 placeholder={currentUser.name}
                 name="userName"
                 maxLength="30"
                 minLength="2"
                 type="text"
-                value={userName||""}
-                onChange={userNameHandleChange}
+                value={values.name}
+                onChange={(e) => handleChange(e)}
                 required
               />
             </label>
@@ -59,15 +53,26 @@ function handleSubmit(e) {
               Почта
               <input
                 className="profile__input"
-                id="profile__email"
+                id="userEmail"
                 placeholder={currentUser.email}
                 name="userEmail"
                 type="email"
-                value={userEmail||""}
-                onChange={userEmailHandleChange}
+                value={values.email}
+                onChange={(e) => handleChange(e)}
                 required
               />
             </label>
+            <span className={`profile__info-message 
+             ${!isValid ? `profile__info-message_active` : null}`}>
+            {errors?.userName}{errors?.userEmail}
+            </span>
+            <span className={`profile__info-message 
+             ${props.isProfileUpdateSuccessful ? 
+             `profile__info-message_active-success` : 
+             `profile__info-message_active` 
+            }` }>
+              {props.isProfileUpdateSuccessful ? `${props.profileUpdateMessage}` : `${props.profileErrorMessage}`}
+            </span>
           </div>
         </div>
         <div className="profile__buttons-wrapper">
@@ -75,7 +80,7 @@ function handleSubmit(e) {
             className="profile__button transition-button"
             type="submit"
             aria-label="Редактировать"
-            onClick={props.handleUpdateProfile}
+            disabled={!isValid}
           >
             Редактировать
           </button>

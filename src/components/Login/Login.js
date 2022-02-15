@@ -1,23 +1,23 @@
 import "./Login.css";
 import { AuthForm } from "../AuthForm/AuthForm";
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import { useFormWithValidation } from "../Validation/Validation";
 
 export function Login(props) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { values, isValid, handleChange, errors } = useFormWithValidation({
+    userEmail: "",
+    userPassword: "",
+  });
 
-  //Передача данных инпутов во внешний обработчик
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    // Передаём значения управляемых компонентов во внешний обработчик
-    props.onLogin({
-      email: email,
-      password: password,
-    });
-    setEmail("");
-    setPassword("");
-  }
+    if (isValid) {
+      props.onLogin({
+        email: values.userEmail,
+        password: values.userPassword,
+      });
+    }
+  };
 
   return (
     <main className="login">
@@ -27,11 +27,11 @@ export function Login(props) {
             <h3 className="login__input-title">E-mail</h3>
             <input
               className="login__input"
-              id="login__email"
+              id="userEmail"
               type="email"
-              value={email || ""}
+              value={values.email}
               name="userEmail"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => handleChange(e)}
               required
             />
           </label>
@@ -39,16 +39,36 @@ export function Login(props) {
             <h3 className="login__input-title">Пароль</h3>
             <input
               className="login__input"
-              id="login__password"
+              id="userPassword"
               type="password"
               name="userPassword"
-              value={password || ""}
-              onChange={(e) => setPassword(e.target.value)}
+              value={values.login}
+              onChange={(e) => handleChange(e)}
+              minLength="8"
               required
             />
           </label>
           <div className="login__button-wrapper">
-            <button className="login__button transition-button" type="submit">
+            <span
+              className={`login__info-message 
+             ${!isValid ? `login__info-message_active` : null}`}
+            >
+              {errors?.userName}
+              {errors?.userEmail}
+              {errors?.userPassword}
+            </span>
+            <span
+              className={`login__info-message 
+             ${props.loginError ? `login__info-message_active` : null}`}
+            >
+              {props.loginErrorMessage}
+            </span>
+            <button
+              className="login__button 
+            transition-button"
+              type="submit"
+              disabled={!isValid}
+            >
               Войти
             </button>
             <Link className="login__link transition-link" to="/signup">

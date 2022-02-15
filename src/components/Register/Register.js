@@ -1,6 +1,5 @@
 import "./Register.css";
 import { AuthForm } from "../AuthForm/AuthForm";
-import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useFormWithValidation } from "../Validation/Validation";
 
