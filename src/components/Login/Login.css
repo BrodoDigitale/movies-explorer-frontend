@@ -47,6 +47,9 @@
     line-height: 17px;
     font-weight: 500;
   }
+  .login__button:disabled {
+    opacity: 0.3;
+  }
   @media screen and (max-width: 425px) {
     .login__button {
       width: 260px;

@@ -15,7 +15,11 @@ import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
 
 function App() {
   const history = useHistory();
-  //const location = useLocation();
+
+  //Стейты регистрации
+  const [isRegistrationSuccessful, setIsRegistrationSuccessful] = React.useState(false);
+  const [registrationError, setRegistrationError] = React.useState(false);
+  const [userMessage, setUserMessage] = React.useState("")
   //Стейты фильмов
   const [resultMovies, setResultMovies] = React.useState([]);
   const [filteredMovies, setFilteredMovies] = React.useState([]);
@@ -31,7 +35,6 @@ function App() {
   const [shortIsOn, setShortIsOn] = React.useState(false)
   //на странице короткометражек
   const [savedMoviesShortIsOn, setSavedMoviesShortIsOn] = React.useState(false)
-
 
   //прелоадер
   const [isLoading, setIsLoading] = React.useState(false);
@@ -119,19 +122,31 @@ function App() {
     localStorage.removeItem("jwt");
     setIsLoggedIn(false);
   }
+
+  
   //Регистрация
   function handleRegister(data) {
     mainApi
       .register(data)
       .then((res) => {
         if (res._id) {
-          //setIsRegistrationSuccessful(true)
-          history.push("/signin");
+          setIsRegistrationSuccessful(true)
+          setTimeout(() => history.push("/movies"), 5000);
         }
       })
       .catch((err) => console.log(err));
     //.finally(() => {setIsInfoToolOpen(true)})
   }
+  React.useEffect(() => {
+    if(isRegistrationSuccessful) {
+      setUserMessage("Вы успешно зарегистрированы!")
+    } else {
+      setUserMessage("Что-то пошло не так...")
+      setRegistrationError(true)
+      setIsRegistrationSuccessful(false)
+    }
+    setIsRegistrationSuccessful(false)
+  }, [isRegistrationSuccessful])
 
   //редактирование профиля
   function handleUpdateProfile(data) {
@@ -412,7 +427,12 @@ const handleSavedMoviesSearch = (searchParams) => {
             <Login onLogin={handleLogin} />
           </Route>
           <Route path="/signup">
-            <Register onRegister={handleRegister} />
+            <Register 
+            onRegister={handleRegister}
+            userMessage={userMessage}
+            registrationError={registrationError}
+            isRegistrationSuccessful={isRegistrationSuccessful}
+            />
           </Route>
           <Route path="*">
             <PageNotFound />
