@@ -74,9 +74,9 @@ export function Register(props) {
             <span className={`register__info-message 
              ${props.isRegistrationSuccessful ? 
              `register__info-message_active-success` : 
-             props.isRegistrationError ?
-             `register__info-message_active` : null}`}>
-              {props.userMessage}
+             `register__info-message_active` 
+            }` }>
+              {props.isRegistrationSuccessful ? `${props.userMessage}` : `${props.registrationError}`}
             </span>
           <div className="register__button-wrapper">
             <button

@@ -1,6 +1,11 @@
 import React from "react";
 import "./App.css";
-import { Route, Switch, useHistory, Redirect, /*useLocation*/ } from "react-router-dom";
+import {
+  Route,
+  Switch,
+  useHistory,
+  Redirect /*useLocation*/,
+} from "react-router-dom";
 import { Main } from "../Main/Main";
 import { Movies } from "../Movies/Movies";
 import { SavedMovies } from "../SavedMovies/SavedMovies";
@@ -14,27 +19,29 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
 
 function App() {
-  const history = useHistory();
-
+ 
   //Стейты регистрации
-  const [isRegistrationSuccessful, setIsRegistrationSuccessful] = React.useState(false);
-  const [registrationError, setRegistrationError] = React.useState(false);
-  const [userMessage, setUserMessage] = React.useState("")
+
+  const [isRegistrationSuccessful, setIsRegistrationSuccessful] =
+    React.useState(false);
+  const [registrationError, setRegistrationError] = React.useState("");
+  const [userMessage, setUserMessage] = React.useState("");
   //Стейты фильмов
   const [resultMovies, setResultMovies] = React.useState([]);
   const [filteredMovies, setFilteredMovies] = React.useState([]);
   const [likedMovies, setLikedMovies] = React.useState([]);
- 
+
   //Стейты поиска
   //короткометражки
   //включен ли фильтр короткометражек на основной странице
-  const [shortMoviesSearch, setShortMoviesSearch] = React.useState(false)
+  const [shortMoviesSearch, setShortMoviesSearch] = React.useState(false);
   //включен ли фильтр короткометражек на странице с сохраненными фильмами
-  const [savedShortMoviesSearch, setSavedShortMoviesSearch] = React.useState(false)
+  const [savedShortMoviesSearch, setSavedShortMoviesSearch] =
+    React.useState(false);
   //на странице где все фильмы
-  const [shortIsOn, setShortIsOn] = React.useState(false)
+  const [shortIsOn, setShortIsOn] = React.useState(false);
   //на странице короткометражек
-  const [savedMoviesShortIsOn, setSavedMoviesShortIsOn] = React.useState(false)
+  const [savedMoviesShortIsOn, setSavedMoviesShortIsOn] = React.useState(false);
 
   //прелоадер
   const [isLoading, setIsLoading] = React.useState(false);
@@ -67,40 +74,28 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
 
   //Отрисовка сохраненных фильмов
-    React.useEffect(() => {
-      moviesRender(likedMovies, limit);
-    }, []);
-
-  //логика логина
   React.useEffect(() => {
-    if (loggedIn) {
-      mainApi
-        .getUserProfile()
-        .then((res) => {
-          //загружаем профиль и сохраненные фильмы
-          setCurrentUser(res);
-          getSavedMovies()
-        })
-        .catch((err) => console.log(err));
-    }
-  }, [loggedIn]);
+    moviesRender(likedMovies, limit);
+  }, []);
+
 
   //Проверка токена при загрузке страницы
-  React.useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    if (jwt) {
+ React.useEffect(() => {
+    if (localStorage.jwt) {
       mainApi
-        .checkTokenValidity(jwt)
+        .checkTokenValidity(localStorage.getItem("jwt"))
         .then((res) => {
+          console.log(res)
           if (res) {
+            setCurrentUser(res)
             setIsLoggedIn(true);
           }
         })
         .catch((err) => console.log(err));
     }
-  }, []);
+  }, [loggedIn]);
 
-  //Логин
+   //Логин
   function handleLogin(data) {
     if (!data.email || !data.password) {
       return;
@@ -110,43 +105,58 @@ function App() {
       .then((res) => {
         if (!res) throw new Error("Неправильные имя пользователя или пароль");
         if (res) {
+          console.log(res)
           localStorage.setItem("jwt", res.token);
+          console.log(localStorage.getItem("jwt", res.token))
           setIsLoggedIn(true);
-          history.push("/movies");
         }
       })
       .catch((err) => console.log(err));
   }
+
   //Логаут
   function handleLogout() {
     localStorage.removeItem("jwt");
+    setCurrentUser({});
     setIsLoggedIn(false);
   }
 
-  
+  const setUserProfile = () => {
+    mainApi.getUserProfile()
+          .then((res) => {
+            //загружаем профиль и сохраненные фильмы
+            console.log(res)
+            setCurrentUser(res);
+            console.log(currentUser)
+            getSavedMovies()
+            setIsLoggedIn(true);
+          })
+          .catch((err) => console.log(err));
+  }
+
   //Регистрация
-  function handleRegister(data) {
+  function handleRegister(signupData) {
     mainApi
-      .register(data)
+      .register(signupData)
       .then((res) => {
         if (res._id) {
-          setIsRegistrationSuccessful(true)
-          setTimeout(() => history.push("/movies"), 5000);
+          setCurrentUser(res);
+          setIsRegistrationSuccessful(true);
+          setUserMessage("Вы успешно зарегистрированы!");
+          console.log(signupData);
+          setTimeout(() => handleLogin(signupData), 1000);
         }
       })
-      .catch((err) => console.log(err));
-    //.finally(() => {setIsInfoToolOpen(true)})
+      .catch((err) => {
+        setRegistrationError("Что-то пошло не так...");
+        console.log(err);
+      });
   }
+
   React.useEffect(() => {
-    if(isRegistrationSuccessful) {
-      setUserMessage("Вы успешно зарегистрированы!")
-    } else {
-      setUserMessage("Что-то пошло не так...")
-      setRegistrationError(true)
-      setIsRegistrationSuccessful(false)
-    }
-    setIsRegistrationSuccessful(false)
-  }, [isRegistrationSuccessful])
+    setRegistrationError("");
+    setUserMessage("");
+  }, []);
 
   //редактирование профиля
   function handleUpdateProfile(data) {
@@ -171,7 +181,7 @@ function App() {
               .toLowerCase()
               .includes(searchParams.trim().toLowerCase());
           });
-        })
+        });
       } catch (err) {
         console.log(err);
       }
@@ -187,11 +197,11 @@ function App() {
     //устанавливаем верное кол-во карточек
     setLimit(windowSizeHandler);
     //Проверяем, стоит ли фильтр на короткометражки
-    if(shortMoviesSearch) {
-      const shortMovies = filterResults.filter((movie) =>  movie.duration <=40)
-      setFilteredMovies(shortMovies)
+    if (shortMoviesSearch) {
+      const shortMovies = filterResults.filter((movie) => movie.duration <= 40);
+      setFilteredMovies(shortMovies);
     } else {
-    setFilteredMovies(filterResults);
+      setFilteredMovies(filterResults);
     }
     //отрисовываем карточки
     moviesRender(filterResults, limit);
@@ -200,60 +210,64 @@ function App() {
     //сохраняем в локал сторадж
     localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
   }
-//Функция поиска для сохраненных фильмов
-const handleSavedMoviesSearch = (searchParams) => {
-  setIsLoading(true);
-  const filterResults = JSON.parse(localStorage.getItem("savedMovies")).filter(
-      (movie) => {
-        return movie.nameRU
-          .toLowerCase()
-          .includes(searchParams.trim().toLowerCase());
-      }
-    );
-  setLikedMovies(filterResults);
-  //отключаем загрузчик
-  setTimeout(() => setIsLoading(false), 1000);
-}
+  //Функция поиска для сохраненных фильмов
+  const handleSavedMoviesSearch = (searchParams) => {
+    setIsLoading(true);
+    const filterResults = JSON.parse(
+      localStorage.getItem("savedMovies")
+    ).filter((movie) => {
+      return movie.nameRU
+        .toLowerCase()
+        .includes(searchParams.trim().toLowerCase());
+    });
+    setLikedMovies(filterResults);
+    //отключаем загрузчик
+    setTimeout(() => setIsLoading(false), 1000);
+  };
 
   //Изменение стейта короткометражек по нажатию на переключатель на главной странице
   const shortMoviesSwitchClick = () => {
-    setShortMoviesSearch(!shortMoviesSearch)
-  }
+    setShortMoviesSearch(!shortMoviesSearch);
+  };
   //перерисовываем отфильтрованные фильмы, если включили режим короткометражек на основной странице
   React.useEffect(() => {
-    shortMoviesRenderer()
+    shortMoviesRenderer();
   }, [shortMoviesSearch]);
 
   const shortMoviesRenderer = () => {
     if (shortMoviesSearch) {
-      setShortIsOn(true)
-      const shortMovies = filteredMovies.filter((movie) =>  movie.duration <=40)
+      setShortIsOn(true);
+      const shortMovies = filteredMovies.filter(
+        (movie) => movie.duration <= 40
+      );
       moviesRender(shortMovies, limit);
     } else {
-      moviesRender(filteredMovies, limit)
-      setShortIsOn(false)
+      moviesRender(filteredMovies, limit);
+      setShortIsOn(false);
     }
-  }
-   //Изменение стейта короткометражек по нажатию на переключатель на главной странице
-   const shortSavedMoviesSwitchClick = () => {
-    setSavedShortMoviesSearch(!savedShortMoviesSearch)
-  }
-   //перерисовываем сохраненные фильмы, если включили режим короткометражек
-   React.useEffect(() => {
-    shortSavedMoviesRenderer()
+  };
+  //Изменение стейта короткометражек по нажатию на переключатель на главной странице
+  const shortSavedMoviesSwitchClick = () => {
+    setSavedShortMoviesSearch(!savedShortMoviesSearch);
+  };
+  //перерисовываем сохраненные фильмы, если включили режим короткометражек
+  React.useEffect(() => {
+    shortSavedMoviesRenderer();
   }, [savedShortMoviesSearch]);
-  
+
   const shortSavedMoviesRenderer = () => {
     if (savedShortMoviesSearch) {
-      setSavedMoviesShortIsOn(true)
-      const savedShortMovies = likedMovies.filter((movie) =>  movie.duration <=40)
-      setLikedMovies(savedShortMovies)
+      setSavedMoviesShortIsOn(true);
+      const savedShortMovies = likedMovies.filter(
+        (movie) => movie.duration <= 40
+      );
+      setLikedMovies(savedShortMovies);
     } else {
-      const savedMovies = JSON.parse(localStorage.getItem("savedMovies"))
-      setLikedMovies(savedMovies)
-      setSavedMoviesShortIsOn(false)
+      const savedMovies = JSON.parse(localStorage.getItem("savedMovies"));
+      setLikedMovies(savedMovies);
+      setSavedMoviesShortIsOn(false);
     }
-  }
+  };
 
   ////проверка длины массива для отрисовки карточек
   const moviesRender = (movies, itemsToShow) => {
@@ -262,7 +276,7 @@ const handleSavedMoviesSearch = (searchParams) => {
       setResultMovies(movies.slice(0, limit));
     } else {
       setResultMovies(movies);
-      setMoreResults(false)
+      setMoreResults(false);
     }
   };
   const [width, setWidth] = React.useState(window.innerWidth);
@@ -284,10 +298,10 @@ const handleSavedMoviesSearch = (searchParams) => {
   }, [width]);
   //перерисовываем карточки при изменении ширины экрана;
   React.useEffect(() => {
-    moviesRender(filteredMovies, limit)
-  }, [limit])
+    moviesRender(filteredMovies, limit);
+  }, [limit]);
 
-//логика отображения нужного кол-ва карточек при изменении ширины окна
+  //логика отображения нужного кол-ва карточек при изменении ширины окна
   const windowSizeHandler = () => {
     if (window.innerWidth <= 480) {
       setLimit(5);
@@ -307,9 +321,9 @@ const handleSavedMoviesSearch = (searchParams) => {
     let newLimit;
     if (limit + resultsToAdd < filteredMovies.length) {
       newLimit = limit + resultsToAdd;
-      moviesRender(filteredMovies.slice(0, newLimit))
-      setLimit(newLimit)
-      setMoreResults(true)
+      moviesRender(filteredMovies.slice(0, newLimit));
+      setLimit(newLimit);
+      setMoreResults(true);
     } else if (limit + resultsToAdd >= filteredMovies.length) {
       newLimit = filteredMovies.length;
       moviesRender(filteredMovies, newLimit);
@@ -323,58 +337,61 @@ const handleSavedMoviesSearch = (searchParams) => {
     mainApi
       .createMovie(cardMovie)
       .then((savedCard) => {
-        console.log("сохранено")
-        const updatedLikedMovies = [ ...likedMovies, savedCard]
-        setLikedMovies(updatedLikedMovies)
+        console.log("сохранено");
+        const updatedLikedMovies = [...likedMovies, savedCard];
+        setLikedMovies(updatedLikedMovies);
         localStorage.setItem("savedMovies", JSON.stringify(updatedLikedMovies));
       })
       .catch((err) => console.log(err));
   };
 
-
   //загрузка сохраненных фильмов с сервера при логине
   const getSavedMovies = () => {
-    if(!localStorage.savedMovies) {
-      mainApi.getMovies()
-      .then((res) => {
-        localStorage.setItem("savedMovies", JSON.stringify(res));
-        setLikedMovies(res);
-        console.log('с сервака')
-        console.log(localStorage.savedMovies)
-      })
-        .catch((err) => console.log(err))
+    if (!localStorage.savedMovies) {
+      mainApi
+        .getMovies()
+        .then((res) => {
+          localStorage.setItem("savedMovies", JSON.stringify(res));
+          setLikedMovies(res);
+          console.log("с сервака");
+          console.log(localStorage.savedMovies);
+        })
+        .catch((err) => console.log(err));
     } else {
-      setLikedMovies(JSON.parse(localStorage.getItem("savedMovies")))
-      console.log('с локал сторадж')
+      setLikedMovies(JSON.parse(localStorage.getItem("savedMovies")));
+      console.log("с локал сторадж");
     }
-        }
+  };
 
   //Удаление лайка
   // проверка наличия id у карточки
   const idCheck = (card) => {
     if (!card._id) {
-      const thisCard = likedMovies.find((likedMovie) => likedMovie.movieId === card.id)
-      return thisCard._id
+      const thisCard = likedMovies.find(
+        (likedMovie) => likedMovie.movieId === card.id
+      );
+      return thisCard._id;
     } else {
-      return card._id
+      return card._id;
     }
-  }
-      const removeMovie = (cardMovie) => {
-        //если мы на странице со всеми фильмами и еще не знаем id базы данных
-        const searchId = idCheck(cardMovie)
-        console.log(searchId)
-        mainApi
-           //удаляем фильм с сервера
-          .removeMovie(searchId)
-          .then(() => {
-            const updatedLikedMovies = likedMovies.filter((movie) => movie._id !== cardMovie._id)
-            console.log(updatedLikedMovies)
-            localStorage.setItem("savedMovies", JSON.stringify(updatedLikedMovies));
-            setLikedMovies(updatedLikedMovies)
-          }
-          )
-          .catch((err) => console.log(err));
-      };
+  };
+  const removeMovie = (cardMovie) => {
+    //если мы на странице со всеми фильмами и еще не знаем id базы данных
+    const searchId = idCheck(cardMovie);
+    console.log(searchId);
+    mainApi
+      //удаляем фильм с сервера
+      .removeMovie(searchId)
+      .then(() => {
+        const updatedLikedMovies = likedMovies.filter(
+          (movie) => movie._id !== cardMovie._id
+        );
+        console.log(updatedLikedMovies);
+        localStorage.setItem("savedMovies", JSON.stringify(updatedLikedMovies));
+        setLikedMovies(updatedLikedMovies);
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -398,8 +415,8 @@ const handleSavedMoviesSearch = (searchParams) => {
             moreResults={moreResults}
             showMoreResults={showMore}
             savedMovies={likedMovies}
-            onToggleSwitchClick = {shortMoviesSwitchClick}
-            isChecked= {shortIsOn}
+            onToggleSwitchClick={shortMoviesSwitchClick}
+            isChecked={shortIsOn}
           />
           <ProtectedRoute
             exact
@@ -413,8 +430,8 @@ const handleSavedMoviesSearch = (searchParams) => {
             noSearchResults={nothingFound}
             savedMovies={likedMovies}
             shortMoviesOn={shortMoviesSearch}
-            onToggleSwitchClick = {shortSavedMoviesSwitchClick}
-            savedIsChecked= {savedMoviesShortIsOn}
+            onToggleSwitchClick={shortSavedMoviesSwitchClick}
+            savedIsChecked={savedMoviesShortIsOn}
           />
           <ProtectedRoute
             path="/profile"
@@ -422,16 +439,17 @@ const handleSavedMoviesSearch = (searchParams) => {
             loggedIn={loggedIn}
             handleLogout={handleLogout}
             onUpdateProfile={handleUpdateProfile}
+            currentUser={currentUser}
           />
           <Route path="/signin">
             <Login onLogin={handleLogin} />
           </Route>
           <Route path="/signup">
-            <Register 
-            onRegister={handleRegister}
-            userMessage={userMessage}
-            registrationError={registrationError}
-            isRegistrationSuccessful={isRegistrationSuccessful}
+            <Register
+              onRegister={handleRegister}
+              userMessage={userMessage}
+              registrationError={registrationError}
+              isRegistrationSuccessful={isRegistrationSuccessful}
             />
           </Route>
           <Route path="*">

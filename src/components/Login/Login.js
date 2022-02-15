@@ -12,8 +12,8 @@ export function Login(props) {
     e.preventDefault();
     // Передаём значения управляемых компонентов во внешний обработчик
     props.onLogin({
-      email,
-      password,
+      email: email,
+      password: password,
     });
     setEmail("");
     setPassword("");

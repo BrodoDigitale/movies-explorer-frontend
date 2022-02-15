@@ -14,10 +14,7 @@ const [userName, setUserName] = React.useState("");
 //Подписка на контекст юзера
   const currentUser = React.useContext(CurrentUserContext);
 
-  React.useEffect(() => {
-    setUserName(currentUser.userName);
-    setUserEmail(currentUser.userEmail);
-  }, [currentUser]);
+
 
 //Управление полями
 function userNameHandleChange(e) {
@@ -32,7 +29,7 @@ function handleSubmit(e) {
     // Передаём значения управляемых компонентов во внешний обработчик
     props.onUpdateProfile({
       name: userName,
-      email: userEmail,
+      email:userEmail,
     });
   }
   return (

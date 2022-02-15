@@ -54,18 +54,22 @@ register(data) {
             "Authorization" : `Bearer ${token}`
         }
       })
-    .then(this.handleResponse)
+    .then(this._handleResponse)
     .then((res) => {
         return res;
       }) 
     }
      getUserProfile() {
-        return fetch(`${this._url}/users/me`,{
+        return fetch(`${this._url}/users/me`, {
             method: 'GET',
-            headers: this._headers
+            headers: this._headers,
         })
         .then(this._handleResponse)
-     }
+        .then((res) => {
+          return res;
+        }) 
+      }
+     
      updateProfile(data) {
       return fetch(`${this._url}/users/me`,{
       method: 'PATCH',
