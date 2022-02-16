@@ -14,16 +14,19 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
 
 function App() {
-  //Стейты регистрации
+  
   const history = useHistory();
   const location = useLocation();
+
+  //стейты для авторизации и регистрации
   const [isRegistrationSuccessful, setIsRegistrationSuccessful] =
     React.useState(false);
   const [loginError, setLoginError] = React.useState(false);
   const [loginErrorMessage, setLoginErrorMessage] = React.useState("");
   const [registrationError, setRegistrationError] = React.useState("");
   const [userMessage, setUserMessage] = React.useState("");
-  const [profileUpdateMessage, setProfileUpdateMessage] = React.useState(false);
+  //стейты обновлениия профиля
+  const [profileUpdateMessage, setProfileUpdateMessage] = React.useState("");
   const [profileErrorMessage, setProfileErrorMessage] = React.useState("");
   const [isProfileUpdateSuccessful, setIsProfileUpdateSuccessful] =
     React.useState(false);
@@ -35,14 +38,14 @@ function App() {
 
   //Стейты поиска
   //короткометражки
-  //включен ли фильтр короткометражек на основной странице
+  //необходимо ли искать только короткометражки на основной странице
   const [shortMoviesSearch, setShortMoviesSearch] = React.useState(false);
-  //включен ли фильтр короткометражек на странице с сохраненными фильмами
+  //необходимо ли искать только короткометражки на странице с сохраненными фильмами
   const [savedShortMoviesSearch, setSavedShortMoviesSearch] =
     React.useState(false);
-  //на странице где все фильмы
+  //отобразить короткометражки из найденных результатов странице где все фильмы
   const [shortIsOn, setShortIsOn] = React.useState(false);
-  //на странице короткометражек
+  //отобразить короткометражки из найденных результатов на странице сохраненных
   const [savedMoviesShortIsOn, setSavedMoviesShortIsOn] = React.useState(false);
 
   //прелоадер
@@ -59,7 +62,8 @@ function App() {
       return 12;
     }
   });
-  //кол-во добавляемых элементов
+
+  //кол-во добавляемых элементов при клике "еще"
   const [resultsToAdd, setResultsToAdd] = React.useState(() => {
     if (window.innerWidth <= 768) {
       return 2;
@@ -67,6 +71,7 @@ function App() {
       return 4;
     }
   });
+
   //состояние кнопки "еще"
   const [moreResults, setMoreResults] = React.useState(false);
 
@@ -74,7 +79,6 @@ function App() {
   const [loggedIn, setIsLoggedIn] = React.useState(false);
   //Стейт юзера
   const [currentUser, setCurrentUser] = React.useState({});
-
 
   //проверка токена при загрузке страницы
   React.useEffect(() => {
@@ -93,22 +97,22 @@ function App() {
         });
     }
   }, []);
+  //загрузка профиля и фильмов при логине
   React.useEffect(() => {
-    if(loggedIn) {
+    if (loggedIn) {
       mainApi
-      .getUserProfile()
-      .then((res) => {
-        if (res) {
-          console.log(res)
-          setCurrentUser(res);
-          getAllServerMovies();
-          getSavedMovies(res);
-          history.push("/movies");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        .getUserProfile()
+        .then((res) => {
+          if (res) {
+            setCurrentUser(res);
+            getAllServerMovies();
+            getSavedMovies(res);
+            history.push("/movies");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, [loggedIn]);
 
@@ -172,16 +176,19 @@ function App() {
         setIsProfileUpdateSuccessful(true);
         setCurrentUser(res);
         setProfileUpdateMessage("Данные успешно изменены");
+        setTimeout(() => setProfileUpdateMessage(""), 3000);
       })
       .catch((err) => {
         setIsProfileUpdateSuccessful(false);
         setProfileErrorMessage("Что-то пошло не так...");
+        setTimeout(() => setProfileErrorMessage(""), 3000);
         console.log(err);
       });
   }
 
-  //Поиск и фильтр фильмов
+  //поиск и фильтр фильмов
   function handleMoviesSearch(searchParams) {
+    setNothingFound(false);
     setIsLoading(true);
     const filterResults = JSON.parse(localStorage.getItem("movies")).filter(
       (movie) => {
@@ -190,26 +197,32 @@ function App() {
           .includes(searchParams.trim().toLowerCase());
       }
     );
+
     //устанавливаем верное кол-во карточек
     setLimit(windowSizeHandler);
-    //Проверяем, стоит ли фильтр на короткометражки
+    //отключаем загрузчик
+    setTimeout(() => setIsLoading(false), 500);
+    //проверяем, стоит ли фильтр на короткометражки
     if (shortMoviesSearch) {
       const shortMovies = filterResults.filter((movie) => movie.duration <= 40);
       setFilteredMovies(shortMovies);
+      if (shortMovies.length === 0) {
+        setNothingFound(true);
+      }
     } else {
       setFilteredMovies(filterResults);
+      if (filterResults.length === 0) {
+        setNothingFound(true);
+      }
     }
     //отрисовываем карточки
     moviesRender(filterResults, limit);
-    //отключаем загрузчик
-    setTimeout(() => setIsLoading(false), 1000);
     //сохраняем в локал сторадж
     localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
   }
-
+  //загрузка всех фильмов с api единоразово при логине
   const getAllServerMovies = () => {
     if (!localStorage.movies) {
-      console.log("серверные фильмы");
       moviesApi
         .getMovies()
         .then((res) => {
@@ -219,10 +232,28 @@ function App() {
     }
   };
 
+  //загрузка сохраненных пользователем фильмов (при логине)
+  const getSavedMovies = (user) => {
+    if (!localStorage.savedMovies) {
+      mainApi
+        .getMovies()
+        .then((res) => {
+          const savedMovies = res.filter((movie) => movie.owner === user._id);
+          localStorage.setItem("savedMovies", JSON.stringify(savedMovies));
+          setLikedMovies(savedMovies);
+          console.log("с сервака");
+        })
+        .catch((err) => console.log(err));
+    } else {
+      setLikedMovies(JSON.parse(localStorage.getItem("savedMovies")));
+      console.log("с локал сторадж");
+    }
+  };
+
   //Функция поиска для сохраненных фильмов
   const handleSavedMoviesSearch = (searchParams) => {
+    setNothingFound(false);
     setIsLoading(true);
-    console.log("из локал сторадж");
     const filterResults = JSON.parse(
       localStorage.getItem("savedMovies")
     ).filter((movie) => {
@@ -231,47 +262,63 @@ function App() {
         .includes(searchParams.trim().toLowerCase());
     });
     setLikedMovies(filterResults);
+    if (filterResults.length === 0) {
+      setNothingFound(true);
+    }
     //отключаем загрузчик
-    setTimeout(() => setIsLoading(false), 1000);
+    setTimeout(() => setIsLoading(false), 500);
   };
 
-  //Изменение стейта короткометражек по нажатию на переключатель на главной странице
+  //изменение стейта короткометражек по нажатию на переключатель на главной странице
   const shortMoviesSwitchClick = () => {
     setShortMoviesSearch(!shortMoviesSearch);
   };
+
   //перерисовываем отфильтрованные фильмы, если включили режим короткометражек на основной странице
   React.useEffect(() => {
     shortMoviesRenderer();
   }, [shortMoviesSearch]);
 
+  //отрисовка фильмов с условиием короткометражек
   const shortMoviesRenderer = () => {
+    setNothingFound(false);
     if (shortMoviesSearch) {
       setShortIsOn(true);
       const shortMovies = filteredMovies.filter(
         (movie) => movie.duration <= 40
       );
       moviesRender(shortMovies, limit);
+      if (shortMovies.length === 0) {
+        setNothingFound(true);
+      }
     } else {
       moviesRender(filteredMovies, limit);
       setShortIsOn(false);
     }
   };
-  //Изменение стейта короткометражек по нажатию на переключатель на главной странице
+
+  //изменение стейта короткометражек по нажатию на переключатель на главной странице
   const shortSavedMoviesSwitchClick = () => {
     setSavedShortMoviesSearch(!savedShortMoviesSearch);
   };
+
   //перерисовываем сохраненные фильмы, если включили режим короткометражек
   React.useEffect(() => {
     shortSavedMoviesRenderer();
   }, [savedShortMoviesSearch]);
 
+  //отрисовка сохраненных фильмов с фильтром короткометражек
   const shortSavedMoviesRenderer = () => {
+    setNothingFound(false);
     if (savedShortMoviesSearch) {
       setSavedMoviesShortIsOn(true);
       const savedShortMovies = likedMovies.filter(
         (movie) => movie.duration <= 40
       );
       setLikedMovies(savedShortMovies);
+      if (savedShortMovies.length === 0) {
+        setNothingFound(true);
+      }
     } else {
       const savedMovies = JSON.parse(localStorage.getItem("savedMovies"));
       setLikedMovies(savedMovies);
@@ -279,7 +326,7 @@ function App() {
     }
   };
 
-  ////проверка длины массива для отрисовки карточек
+  //проверка длины массива для отрисовки карточек
   const moviesRender = (movies, itemsToShow) => {
     if (movies.length > itemsToShow) {
       setMoreResults(true);
@@ -291,7 +338,8 @@ function App() {
   };
   const [width, setWidth] = React.useState(window.innerWidth);
   React.useEffect(() => {
-    // Вешаем слушатель для отслеживания ширины окна
+
+  // отслеживаем ширину окна
     window.addEventListener("resize", () =>
       setTimeout(() => {
         screenSetter();
@@ -299,9 +347,11 @@ function App() {
     );
   }, []);
   const screenSetter = () => {
-    // Записываем ширину окна в стейт
+  
+  // записываем ширину окна в стейт
     setWidth(window.innerWidth);
   };
+
   //устанавливаем новое кол-во отображаемых карточек при изменении ширины
   React.useEffect(() => {
     setLimit(windowSizeHandler);
@@ -340,7 +390,7 @@ function App() {
     }
   };
 
-  //Логика лайка
+  //логика лайка
   const saveMovie = (cardMovie) => {
     mainApi
       .createMovie(cardMovie)
@@ -353,27 +403,7 @@ function App() {
       .catch((err) => console.log(err));
   };
 
-  //загрузка сохраненных фильмов при логине
-  const getSavedMovies = (user) => {
-    if (!localStorage.savedMovies) {
-      mainApi
-        .getMovies()
-        .then((res) => {
-          const savedMovies = res.filter(
-            (movie) => movie.owner === user._id
-          );
-          localStorage.setItem("savedMovies", JSON.stringify(savedMovies));
-          setLikedMovies(savedMovies);
-          console.log("с сервака");
-        })
-        .catch((err) => console.log(err));
-    } else {
-      setLikedMovies(JSON.parse(localStorage.getItem("savedMovies")));
-      console.log("с локал сторадж");
-    }
-  };
-
-  //Удаление лайка
+  //удаление лайка
   // проверка наличия id у карточки
   const idCheck = (card) => {
     if (!card._id) {
@@ -392,7 +422,6 @@ function App() {
       //удаляем фильм с сервера
       .removeMovie(searchId)
       .then(() => {
-        console.log(likedMovies);
         let updatedLikedMovies;
         if (location.pathname === "/movies") {
           updatedLikedMovies = likedMovies.filter(
@@ -405,7 +434,6 @@ function App() {
         }
         localStorage.setItem("savedMovies", JSON.stringify(updatedLikedMovies));
         setLikedMovies(updatedLikedMovies);
-        console.log("удалено");
       })
       .catch((err) => console.log(err));
   };
@@ -423,7 +451,7 @@ function App() {
             component={Movies}
             loggedIn={loggedIn}
             movies={resultMovies}
-            noSearchResults={nothingFound}
+            isNothingFound={nothingFound}
             onSearch={handleMoviesSearch}
             onLike={saveMovie}
             onUnlike={removeMovie}
@@ -443,7 +471,7 @@ function App() {
             component={SavedMovies}
             isLoading={isLoading}
             loggedIn={loggedIn}
-            noSearchResults={nothingFound}
+            isNothingFound={nothingFound}
             savedMovies={likedMovies}
             shortMoviesOn={shortMoviesSearch}
             onToggleSwitchClick={shortSavedMoviesSwitchClick}

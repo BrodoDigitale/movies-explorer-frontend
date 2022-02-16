@@ -87,3 +87,16 @@
     background: #000;
     animation: preloader-inside-red 1s ease-in-out infinite;
 }
+.preloader__nothingFoundMsg {
+    font-size: 13px;
+    font-weight: 400;
+    color: #000;
+    display: none;
+    text-align: center;
+    width: 100%;
+    margin-top: 30px;
+  }
+  
+  .preloader__nothingFoundMsg_active {
+   display: block;
+  }

@@ -1,13 +1,13 @@
 .searchForm {
   max-width: 1140px;
-  padding: 0;
   margin: 0 auto;
   box-sizing: border-box;
+  padding: 0 0 69px;
   border-bottom: 1px solid #e8e8e8;
 }
 @media screen and (max-width: 768px) {
   .searchForm {
-    padding: 0 0 50px;
+    padding: 0 0 109px;
   }
 }
 @media screen and (max-width: 425px) {

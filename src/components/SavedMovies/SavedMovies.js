@@ -16,13 +16,15 @@ export function SavedMovies(props) {
           shortMoviesOn={props.shortMoviesOn}
           savedIsChecked={props.savedIsChecked}
         />
-        <Preloader isLoading={props.isLoading} />
+        <Preloader 
+        isLoading={props.isLoading}
+        isNothingFound={props.isNothingFound}
+        />
         <MoviesCardList
           movies={props.movies}
           button={"movies__unlike-button"}
           onUnlike={props.onUnlike}
           savedMovies={props.savedMovies}
-          isNothingFound={props.isNothingFound}
         />
       </main>
       <Footer />

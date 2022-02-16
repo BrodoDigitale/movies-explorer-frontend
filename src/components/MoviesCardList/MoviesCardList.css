@@ -20,15 +20,5 @@
   grid-auto-flow: row;
 }
 
-.movieCardList__nothingFoundMsg {
-  font-size: 13px;
-  font-weight: 400;
-  color: #000;
-  display: none;
-  text-align: center;
-}
 
-.movieCardList__nothingFoundMsg_active {
- display: block;
-}
 
