@@ -59,10 +59,13 @@ register(data) {
         return res;
       }) 
     }
-     getUserProfile() {
+     getUserProfile(token) {
         return fetch(`${this._url}/users/me`, {
             method: 'GET',
-            headers: this._headers,
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization" : `Bearer ${token}`
+            }
         })
         .then(this._handleResponse)
         .then((res) => {

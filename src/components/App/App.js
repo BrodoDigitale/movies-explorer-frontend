@@ -14,7 +14,6 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
 
 function App() {
-  
   const history = useHistory();
   const location = useLocation();
 
@@ -80,54 +79,19 @@ function App() {
   //Стейт юзера
   const [currentUser, setCurrentUser] = React.useState({});
 
-  //проверка токена при загрузке страницы
-  React.useEffect(() => {
-    if (localStorage.jwt) {
-      mainApi
-        .checkTokenValidity(localStorage.getItem("jwt"))
-        .then((res) => {
-          if (res) {
-            setCurrentUser(res);
-            setIsLoggedIn(true);
-            history.push("/movies");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, []);
-  //загрузка профиля и фильмов при логине
-  React.useEffect(() => {
-    if (loggedIn) {
-      mainApi
-        .getUserProfile()
-        .then((res) => {
-          if (res) {
-            setCurrentUser(res);
-            getAllServerMovies();
-            getSavedMovies(res);
-            history.push("/movies");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [loggedIn]);
-
   //Логин
   function handleLogin(data) {
-    setLoginErrorMessage("");
     if (!data.email || !data.password) {
       return;
     }
     mainApi
       .login(data)
       .then((res) => {
+        console.log(res);
         if (!res) throw new Error("Неправильные имя пользователя или пароль");
-        if (res) {
+        else {
           localStorage.setItem("jwt", res.token);
+          console.log(localStorage.getItem("jwt"));
           setIsLoggedIn(true);
           history.push("/movies");
         }
@@ -138,13 +102,33 @@ function App() {
         console.log(err);
       });
   }
+  //загрузка профиля и фильмов при логине
+  React.useEffect(() => {
+    setIsLoading(true);
+    if (loggedIn) {
+      const jwt = localStorage.getItem("jwt");
+      Promise.all([mainApi.getUserProfile(jwt), mainApi.getMovies()])
+        .then(([user, movies]) => {
+          setCurrentUser(user);
+          const userMovies = movies.filter((movie) => movie.owner === user._id);
+          localStorage.setItem("savedMovies", JSON.stringify(userMovies));
+          setLikedMovies(userMovies);
+          setTimeout(() => setIsLoading(false), 1000);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [loggedIn]);
 
   //Логаут
   function handleLogout() {
     localStorage.clear();
     setCurrentUser({});
     setIsLoggedIn(false);
-    setLikedMovies("");
+    setFilteredMovies([]);
+    setResultMovies([]);
+    setRegistrationError("");
+    setLoginErrorMessage("");
+    setMoreResults(false)
     history.push("/movies");
   }
 
@@ -190,65 +174,78 @@ function App() {
   function handleMoviesSearch(searchParams) {
     setNothingFound(false);
     setIsLoading(true);
-    const filterResults = JSON.parse(localStorage.getItem("movies")).filter(
-      (movie) => {
-        return movie.nameRU
-          .toLowerCase()
-          .includes(searchParams.trim().toLowerCase());
-      }
-    );
-
-    //устанавливаем верное кол-во карточек
-    setLimit(windowSizeHandler);
-    //отключаем загрузчик
-    setTimeout(() => setIsLoading(false), 500);
-    //проверяем, стоит ли фильтр на короткометражки
-    if (shortMoviesSearch) {
-      const shortMovies = filterResults.filter((movie) => movie.duration <= 40);
-      setFilteredMovies(shortMovies);
-      if (shortMovies.length === 0) {
-        setNothingFound(true);
-      }
-    } else {
-      setFilteredMovies(filterResults);
-      if (filterResults.length === 0) {
-        setNothingFound(true);
-      }
-    }
-    //отрисовываем карточки
-    moviesRender(filterResults, limit);
-    //сохраняем в локал сторадж
-    localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
-  }
-  //загрузка всех фильмов с api единоразово при логине
-  const getAllServerMovies = () => {
+    let filterResults;
+    //Если это первый поиск, и в локал сторадж ничего нет
     if (!localStorage.movies) {
+      //получаем фильмы с апи
       moviesApi
         .getMovies()
+        //фильтруем по поисковому запросу
         .then((res) => {
+          //сохраняем все фильмы перед фильтром для последующих поисков
           localStorage.setItem("movies", JSON.stringify(res));
-        })
-        .catch((err) => console.log(err));
-    }
-  };
-
-  //загрузка сохраненных пользователем фильмов (при логине)
-  const getSavedMovies = (user) => {
-    if (!localStorage.savedMovies) {
-      mainApi
-        .getMovies()
-        .then((res) => {
-          const savedMovies = res.filter((movie) => movie.owner === user._id);
-          localStorage.setItem("savedMovies", JSON.stringify(savedMovies));
-          setLikedMovies(savedMovies);
-          console.log("с сервака");
+          filterResults = res.filter((movie) => {
+            return movie.nameRU
+              .toLowerCase()
+              .includes(searchParams.trim().toLowerCase());
+          });
+          //устанавливаем верное кол-во карточек
+          setLimit(windowSizeHandler);
+          //отключаем загрузчик
+          setTimeout(() => setIsLoading(false), 500);
+          //проверяем, стоит ли фильтр на короткометражки
+          if (shortMoviesSearch) {
+            const shortMovies = filterResults.filter(
+              (movie) => movie.duration <= 40
+            );
+            setFilteredMovies(shortMovies);
+            if (shortMovies.length === 0) {
+              setNothingFound(true);
+            }
+          } else {
+            setFilteredMovies(filterResults);
+            if (filterResults.length === 0) {
+              setNothingFound(true);
+            }
+          }
+          //отрисовываем карточки
+          moviesRender(filterResults, limit);
+          //сохраняем в локал сторадж отфилтрованный результат
+          localStorage.setItem(
+            "filteredMovies",
+            JSON.stringify(filteredMovies)
+          );
         })
         .catch((err) => console.log(err));
     } else {
-      setLikedMovies(JSON.parse(localStorage.getItem("savedMovies")));
-      console.log("с локал сторадж");
+      //Если фильмы уже получены, делаем все то же самое, только берем фильмы из локал сторадж
+      filterResults = JSON.parse(localStorage.getItem("movies")).filter(
+        (movie) => {
+          return movie.nameRU
+            .toLowerCase()
+            .includes(searchParams.trim().toLowerCase());
+        }
+      );
+      setLimit(windowSizeHandler);
+      setTimeout(() => setIsLoading(false), 500);
+      if (shortMoviesSearch) {
+        const shortMovies = filterResults.filter(
+          (movie) => movie.duration <= 40
+        );
+        setFilteredMovies(shortMovies);
+        if (shortMovies.length === 0) {
+          setNothingFound(true);
+        }
+      } else {
+        setFilteredMovies(filterResults);
+        if (filterResults.length === 0) {
+          setNothingFound(true);
+        }
+      }
+      moviesRender(filterResults, limit);
+      localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
     }
-  };
+  }
 
   //Функция поиска для сохраненных фильмов
   const handleSavedMoviesSearch = (searchParams) => {
@@ -269,7 +266,7 @@ function App() {
     setTimeout(() => setIsLoading(false), 500);
   };
 
-  //изменение стейта короткометражек по нажатию на переключатель на главной странице
+  //Изменение стейта короткометражек по нажатию на переключатель на главной странице
   const shortMoviesSwitchClick = () => {
     setShortMoviesSearch(!shortMoviesSearch);
   };
@@ -338,8 +335,7 @@ function App() {
   };
   const [width, setWidth] = React.useState(window.innerWidth);
   React.useEffect(() => {
-
-  // отслеживаем ширину окна
+    // отслеживаем ширину окна
     window.addEventListener("resize", () =>
       setTimeout(() => {
         screenSetter();
@@ -347,8 +343,7 @@ function App() {
     );
   }, []);
   const screenSetter = () => {
-  
-  // записываем ширину окна в стейт
+    // записываем ширину окна в стейт
     setWidth(window.innerWidth);
   };
 
@@ -403,7 +398,7 @@ function App() {
       .catch((err) => console.log(err));
   };
 
-  //удаление лайка
+  //Удаление лайка
   // проверка наличия id у карточки
   const idCheck = (card) => {
     if (!card._id) {

@@ -26,16 +26,17 @@ export function MoviesCard(props) {
   }
   //проверка лайка
   const likeCheck = () => {
-    if (!isLiked) {
-      const someCard = savedMovies.find(
-        (likedMovie) => likedMovie.movieId === thisMovie.id
-      );
-      if (someCard) {
-        //если айди карточки есть в сохраненных, то она лайкнута
-        setIsLiked(true);
-      } else {
-        //если не нашли айди
-        setIsLiked(false);
+    //если есть сохраненные фильмы
+    if (savedMovies) {
+      if (!isLiked) {
+        const someCard = savedMovies.find((likedMovie) => likedMovie.movieId === thisMovie.id);
+        if (someCard) {
+          //если айди карточки есть в сохраненных, то она лайкнута
+          setIsLiked(true);
+        } else {
+          //если не нашли айди
+          setIsLiked(false);
+        }
       }
     }
   };
