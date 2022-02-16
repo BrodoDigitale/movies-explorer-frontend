@@ -1,11 +1,6 @@
 import React from "react";
 import "./App.css";
-import {
-  Route,
-  Switch,
-  useHistory,
-  Redirect /*useLocation*/,
-} from "react-router-dom";
+import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 import { Main } from "../Main/Main";
 import { Movies } from "../Movies/Movies";
 import { SavedMovies } from "../SavedMovies/SavedMovies";
@@ -21,6 +16,7 @@ import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
 function App() {
   //Стейты регистрации
   const history = useHistory();
+  const location = useLocation();
   const [isRegistrationSuccessful, setIsRegistrationSuccessful] =
     React.useState(false);
   const [loginError, setLoginError] = React.useState(false);
@@ -29,8 +25,8 @@ function App() {
   const [userMessage, setUserMessage] = React.useState("");
   const [profileUpdateMessage, setProfileUpdateMessage] = React.useState(false);
   const [profileErrorMessage, setProfileErrorMessage] = React.useState("");
-  const [isProfileUpdateSuccessful, setIsProfileUpdateSuccessful] = React.useState(false);
-
+  const [isProfileUpdateSuccessful, setIsProfileUpdateSuccessful] =
+    React.useState(false);
 
   //Стейты фильмов
   const [resultMovies, setResultMovies] = React.useState([]);
@@ -79,10 +75,7 @@ function App() {
   //Стейт юзера
   const [currentUser, setCurrentUser] = React.useState({});
 
-  //Отрисовка сохраненных фильмов
-  /*React.useEffect(() => {
-    moviesRender(likedMovies, limit);
-  }, []);*/
+
   //проверка токена при загрузке страницы
   React.useEffect(() => {
     if (localStorage.jwt) {
@@ -90,7 +83,7 @@ function App() {
         .checkTokenValidity(localStorage.getItem("jwt"))
         .then((res) => {
           if (res) {
-            setCurrentUser(res)
+            setCurrentUser(res);
             setIsLoggedIn(true);
             history.push("/movies");
           }
@@ -101,22 +94,27 @@ function App() {
     }
   }, []);
   React.useEffect(() => {
+    if(loggedIn) {
       mainApi
-        .getUserProfile()
-        .then((res) => {
-          if (res) {
-            setCurrentUser(res);
-            history.push("/movies");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      .getUserProfile()
+      .then((res) => {
+        if (res) {
+          console.log(res)
+          setCurrentUser(res);
+          getAllServerMovies();
+          getSavedMovies(res);
+          history.push("/movies");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
   }, [loggedIn]);
 
   //Логин
   function handleLogin(data) {
-    setLoginErrorMessage("")
+    setLoginErrorMessage("");
     if (!data.email || !data.password) {
       return;
     }
@@ -127,15 +125,13 @@ function App() {
         if (res) {
           localStorage.setItem("jwt", res.token);
           setIsLoggedIn(true);
-          getAllServerMovies();
-          getSavedMovies();
           history.push("/movies");
         }
       })
       .catch((err) => {
-        setLoginErrorMessage('Не удалось войти, пожалуйста, проверьте данные')
+        setLoginErrorMessage("Не удалось войти, пожалуйста, проверьте данные");
         setLoginError(true);
-        console.log(err)
+        console.log(err);
       });
   }
 
@@ -144,7 +140,7 @@ function App() {
     localStorage.clear();
     setCurrentUser({});
     setIsLoggedIn(false);
-    setLikedMovies("")
+    setLikedMovies("");
     history.push("/movies");
   }
 
@@ -166,34 +162,34 @@ function App() {
       });
   }
 
-
   //редактирование профиля
   function handleUpdateProfile(data) {
-    setProfileUpdateMessage("")
-    setProfileErrorMessage("")
+    setProfileUpdateMessage("");
+    setProfileErrorMessage("");
     mainApi
       .updateProfile(data)
       .then((res) => {
-        setIsProfileUpdateSuccessful(true)
+        setIsProfileUpdateSuccessful(true);
         setCurrentUser(res);
-        setProfileUpdateMessage("Данные успешно изменены")
+        setProfileUpdateMessage("Данные успешно изменены");
       })
       .catch((err) => {
-        setIsProfileUpdateSuccessful(false)
-        setProfileErrorMessage("Что-то пошло не так...")
-        console.log(err)});
+        setIsProfileUpdateSuccessful(false);
+        setProfileErrorMessage("Что-то пошло не так...");
+        console.log(err);
+      });
   }
 
   //Поиск и фильтр фильмов
   function handleMoviesSearch(searchParams) {
     setIsLoading(true);
-     const filterResults = JSON.parse(localStorage.getItem("movies")).filter(
-        (movie) => {
-          return movie.nameRU
-            .toLowerCase()
-            .includes(searchParams.trim().toLowerCase());
-        }
-      );
+    const filterResults = JSON.parse(localStorage.getItem("movies")).filter(
+      (movie) => {
+        return movie.nameRU
+          .toLowerCase()
+          .includes(searchParams.trim().toLowerCase());
+      }
+    );
     //устанавливаем верное кол-во карточек
     setLimit(windowSizeHandler);
     //Проверяем, стоит ли фильтр на короткометражки
@@ -211,21 +207,22 @@ function App() {
     localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
   }
 
-const getAllServerMovies = () => {
-  if (!localStorage.movies || localStorage.savedMovies.length === 0) {
-    console.log("серверные фильмы")
-      moviesApi.getMovies()
-      .then((res) => {
-      localStorage.setItem("movies", JSON.stringify(res));
-      })
-      .catch ((err) => console.log(err))
-}}
-
+  const getAllServerMovies = () => {
+    if (!localStorage.movies) {
+      console.log("серверные фильмы");
+      moviesApi
+        .getMovies()
+        .then((res) => {
+          localStorage.setItem("movies", JSON.stringify(res));
+        })
+        .catch((err) => console.log(err));
+    }
+  };
 
   //Функция поиска для сохраненных фильмов
   const handleSavedMoviesSearch = (searchParams) => {
     setIsLoading(true);
-    console.log("из локал сторадж")
+    console.log("из локал сторадж");
     const filterResults = JSON.parse(
       localStorage.getItem("savedMovies")
     ).filter((movie) => {
@@ -329,7 +326,6 @@ const getAllServerMovies = () => {
   };
 
   // логика кнопки показать еще
-
   const showMore = () => {
     let newLimit;
     if (limit + resultsToAdd < filteredMovies.length) {
@@ -358,16 +354,17 @@ const getAllServerMovies = () => {
   };
 
   //загрузка сохраненных фильмов при логине
-  const getSavedMovies = () => {
-   if (!localStorage.savedMovies || localStorage.savedMovies.length === 0) {
+  const getSavedMovies = (user) => {
+    if (!localStorage.savedMovies) {
       mainApi
         .getMovies()
         .then((res) => {
-          const savedMovies = res.filter((movie) => movie.owner===currentUser._id)
+          const savedMovies = res.filter(
+            (movie) => movie.owner === user._id
+          );
           localStorage.setItem("savedMovies", JSON.stringify(savedMovies));
           setLikedMovies(savedMovies);
           console.log("с сервака");
-          console.log(localStorage.savedMovies);
         })
         .catch((err) => console.log(err));
     } else {
@@ -395,11 +392,20 @@ const getAllServerMovies = () => {
       //удаляем фильм с сервера
       .removeMovie(searchId)
       .then(() => {
-        const updatedLikedMovies = likedMovies.filter(
-          (movie) => movie._id !== cardMovie._id
-        );
+        console.log(likedMovies);
+        let updatedLikedMovies;
+        if (location.pathname === "/movies") {
+          updatedLikedMovies = likedMovies.filter(
+            (movie) => movie.movieId !== cardMovie.id
+          );
+        } else {
+          updatedLikedMovies = likedMovies.filter(
+            (movie) => movie._id !== cardMovie._id
+          );
+        }
         localStorage.setItem("savedMovies", JSON.stringify(updatedLikedMovies));
         setLikedMovies(updatedLikedMovies);
+        console.log("удалено");
       })
       .catch((err) => console.log(err));
   };
@@ -454,10 +460,10 @@ const getAllServerMovies = () => {
             isProfileUpdateSuccessful={isProfileUpdateSuccessful}
           />
           <Route path="/signin">
-            <Login 
-            onLogin={handleLogin}
-            loginError={loginError}
-            loginErrorMessage={loginErrorMessage}
+            <Login
+              onLogin={handleLogin}
+              loginError={loginError}
+              loginErrorMessage={loginErrorMessage}
             />
           </Route>
           <Route path="/signup">

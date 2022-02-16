@@ -86,15 +86,15 @@ register(data) {
             method: 'POST',
             headers: this._headers,
             body: JSON.stringify({
-                country: card.country,
-                director: card.director,
-                duration: card.duration,
-                year: card.year,
-                description: card.description,
+                country: card.country || "No data",
+                director: card.director || "No data",
+                duration: card.duration || "No data",
+                year: card.year || 0,
+                description: card.description || "No data",
                 image: `https://api.nomoreparties.co/${card.image.url}`,
                 trailer: card.trailerLink,
                 nameRU: card.nameRU,
-                nameEN: card.nameEN,
+                nameEN: card.nameEN || "No data",
                 thumbnail: `https://api.nomoreparties.co/${card.image.formats.thumbnail.url}`,
                 movieId: card.id
               })
