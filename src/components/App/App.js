@@ -20,7 +20,7 @@ import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
 
 function App() {
   //Стейты регистрации
-
+  const history = useHistory();
   const [isRegistrationSuccessful, setIsRegistrationSuccessful] =
     React.useState(false);
   const [loginError, setLoginError] = React.useState(false);
@@ -80,28 +80,38 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
 
   //Отрисовка сохраненных фильмов
-  React.useEffect(() => {
+  /*React.useEffect(() => {
     moviesRender(likedMovies, limit);
-  }, []);
-
-  //Проверка токена при загрузке страницы
+  }, []);*/
+  //проверка токена при загрузке страницы
   React.useEffect(() => {
     if (localStorage.jwt) {
       mainApi
         .checkTokenValidity(localStorage.getItem("jwt"))
         .then((res) => {
-          console.log(res);
           if (res) {
-            setCurrentUser(res);
+            setCurrentUser(res)
             setIsLoggedIn(true);
+            history.push("/movies");
           }
         })
         .catch((err) => {
-          setLoginError(true);
-          setLoginErrorMessage('Не удалось войти, пожалуйста, проверьте данные')
           console.log(err);
         });
     }
+  }, []);
+  React.useEffect(() => {
+      mainApi
+        .getUserProfile()
+        .then((res) => {
+          if (res) {
+            setCurrentUser(res);
+            history.push("/movies");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
   }, [loggedIn]);
 
   //Логин
@@ -115,10 +125,11 @@ function App() {
       .then((res) => {
         if (!res) throw new Error("Неправильные имя пользователя или пароль");
         if (res) {
-          console.log(res);
           localStorage.setItem("jwt", res.token);
-          console.log(localStorage.getItem("jwt", res.token));
           setIsLoggedIn(true);
+          getAllServerMovies();
+          getSavedMovies();
+          history.push("/movies");
         }
       })
       .catch((err) => {
@@ -130,24 +141,12 @@ function App() {
 
   //Логаут
   function handleLogout() {
-    localStorage.removeItem("jwt");
+    localStorage.clear();
     setCurrentUser({});
     setIsLoggedIn(false);
+    setLikedMovies("")
+    history.push("/movies");
   }
-
-  const setUserProfile = () => {
-    mainApi
-      .getUserProfile()
-      .then((res) => {
-        //загружаем профиль и сохраненные фильмы
-        console.log(res);
-        setCurrentUser(res);
-        console.log(currentUser);
-        getSavedMovies();
-        setIsLoggedIn(true);
-      })
-      .catch((err) => console.log(err));
-  };
 
   //Регистрация
   function handleRegister(signupData) {
@@ -188,29 +187,13 @@ function App() {
   //Поиск и фильтр фильмов
   function handleMoviesSearch(searchParams) {
     setIsLoading(true);
-    let filterResults;
-    if (!localStorage.movies) {
-      try {
-        moviesApi.getMovies().then((res) => {
-          localStorage.setItem("movies", JSON.stringify(res));
-          filterResults = res.filter((movie) => {
-            return movie.nameRU
-              .toLowerCase()
-              .includes(searchParams.trim().toLowerCase());
-          });
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    } else {
-      filterResults = JSON.parse(localStorage.getItem("movies")).filter(
+     const filterResults = JSON.parse(localStorage.getItem("movies")).filter(
         (movie) => {
           return movie.nameRU
             .toLowerCase()
             .includes(searchParams.trim().toLowerCase());
         }
       );
-    }
     //устанавливаем верное кол-во карточек
     setLimit(windowSizeHandler);
     //Проверяем, стоит ли фильтр на короткометражки
@@ -227,9 +210,22 @@ function App() {
     //сохраняем в локал сторадж
     localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
   }
+
+const getAllServerMovies = () => {
+  if (!localStorage.movies || localStorage.savedMovies.length === 0) {
+    console.log("серверные фильмы")
+      moviesApi.getMovies()
+      .then((res) => {
+      localStorage.setItem("movies", JSON.stringify(res));
+      })
+      .catch ((err) => console.log(err))
+}}
+
+
   //Функция поиска для сохраненных фильмов
   const handleSavedMoviesSearch = (searchParams) => {
     setIsLoading(true);
+    console.log("из локал сторадж")
     const filterResults = JSON.parse(
       localStorage.getItem("savedMovies")
     ).filter((movie) => {
@@ -345,7 +341,6 @@ function App() {
       newLimit = filteredMovies.length;
       moviesRender(filteredMovies, newLimit);
       setMoreResults(false);
-      //setLimit(windowSizeHandler)
     }
   };
 
@@ -362,14 +357,15 @@ function App() {
       .catch((err) => console.log(err));
   };
 
-  //загрузка сохраненных фильмов с сервера при логине
+  //загрузка сохраненных фильмов при логине
   const getSavedMovies = () => {
-    if (!localStorage.savedMovies) {
+   if (!localStorage.savedMovies || localStorage.savedMovies.length === 0) {
       mainApi
         .getMovies()
         .then((res) => {
-          localStorage.setItem("savedMovies", JSON.stringify(res));
-          setLikedMovies(res);
+          const savedMovies = res.filter((movie) => movie.owner===currentUser._id)
+          localStorage.setItem("savedMovies", JSON.stringify(savedMovies));
+          setLikedMovies(savedMovies);
           console.log("с сервака");
           console.log(localStorage.savedMovies);
         })
@@ -395,7 +391,6 @@ function App() {
   const removeMovie = (cardMovie) => {
     //если мы на странице со всеми фильмами и еще не знаем id базы данных
     const searchId = idCheck(cardMovie);
-    console.log(searchId);
     mainApi
       //удаляем фильм с сервера
       .removeMovie(searchId)
@@ -403,7 +398,6 @@ function App() {
         const updatedLikedMovies = likedMovies.filter(
           (movie) => movie._id !== cardMovie._id
         );
-        console.log(updatedLikedMovies);
         localStorage.setItem("savedMovies", JSON.stringify(updatedLikedMovies));
         setLikedMovies(updatedLikedMovies);
       })
@@ -413,7 +407,6 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
-        {loggedIn ? <Redirect to="/movies" /> : <Redirect to="/" />}
         <Switch>
           <Route exact path="/">
             <Main loggedIn={loggedIn} />

@@ -8,12 +8,14 @@ export function MoviesCardList(props) {
 const location = useLocation();
 
 const movies = props.movies;
-    //Стейт лайка карточки
-
-
+   
 
     return(
     <section className="moviesCardList">
+        <span className={`movieCardList__nothingFoundMsg
+             ${props.isNothingFound ? `movieCardList__nothingFoundMsg_active` : null}`}>
+            К сожалению, по вашему запросу ничего не найдено
+            </span>
         <ul className="moviesCardList__list">
             {location.pathname === '/movies' ? (
                         movies.map((movie) => {

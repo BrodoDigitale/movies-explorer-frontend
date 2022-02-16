@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 export function MoviesCard(props) {
 const location = useLocation();
   const thisMovie = props.movieCard
+  const savedMovies=props.savedMovies
   
   //Стейт лайка карточки
   const [isLiked, setIsLiked] = React.useState(false);
@@ -25,8 +26,8 @@ const location = useLocation();
   }
   //проверка лайка
   const likeCheck = () => {
-    if(!isLiked) {
-        const someCard = props.savedMovies.find((likedMovie) => likedMovie.movieId === thisMovie.id)
+    if (!isLiked) {
+        const someCard = savedMovies.find((likedMovie) => likedMovie.movieId === thisMovie.id)
         if(someCard) {
             //если айди карточки есть в сохраненных, то она лайкнута
             setIsLiked(true)
@@ -39,6 +40,7 @@ const location = useLocation();
   //при отрисовке сохраненных карточек задаем им сразу лайк
   //а если это отрисовка после поиска определяем статус лайка карточки
   React.useEffect(() => {
+ 
  location.pathname === '/movies' ? likeCheck() : setIsLiked(true)
  }, []);
 

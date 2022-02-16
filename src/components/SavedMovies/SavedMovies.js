@@ -22,6 +22,7 @@ export function SavedMovies(props) {
           button={"movies__unlike-button"}
           onUnlike={props.onUnlike}
           savedMovies={props.savedMovies}
+          isNothingFound={props.isNothingFound}
         />
       </main>
       <Footer />

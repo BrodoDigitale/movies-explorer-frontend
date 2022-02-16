@@ -26,6 +26,7 @@ export function Movies(props) {
         onLike={props.onLike}
         onUnlike={props.onUnlike}
         savedMovies={props.savedMovies}
+        isNothingFound={props.isNothingFound}
         />
         <button
           className={`movies__button ${props.moreResults ? 'movies__button_on' : null}`}
