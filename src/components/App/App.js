@@ -128,13 +128,16 @@ function App() {
             if (res) {
               setIsLoggedIn(true);
               if(localStorage.searchWord) {
-                setPreviousSearchWord(JSON.parse(
-                localStorage.getItem("searchWord")))
+                const previousSearchWord = JSON.parse(localStorage.getItem("searchWord"))
+                setPreviousSearchWord(previousSearchWord)
                 handleMoviesSearch(previousSearchWord)
+                if(localStorage.shortIsOn) {
+                  setShortMoviesSearch(true)
+                } 
               }
-              history.push("/movies");
-            }
-          })
+            history.push("/movies");
+          }
+        })
           .catch((err) => console.log(err));
       }
     }, []);
@@ -165,6 +168,9 @@ function App() {
     setResultMovies([]);
     setRegistrationError("");
     setLoginErrorMessage("");
+    setPreviousSearchWord("")
+    setShortIsOn(false)
+    setShortMoviesSearch(false)
     setMoreResults(false)
     history.push("/movies");
   }
@@ -221,7 +227,6 @@ function App() {
         .getMovies()
         //фильтруем по поисковому запросу
         .then((res) => {
-          console.log(res)
           //сохраняем все фильмы перед фильтром для последующих поисков
           localStorage.setItem("movies", JSON.stringify(res));
           filterResults = res.filter((movie) => {
@@ -332,9 +337,9 @@ function App() {
         setNothingFound(true);
       }
     } else {
-      localStorage.removeItem("shortIsOn");
       moviesRender(filteredMovies, limit);
       setShortIsOn(false);
+      localStorage.removeItem("shortIsOn");
     }
   };
 
