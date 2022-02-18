@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 export function SearchForm(props) {
     const location = useLocation();
-    const [searchWord, setSearchWord] = useState("");
+    const [searchWord, setSearchWord] = useState(props.previousSearchWord);
 
     function handleSearch(e) {
       e.preventDefault();

@@ -36,6 +36,7 @@ function App() {
   const [likedMovies, setLikedMovies] = React.useState([]);
 
   //Стейты поиска
+  const [previousSearchWord, setPreviousSearchWord] = React.useState('');
   //короткометражки
   //необходимо ли искать только короткометражки на основной странице
   const [shortMoviesSearch, setShortMoviesSearch] = React.useState(false);
@@ -87,11 +88,9 @@ function App() {
     mainApi
       .login(data)
       .then((res) => {
-        console.log(res);
         if (!res) throw new Error("Неправильные имя пользователя или пароль");
         else {
           localStorage.setItem("jwt", res.token);
-          console.log(localStorage.getItem("jwt"));
           setIsLoggedIn(true);
           history.push("/movies");
         }
@@ -118,6 +117,44 @@ function App() {
         .catch((err) => console.log(err));
     }
   }, [loggedIn]);
+  
+    //Проверка токена при загрузке страницы
+    React.useEffect(() => {
+      const jwt = localStorage.getItem("jwt");
+      if (jwt) {
+        mainApi
+          .checkTokenValidity(jwt)
+          .then((res) => {
+            if (res) {
+              setIsLoggedIn(true);
+              if(localStorage.searchWord) {
+                setPreviousSearchWord(JSON.parse(
+                localStorage.getItem("searchWord")))
+                handleMoviesSearch(previousSearchWord)
+              }
+              history.push("/movies");
+            }
+          })
+          .catch((err) => console.log(err));
+      }
+    }, []);
+
+    //загрузка профиля и фильмов при логине
+    React.useEffect(() => {
+      setIsLoading(true);
+      if (loggedIn) {
+        const jwt = localStorage.getItem("jwt");
+        Promise.all([mainApi.getUserProfile(jwt), mainApi.getMovies()])
+          .then(([user, movies]) => {
+            setCurrentUser(user);
+            const userMovies = movies.filter((movie) => movie.owner === user._id);
+            localStorage.setItem("savedMovies", JSON.stringify(userMovies));
+            setLikedMovies(userMovies);
+            setTimeout(() => setIsLoading(false), 1000);
+          })
+          .catch((err) => console.log(err));
+      }
+    }, []);
 
   //Логаут
   function handleLogout() {
@@ -174,6 +211,8 @@ function App() {
   function handleMoviesSearch(searchParams) {
     setNothingFound(false);
     setIsLoading(true);
+    //сохраняем поисковое слово
+    localStorage.setItem("searchWord", JSON.stringify(searchParams))
     let filterResults;
     //Если это первый поиск, и в локал сторадж ничего нет
     if (!localStorage.movies) {
@@ -182,6 +221,7 @@ function App() {
         .getMovies()
         //фильтруем по поисковому запросу
         .then((res) => {
+          console.log(res)
           //сохраняем все фильмы перед фильтром для последующих поисков
           localStorage.setItem("movies", JSON.stringify(res));
           filterResults = res.filter((movie) => {
@@ -210,7 +250,7 @@ function App() {
           }
           //отрисовываем карточки
           moviesRender(filterResults, limit);
-          //сохраняем в локал сторадж отфилтрованный результат
+          //сохраняем в локал сторадж отфильтрованный результат
           localStorage.setItem(
             "filteredMovies",
             JSON.stringify(filteredMovies)
@@ -243,7 +283,8 @@ function App() {
         }
       }
       moviesRender(filterResults, limit);
-      localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
+      localStorage.setItem("filteredMovies", JSON.stringify(filterResults));
+  
     }
   }
 
@@ -281,6 +322,8 @@ function App() {
     setNothingFound(false);
     if (shortMoviesSearch) {
       setShortIsOn(true);
+      localStorage.setItem("shortIsOn", "true");
+      console.log(localStorage)
       const shortMovies = filteredMovies.filter(
         (movie) => movie.duration <= 40
       );
@@ -289,6 +332,7 @@ function App() {
         setNothingFound(true);
       }
     } else {
+      localStorage.removeItem("shortIsOn");
       moviesRender(filteredMovies, limit);
       setShortIsOn(false);
     }
@@ -456,6 +500,7 @@ function App() {
             savedMovies={likedMovies}
             onToggleSwitchClick={shortMoviesSwitchClick}
             isChecked={shortIsOn}
+            previousSearchWord={previousSearchWord}
           />
           <ProtectedRoute
             exact
