@@ -37,6 +37,7 @@ export function Register(props) {
               onChange={(e) => handleChange(e)}
               name="userName"
               required
+              readOnly={props.isLoading}
             />
           </label>
           <label>
@@ -50,6 +51,7 @@ export function Register(props) {
               onChange={(e) => handleChange(e)}
               name="userEmail"
               required
+              readOnly={props.isLoading}
             />
           </label>
           <label>
@@ -64,6 +66,7 @@ export function Register(props) {
               onChange={(e) => handleChange(e)}
               name="userPassword"
               required
+              readOnly={props.isLoading}
             />
           </label>
             <span className={`register__info-message 

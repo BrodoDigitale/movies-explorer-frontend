@@ -91,7 +91,7 @@ register(data) {
             body: JSON.stringify({
                 country: card.country || "No data",
                 director: card.director || "No data",
-                duration: card.duration || "No data",
+                duration: card.duration || 0,
                 year: card.year || 0,
                 description: card.description || "No data",
                 image: `https://api.nomoreparties.co/${card.image.url}`,

@@ -4,10 +4,12 @@ import { Link } from "react-router-dom";
 import { useFormWithValidation } from "../Validation/Validation";
 
 export function Login(props) {
+
   const { values, isValid, handleChange, errors } = useFormWithValidation({
     userEmail: "",
     userPassword: "",
   });
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,6 +35,7 @@ export function Login(props) {
               name="userEmail"
               onChange={(e) => handleChange(e)}
               required
+              readOnly= {props.isLoading}
             />
           </label>
           <label>
@@ -46,6 +49,7 @@ export function Login(props) {
               onChange={(e) => handleChange(e)}
               minLength="8"
               required
+              readOnly= {props.isLoading}
             />
           </label>
           <div className="login__button-wrapper">

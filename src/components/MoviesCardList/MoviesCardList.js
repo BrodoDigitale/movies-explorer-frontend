@@ -8,8 +8,13 @@ export function MoviesCardList(props) {
 const location = useLocation();
 
 const movies = props.movies;
-   
-
+ 
+const calcDuration = (time) => {
+    const hours = Math.floor(time / 60)
+    const minutes = time % 60;
+    return hours > 0 ? `${hours}ч ${minutes}м` : `${minutes}м`
+}
+ 
     return(
     <section className="moviesCardList">
         <ul className="moviesCardList__list">
@@ -21,7 +26,7 @@ const movies = props.movies;
                                movieCard={movie}
                                image={`https://api.nomoreparties.co/${movie.image.url}`}
                                nameRU={movie.nameRU}
-                               duration={movie.duration}
+                               duration= {calcDuration(movie.duration)}
                                button={props.button}
                                trailer={movie.trailerLink}
                                onLike={props.onLike}
@@ -37,7 +42,7 @@ const movies = props.movies;
                                        movieCard={movie}
                                        image={movie.image}
                                        nameRU={movie.nameRU}
-                                       duration={movie.duration}
+                                       duration={calcDuration(movie.duration)}
                                        button={props.button}
                                        trailer={movie.trailerLink}
                                        onUnlike={props.onUnlike}

@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { Route, Switch, useHistory, useLocation } from "react-router-dom";
+import { Route, Switch, useHistory, useLocation, Redirect } from "react-router-dom";
 import { Main } from "../Main/Main";
 import { Movies } from "../Movies/Movies";
 import { SavedMovies } from "../SavedMovies/SavedMovies";
@@ -85,6 +85,7 @@ function App() {
     if (!data.email || !data.password) {
       return;
     }
+    setIsLoading(true)
     mainApi
       .login(data)
       .then((res) => {
@@ -92,29 +93,32 @@ function App() {
         else {
           localStorage.setItem("jwt", res.token);
           setIsLoggedIn(true);
-          history.push("/movies");
+          setIsLoading(false)
         }
       })
       .catch((err) => {
         setLoginErrorMessage("Не удалось войти, пожалуйста, проверьте данные");
+        setIsLoading(false)
         setLoginError(true);
         console.log(err);
       });
   }
   //загрузка профиля и фильмов при логине
   React.useEffect(() => {
-    setIsLoading(true);
     if (loggedIn) {
-      const jwt = localStorage.getItem("jwt");
-      Promise.all([mainApi.getUserProfile(jwt), mainApi.getMovies()])
+      setIsLoading(true)
+      Promise.all([mainApi.getUserProfile(localStorage.getItem("jwt")), mainApi.getMovies()])
         .then(([user, movies]) => {
           setCurrentUser(user);
           const userMovies = movies.filter((movie) => movie.owner === user._id);
           localStorage.setItem("savedMovies", JSON.stringify(userMovies));
           setLikedMovies(userMovies);
+          history.push("/movies");
           setTimeout(() => setIsLoading(false), 1000);
         })
         .catch((err) => console.log(err));
+    } else {
+      setIsLoggedIn(false)
     }
   }, [loggedIn]);
   
@@ -127,37 +131,24 @@ function App() {
           .then((res) => {
             if (res) {
               setIsLoggedIn(true);
+              //проверка, какой был последний поиск
               if(localStorage.searchWord) {
                 const previousSearchWord = JSON.parse(localStorage.getItem("searchWord"))
                 setPreviousSearchWord(previousSearchWord)
                 handleMoviesSearch(previousSearchWord)
+                //проверка, стоял ли фильтр короткометражек
                 if(localStorage.shortIsOn) {
                   setShortMoviesSearch(true)
-                } 
+                }
               }
-            history.push("/movies");
           }
+          //обнуляем сохраненный фильтр короткометражек
+          localStorage.removeItem("shortIsOn")
         })
           .catch((err) => console.log(err));
-      }
+      } 
     }, []);
 
-    //загрузка профиля и фильмов при логине
-    React.useEffect(() => {
-      setIsLoading(true);
-      if (loggedIn) {
-        const jwt = localStorage.getItem("jwt");
-        Promise.all([mainApi.getUserProfile(jwt), mainApi.getMovies()])
-          .then(([user, movies]) => {
-            setCurrentUser(user);
-            const userMovies = movies.filter((movie) => movie.owner === user._id);
-            localStorage.setItem("savedMovies", JSON.stringify(userMovies));
-            setLikedMovies(userMovies);
-            setTimeout(() => setIsLoading(false), 1000);
-          })
-          .catch((err) => console.log(err));
-      }
-    }, []);
 
   //Логаут
   function handleLogout() {
@@ -170,13 +161,13 @@ function App() {
     setLoginErrorMessage("");
     setPreviousSearchWord("")
     setShortIsOn(false)
-    setShortMoviesSearch(false)
     setMoreResults(false)
-    history.push("/movies");
+    history.push("/");
   }
 
   //Регистрация
   function handleRegister(signupData) {
+    setIsLoading(true)
     mainApi
       .register(signupData)
       .then((res) => {
@@ -184,10 +175,12 @@ function App() {
           setCurrentUser(res);
           setIsRegistrationSuccessful(true);
           setUserMessage("Вы успешно зарегистрированы!");
+          setIsLoading(false)
           setTimeout(() => handleLogin(signupData), 1000);
         }
       })
       .catch((err) => {
+        setIsLoading(false)
         setRegistrationError("Что-то пошло не так...");
         console.log(err);
       });
@@ -197,16 +190,19 @@ function App() {
   function handleUpdateProfile(data) {
     setProfileUpdateMessage("");
     setProfileErrorMessage("");
+    setIsLoading(true)
     mainApi
       .updateProfile(data)
       .then((res) => {
         setIsProfileUpdateSuccessful(true);
         setCurrentUser(res);
         setProfileUpdateMessage("Данные успешно изменены");
+        setIsLoading(false)
         setTimeout(() => setProfileUpdateMessage(""), 3000);
       })
       .catch((err) => {
         setIsProfileUpdateSuccessful(false);
+        setIsLoading(false)
         setProfileErrorMessage("Что-то пошло не так...");
         setTimeout(() => setProfileErrorMessage(""), 3000);
         console.log(err);
@@ -258,7 +254,7 @@ function App() {
           //сохраняем в локал сторадж отфильтрованный результат
           localStorage.setItem(
             "filteredMovies",
-            JSON.stringify(filteredMovies)
+            JSON.stringify(filterResults)
           );
         })
         .catch((err) => console.log(err));
@@ -328,7 +324,6 @@ function App() {
     if (shortMoviesSearch) {
       setShortIsOn(true);
       localStorage.setItem("shortIsOn", "true");
-      console.log(localStorage)
       const shortMovies = filteredMovies.filter(
         (movie) => movie.duration <= 40
       );
@@ -337,9 +332,9 @@ function App() {
         setNothingFound(true);
       }
     } else {
-      moviesRender(filteredMovies, limit);
+      const allFilteredMovies = JSON.parse(localStorage.getItem("filteredMovies"))
+      moviesRender(allFilteredMovies, limit);
       setShortIsOn(false);
-      localStorage.removeItem("shortIsOn");
     }
   };
 
@@ -374,12 +369,15 @@ function App() {
 
   //проверка длины массива для отрисовки карточек
   const moviesRender = (movies, itemsToShow) => {
-    if (movies.length > itemsToShow) {
-      setMoreResults(true);
-      setResultMovies(movies.slice(0, limit));
-    } else {
-      setResultMovies(movies);
-      setMoreResults(false);
+    //предовращаем рендеринг, если юзер не залогинен
+    if(movies) {
+      if (movies.length > itemsToShow) {
+        setMoreResults(true);
+        setResultMovies(movies.slice(0, limit));
+      } else {
+        setResultMovies(movies);
+        setMoreResults(false);
+      }
     }
   };
   const [width, setWidth] = React.useState(window.innerWidth);
@@ -523,6 +521,7 @@ function App() {
             savedIsChecked={savedMoviesShortIsOn}
           />
           <ProtectedRoute
+            exact
             path="/profile"
             component={Profile}
             loggedIn={loggedIn}
@@ -531,12 +530,14 @@ function App() {
             profileUpdateMessage={profileUpdateMessage}
             profileErrorMessage={profileErrorMessage}
             isProfileUpdateSuccessful={isProfileUpdateSuccessful}
+            isLoading={isLoading}
           />
           <Route path="/signin">
             <Login
               onLogin={handleLogin}
               loginError={loginError}
               loginErrorMessage={loginErrorMessage}
+              isLoading={isLoading}
             />
           </Route>
           <Route path="/signup">
@@ -545,6 +546,7 @@ function App() {
               userMessage={userMessage}
               registrationError={registrationError}
               isRegistrationSuccessful={isRegistrationSuccessful}
+              isLoading={isLoading}
             />
           </Route>
           <Route path="*">
