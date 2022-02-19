@@ -1,21 +1,20 @@
 .App {
-    font-family: "Inter", "Arial", sans-serif;
-    font-weight: 400;
-    font-size: 13px;
-    color: #000;
-    box-sizing: border-box;
-    width: 100%;
-  }
+  font-family: "Inter", "Arial", sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  color: #000;
+  box-sizing: border-box;
+  width: 100%;
+}
 
-  
-  .transition-button:hover  {
-    opacity: 0.8;
-    transition: opacity 0.1s ease;
-    cursor: pointer;
-    }
+.transition-button:hover {
+  opacity: 0.8;
+  transition: opacity 0.1s ease;
+  cursor: pointer;
+}
 
-    .transition-link:hover  {
-      opacity: 0.7;
-      transition: opacity 0.1s ease;
-      cursor: pointer;
-      }
+.transition-link:hover {
+  opacity: 0.7;
+  transition: opacity 0.1s ease;
+  cursor: pointer;
+}

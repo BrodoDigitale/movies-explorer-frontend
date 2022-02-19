@@ -1,18 +1,18 @@
 .searchForm {
   max-width: 1140px;
-  padding: 70px 0;
   margin: 0 auto;
   box-sizing: border-box;
+  padding: 0 0 69px;
   border-bottom: 1px solid #e8e8e8;
 }
 @media screen and (max-width: 768px) {
   .searchForm {
-    padding: 70px 0 50px;
+    padding: 0 0 109px;
   }
 }
 @media screen and (max-width: 425px) {
   .searchForm {
-    padding: 80px 0 45px;
+    padding: 0 0 45px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -21,7 +21,7 @@
 .searchForm__form {
   display: flex;
   align-items: center;
-  width: 100%;
+  justify-content: flex-end;
   box-shadow: 0px 3px 14px rgba(0, 0, 0, 0.08);
   border-radius: 9px;
   background-color: #fdfdfd;
@@ -30,55 +30,61 @@
   .searchForm__form {
     flex-direction: column;
     box-shadow: none;
+    width: 100%;
   }
 }
 .searchForm__panel {
   display: flex;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
-  width: 80%;
-  padding: 19px;
+  padding: 19px 19px 19px 25px;
   border-radius: 9px;
+  background-image: url(../../images/search-icon-grey.svg);
+  background-size: 34px 34px;
+  background-repeat: no-repeat;
+  background-position: 19px center;
 }
 @media screen and (max-width: 600px) {
   .searchForm__panel {
     padding: 0 16px 0;
     box-sizing: border-box;
     height: 72px;
-    width: 100%;
     box-shadow: 0px 3px 14px rgba(0, 0, 0, 0.08);
+    background-image: none;
   }
 }
 .searchForm__input {
   border: none;
+  width: 85%;
   min-height: 34px;
-  padding: 0 19px 0 0;
-  background-color: #fdfdfd;
+  font-size: 18px;
+  padding: 0;
+  box-sizing: border-box;
+  margin: 0 19px 0 44px;
+  background-color: transparent;
 }
 .searchForm__input::placeholder {
-  padding: 25px 0 25px 44px;
-  background-image: url(../../images/search-icon-grey.svg);
-  background-size: 34px 34px;
-  background-repeat: no-repeat;
-  background-position: left center;
   color: #a0a0a0;
   font-size: 18px;
   line-height: 20px;
   font-weight: 400;
 }
+@media screen and (max-width: 600px) {
+  .searchForm__input {
+    font-size: 14px;
+    margin-left: 0;
+  }
+}
 @media screen and (max-width: 425px) {
   .searchForm__input::placeholder {
-    background-image: none;
     font-size: 14px;
-    padding: 0;
+    line-height: 20px;
   }
 }
 .searchForm__input:focus {
-  outline: none;
-  background-color: transparent;
-}
-.searchForm__input::-webkit-search-cancel-button{
-  display: none;  
+  border: none;
+  outline: 1px solid #a0a0a0;
 }
 .searchForm__button {
   width: 80px;

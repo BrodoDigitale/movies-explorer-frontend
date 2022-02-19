@@ -8,23 +8,23 @@
   box-sizing: border-box;
 }
 @media screen and (max-width: 425px) {
-    .pageNotFound {
-        padding: 30px;
-    }
+  .pageNotFound {
+    padding: 30px;
   }
+}
 .pageNotFound__title-wrapper {
-    margin: auto 0;
+  margin: auto 0;
 }
 @media screen and (max-width: 780px) {
-    .pageNotFound__title-wrapper {
-        margin: 0 0 184px 0;
-    }
+  .pageNotFound__title-wrapper {
+    margin: 0 0 184px 0;
   }
+}
 @media screen and (max-width: 425px) {
-    .pageNotFound__title-wrapper {
-        margin: auto 0;
-    }
+  .pageNotFound__title-wrapper {
+    margin: auto 0;
   }
+}
 .pageNotFound__header {
   font-size: 140px;
   line-height: 170px;

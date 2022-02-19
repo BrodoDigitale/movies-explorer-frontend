@@ -3,22 +3,31 @@ import { Header } from "../Header/Header";
 import { Footer } from "../Footer/Footer";
 import { SearchForm } from "../SearchForm/SearchForm";
 import { MoviesCardList } from "../MoviesCardList/MoviesCardList";
-import { savedMovies } from "../../utils/utils";
+import Preloader from "../Preloader/Preloader";
 
 export function SavedMovies(props) {
-    return(
+  return (
     <>
-        <Header 
-        loggedIn = {props.loggedIn}
+      <Header loggedIn={props.loggedIn} />
+      <main className="movies">
+        <SearchForm
+          onSavedMoviesSearch={props.onSearch}
+          onToggleSwitchClick={props.onToggleSwitchClick}
+          shortMoviesOn={props.shortMoviesOn}
+          savedIsChecked={props.savedIsChecked}
         />
-        <main className="movies">
-            <SearchForm />
-            <MoviesCardList
-            movies={savedMovies}
-            button="movies__unlike-button"
-            />
-        </main>
-        <Footer/>
-     </>
-    )
+        <Preloader 
+        isLoading={props.isLoading}
+        isNothingFound={props.isNothingFound}
+        />
+        <MoviesCardList
+          movies={props.movies}
+          button={"movies__unlike-button"}
+          onUnlike={props.onUnlike}
+          savedMovies={props.savedMovies}
+        />
+      </main>
+      <Footer />
+    </>
+  );
 }

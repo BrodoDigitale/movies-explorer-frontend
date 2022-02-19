@@ -9,12 +9,14 @@ export function HamburgerButton(props) {
         className="hamburgerButton transition-button"
         type="button"
         aria-label="Открыть_меню_навигации"
+        onClick={props.onHamburgerButtonClick}
       ></button>
-      <div className="hamburgerMenu">
+      <div className={`hamburgerMenu ${props.isOpen ? 'hamburgerMenu_opened' : null}`}>
         <button
           className="hamburgerMenu__close-button transition-button"
           type="button"
           area-label="Закрыть"
+          onClick={props.onClose}
         />
         <div className="hamburgerMenu__wrapper">
           <div className="hamburgerMenu__links-wrapper">

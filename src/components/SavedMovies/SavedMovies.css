@@ -4,8 +4,8 @@
     border: none;
     background-color: transparent;
     padding: 0;
+    background-image: url(../../images/unlike-icon.svg);
   }
   .movies__unlike-button:hover {
     cursor: pointer;
-    background-image: url(../../images/unlike-icon.svg);
   }
