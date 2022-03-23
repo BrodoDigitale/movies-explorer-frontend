@@ -1,6 +1,7 @@
 # Movies Explorer Project
 
-**Final project for Yandex-Practicum Bootcamp web-development path**  
+**Final project for Yandex-Practicum Bootcamp web-development path** 
+**Movies Explorer** represents a full-stack application for searching and saving movies
 
 **[Figma layout](https://www.figma.com/file/crdG0H4KMEK8C3P7KDSoPq/Diploma_Sensi)**  
 **[Repository for back-end part of the project](https://github.com/BrodoDigitale/movies-explorer-api)**  
@@ -17,7 +18,6 @@ Public Server IP: 51.250.15.65**
 + CSS 
 + BEM
 
-**Movies Explorer** is an application for searching and saving movies
 ## Implemented features: 
 + Authorization and registration of users
 + Page with saved movies
