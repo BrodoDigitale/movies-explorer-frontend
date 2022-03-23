@@ -1,17 +1,17 @@
-# Фронтенд для сервиса Movies Explorer
+# Movies Explorer Project
 
-**Дипломный проект факультета веб-разработки Яндекс Практикум**
+**Final project for Yandex-Practicum Bootcamp web-development path**. 
+
+[Figma layout](https://www.figma.com/file/crdG0H4KMEK8C3P7KDSoPq/Diploma_Sensi). 
+
+**Front-end part:  http://sensi.movies.nomoredomains.work. 
+Back-end part: https://sensi.movies.api.nomoredomains.rocks. 
+Public Server IP: 51.250.15.65**
 
 
-## Стек 
-+ HTML/CSS
-+ Javascript
+## Tech Stack
 + React
-+ БЭМ
-
-Ссылка на макет в фигме: https://www.figma.com/file/crdG0H4KMEK8C3P7KDSoPq/Diploma_Sensi
-Деплой проекта: http://sensi.movies.nomoredomains.work 
-Бэкенд проекта здесь: https://sensi.movies.api.nomoredomains.rocks
-
-Публичный IP сервера: 51.250.15.65
-
++ Javascript
++ HTML
++ CSS 
++ BEM
