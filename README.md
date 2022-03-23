@@ -16,3 +16,11 @@ Public Server IP: 51.250.15.65**
 + HTML
 + CSS 
 + BEM
+
+**Movies Explorer** is an application for searching and saving movies
+## Implemented features: 
++ Authorization and registration of users
++ Page with saved movies
++ Short movies search filter
++ Validation of inputs of all the forms
++ Preloader
