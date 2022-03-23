@@ -1,12 +1,12 @@
 # Movies Explorer Project
 
-**Final project for Yandex-Practicum Bootcamp web-development path**. 
+**Final project for Yandex-Practicum Bootcamp web-development path**  
 
-[Figma layout](https://www.figma.com/file/crdG0H4KMEK8C3P7KDSoPq/Diploma_Sensi). 
+[Figma layout](https://www.figma.com/file/crdG0H4KMEK8C3P7KDSoPq/Diploma_Sensi)  
 
-**Front-end part:  http://sensi.movies.nomoredomains.work. 
-Back-end part: https://sensi.movies.api.nomoredomains.rocks. 
-Public Server IP: 51.250.15.65**
+**Front-end part:  http://sensi.movies.nomoredomains.work  
+Back-end part: https://sensi.movies.api.nomoredomains.rocks  
+Public Server IP: 51.250.15.65**  
 
 
 ## Tech Stack
