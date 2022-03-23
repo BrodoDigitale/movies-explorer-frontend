@@ -2,7 +2,7 @@
 
 **Final project for Yandex-Practicum Bootcamp web-development path**  
 **Movies Explorer** represents a full-stack application for searching and saving movies  
-Requires registration to see the full version of the website
+
 
 **[Figma layout](https://www.figma.com/file/crdG0H4KMEK8C3P7KDSoPq/Diploma_Sensi)**  
 **[Repository for back-end part of the project](https://github.com/BrodoDigitale/movies-explorer-api)**  
