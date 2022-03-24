@@ -18,6 +18,7 @@ Public Server IP: 51.250.15.65**
 + HTML
 + CSS 
 + BEM
++ Webpack
 
 ## Implemented features: 
 + Authorization and registration of users
